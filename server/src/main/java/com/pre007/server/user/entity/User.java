@@ -5,6 +5,8 @@ import org.hibernate.type.DateType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +24,9 @@ public class User {
     private String password;
 
     private String displayName;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> roles = new ArrayList<>();
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
