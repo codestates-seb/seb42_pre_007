@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
  * 추후 권한에 따라 접근을 제한하는 경우를 상정해 확장가능성을 남겨둠.
  */
 
+@Component
 public class CustomAuthorityUtils {
 
     private final List<GrantedAuthority> USER_ROLES =
