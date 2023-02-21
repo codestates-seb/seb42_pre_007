@@ -4,6 +4,7 @@ import { LogoImg,AuthFormWrap,AuthForm,AuthFormBox,AuthFormLabel,AuthFormInput,B
 
 const Login = () => {
   const navigate = useNavigate();
+  
   return (
     <>
       <AuthFormWrap>
