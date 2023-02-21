@@ -1,7 +1,7 @@
-package com.pre007.server.auth.JwtAuthenticationFilter;
+package com.pre007.server.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pre007.server.auth.JwtTokenizer.JwtTokenizer;
+import com.pre007.server.auth.jwt.JwtTokenizer;
 import com.pre007.server.globaldto.LoginDto;
 import com.pre007.server.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +43,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,
-                                            Authentication authResult) {
+                                            Authentication authResult) throws ServletException, IOException {
         User user = (User) authResult.getPrincipal();
 
         String accessToken = delegateAccessToken(user);
@@ -49,6 +51,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.setHeader("Authorization", "Bearer" + accessToken);
         response.setHeader("Refresh", refreshToken);
+
+        this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
 
     private String delegateAccessToken(User user) {

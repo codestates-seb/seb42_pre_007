@@ -1,8 +1,9 @@
 package com.pre007.server.config;
 
-import com.pre007.server.auth.JwtAuthenticationFilter.JwtAuthenticationFilter;
-import com.pre007.server.auth.JwtTokenizer.JwtTokenizer;
-import io.jsonwebtoken.io.Encoders;
+import com.pre007.server.auth.filter.JwtAuthenticationFilter;
+import com.pre007.server.auth.handler.UserAuthenticationFailureHandler;
+import com.pre007.server.auth.handler.UserAuthenticationSuccessHandler;
+import com.pre007.server.auth.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -83,6 +83,8 @@ public class WebSecurityConfig {
             JwtAuthenticationFilter jwtAuthenticationFilter =
                     new JwtAuthenticationFilter(authenticationManager,jwtTokenizer);
             jwtAuthenticationFilter.setFilterProcessesUrl("/users/login");
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler());
 
             builder.addFilter(jwtAuthenticationFilter);
         }
