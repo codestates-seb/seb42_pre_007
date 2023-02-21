@@ -1,5 +1,5 @@
 import "./styles/variable.css";
-import { GlobalStyle } from './styles/globalStyle';
+import { GlobalStyle } from './globalStyle';
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import Login from './pages/Login';
 import SignUp from "./pages/SignUp";
