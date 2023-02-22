@@ -115,6 +115,7 @@ export function AskForm({ user }) {
     setTitle('');
     setContent('');
     setTags([]);
+    setTagInput('');
     setIsReview(false);
     setNowStep(0);
     setNowFocus(0);
