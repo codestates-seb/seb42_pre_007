@@ -1,3 +1,19 @@
 .App {
   font-family: var(--ft-notoSansRegular);
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration-line: none;
+}
+
+p {
+  margin: 0;
+}

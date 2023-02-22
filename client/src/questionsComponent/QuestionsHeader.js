@@ -1,24 +1,28 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
+// 최상단 Header 전체를 감싸는 Container
 const HeaderContainer = styled.div`
-  width: 100%;
+  /* width: 100%; */
   height: auto;
-  margin: 0 auto;
+  margin: 30px 20px 0px 20px;
   box-sizing: content-box;
   display: flex;
-  align-items: flex-start;
+  justify-content: space-between;
   flex-direction: column;
 `;
 
+// Title, Ask Questions 버튼을 감싸는 Container
 const TitleContainer = styled.div`
-  width: 100%;
+  width: 90%;
+  max-width: 800px;
   height: auto;
   margin: 0 auto;
   box-sizing: content-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 20px 0;
 
   button {
     border: none;
@@ -29,6 +33,8 @@ const TitleContainer = styled.div`
     width: 120px;
     height: 45px;
     cursor: pointer;
+    text-align: center;
+    display: block;
 
     &:hover {
       background-color: var(--blue-hover);
@@ -36,33 +42,24 @@ const TitleContainer = styled.div`
   }
 `;
 
+// 총 Questions 갯수와 Filter 버튼을 감싸는 Container
 const SubContainer = styled.div`
-  width: 100%;
+  width: 90%;
+  max-width: 800px;
   height: auto;
   margin: 0 auto;
   box-sizing: content-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 20px 0;
 `;
 
 const QuestionsCount = styled.span`
   font-size: 20px;
 `;
 
-const FilterContainer = styled.div`
-  /* button {
-    border: 1px solid var(--lgray);
-    background-color: var(--white);
-    color: var(--black);
-    font-size: 10px;
-    border-radius: 3px;
-    width: 50px;
-    height: 35px;
-    cursor: pointer;
-  } */
-`;
-
+// 게시글 필터 버튼 -- 기능 작동X
 const FilterButtons = styled.button`
   border-top: 1px solid var(--dgray);
   border-left: 1px solid var(--dgray);
@@ -85,8 +82,10 @@ const FilterButtons = styled.button`
 `;
 
 const QuestionsHeader = ({ questions }) => {
+  // 필터 버튼 select 상태 유지를 위한 useState
   const [selected, setSelected] = useState('newest');
 
+  // 필터 버튼 클릭 시 select 상태 유지를 위한 이벤트 핸들러 함수
   const handleFilterClick = filter => {
     setSelected(filter);
   };
@@ -101,7 +100,7 @@ const QuestionsHeader = ({ questions }) => {
         <QuestionsCount>
           {questions && questions.length} questions
         </QuestionsCount>
-        <FilterContainer>
+        <div className='filter-button-section'>
           <FilterButtons
             selected={selected === 'newest'}
             onClick={() => handleFilterClick('newest')}
@@ -129,7 +128,7 @@ const QuestionsHeader = ({ questions }) => {
             width='40px'>
             Hot
           </FilterButtons>
-        </FilterContainer>
+        </div>
       </SubContainer>
     </HeaderContainer>
   );
