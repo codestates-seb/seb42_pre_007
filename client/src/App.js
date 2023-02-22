@@ -1,5 +1,6 @@
 import "./styles/variable.css";
-import { GlobalStyle } from './styles/globalStyle';
+import "./App.css";
+import { GlobalStyle } from "./globalStyle";
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import Login from './pages/Login';
 
@@ -10,8 +11,8 @@ function App() {
       <Routes>
         <Route path='/users/login' element={<Login/>} />
       </Routes>
-  </BrowserRouter>
+    </BrowserRouter>
   )
-}
+ }
 
 export default App;
