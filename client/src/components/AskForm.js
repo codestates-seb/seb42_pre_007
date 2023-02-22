@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 //styled components
 import {
   AskContainer,
@@ -21,9 +21,9 @@ import MDEditor from '@uiw/react-md-editor';
 
 export function AskForm({ user }) {
   const navigate = useNavigate();
-  const URI=process.env.REACT_APP_API_URI;
+  const URI = process.env.REACT_APP_API_URI;
   //user 프롭이 없으면 더미 데이터 삽입
-  if(!user) user='1234';
+  if (!user) user = '1234';
 
   //title,content,tags의 내용을 저장
   const [title, setTitle] = useState('');
@@ -56,8 +56,19 @@ export function AskForm({ user }) {
   const titleHandler = (e) => {
     setTitle(e.target.value);
   };
+  //tag 추가
+  const tagInputHandler = () => {
+    if (tagInput.length === 0) return;
+    if(tags.includes(tagInput)) {
+      setTagInput('');
+      return;
+    }
+
+    setTags([...tags, tagInput]);
+    setTagInput('');
+  };
   //tag 제거
-  const TagButtonHandler = (e) => {
+  const tagButtonHandler = (e) => {
     setTags((prevState) => {
       let newTags = [...prevState];
       newTags.splice(e.target.value, 1);
@@ -75,29 +86,27 @@ export function AskForm({ user }) {
   }, [content]);
   //is tags array length not 0?
   useEffect(() => {
-    setIsTagsValid(tags.length > 0);
+    setIsTagsValid(tags.length > 0 && tags.length <= 5);
   }, [tags]);
 
-
   //질문 post
-  const postButtonHandler=()=>{
-    if(!isTitleValid||!isContentValid||!isTagsValid) return;
-    const data={
+  const postButtonHandler = () => {
+    if (!isTitleValid || !isContentValid || !isTagsValid) return;
+    const data = {
       title,
       content,
       user,
-      tags
+      tags,
     };
     // console.log(data)
     axios({
-      method:'post',
-      url:`${URI}/ask`,
-      data
+      method: 'post',
+      url: `${URI}/ask`,
+      data,
     })
-    .then(res=>navigate(`${URI}/question/${res.data.questionid}`))
-    .catch(err=>console.log(err))
-  }
-
+      .then((res) => navigate(`${URI}/question/${res.data.questionid}`))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <AskContainer>
@@ -197,7 +206,10 @@ export function AskForm({ user }) {
             results. Minimum 30 characters.
           </label>
           <AskMdEditorWrapper>
-            <AskMdEditorBorder valid={isContentValid} isReview={isReview} focus={isMdEditorFocus}></AskMdEditorBorder>
+            <AskMdEditorBorder
+              valid={isContentValid}
+              isReview={isReview}
+              focus={isMdEditorFocus}></AskMdEditorBorder>
             <MDEditor
               onFocus={() => {
                 setNowFocus(1);
@@ -280,7 +292,7 @@ export function AskForm({ user }) {
             {tags.map((str, idx) => (
               <AskTag key={str}>
                 {str}
-                <button value={idx} onClick={TagButtonHandler}>
+                <button value={idx} onClick={tagButtonHandler}>
                   ✖
                 </button>
               </AskTag>
@@ -300,18 +312,16 @@ export function AskForm({ user }) {
               onChange={(e) => {
                 setTagInput(e.target.value);
               }}
-              onClick={(e) => {
-                if (tagInput.length > 0) {
-                  setTags([...tags, e.target.value]);
-                  setTagInput('');
-                }
-              }}></input>
+              onClick={tagInputHandler}></input>
           </AskTagInput>
           {isReview && tags.length === 0 ? (
             <AskWarning>
               Please enter at least one tag; see a list of{' '}
               <a href='https://stackoverflow.com/tags'>popular tags.</a>
             </AskWarning>
+          ) : null}
+          {isReview && tags.length > 5 ? (
+            <AskWarning>Please enter no more than 5 tags.</AskWarning>
           ) : null}
           {isReview ? null : (
             <AskFormButton valid={true} onClick={() => setIsReview(true)}>
@@ -346,7 +356,7 @@ export function AskForm({ user }) {
       <div className='post-btn-wrapper'>
         {isReview && (
           <AskFormButton
-          onClick={postButtonHandler}
+            onClick={postButtonHandler}
             valid={isTitleValid && isContentValid && isTagsValid}>
             Post your question
           </AskFormButton>
