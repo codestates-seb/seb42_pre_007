@@ -23,10 +23,9 @@ const Login = () => {
     e.preventDefault()
     axios({
       method: 'post',
-      url: `${URI}`,
+      url: `${URI}/users/login`,
       params: {
-        email,
-        password
+
       },
       data: {
         email,
