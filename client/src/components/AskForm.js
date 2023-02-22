@@ -15,6 +15,9 @@ import {
   AskWarning,
   AskTagInput,
   AskTag,
+  AskPostButtonWrapper,
+  AskPostButton,
+  AskDiscardButton,
 } from '../styles/askform';
 //markdown editor
 import MDEditor from '@uiw/react-md-editor';
@@ -59,7 +62,7 @@ export function AskForm({ user }) {
   //tag 추가
   const tagInputHandler = () => {
     if (tagInput.length === 0) return;
-    if(tags.includes(tagInput)) {
+    if (tags.includes(tagInput)) {
       setTagInput('');
       return;
     }
@@ -106,6 +109,15 @@ export function AskForm({ user }) {
     })
       .then((res) => navigate(`${URI}/question/${res.data.questionid}`))
       .catch((err) => console.log(err));
+  };
+  //Discard draft 버튼
+  const discardButtonHandler = () => {
+    setTitle('');
+    setContent('');
+    setTags([]);
+    setIsReview(false);
+    setNowStep(0);
+    setNowFocus(0);
   };
 
   return (
@@ -353,15 +365,18 @@ export function AskForm({ user }) {
           </div>
         </AskIntroduceCard>
       </AskArticleWrapper>
-      <div className='post-btn-wrapper'>
+      <AskPostButtonWrapper>
         {isReview && (
-          <AskFormButton
+          <AskPostButton
             onClick={postButtonHandler}
             valid={isTitleValid && isContentValid && isTagsValid}>
             Post your question
-          </AskFormButton>
+          </AskPostButton>
         )}
-      </div>
+        <AskDiscardButton onClick={discardButtonHandler}>
+          Discard draft
+        </AskDiscardButton>
+      </AskPostButtonWrapper>
     </AskContainer>
   );
 }

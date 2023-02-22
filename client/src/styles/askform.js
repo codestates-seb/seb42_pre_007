@@ -271,3 +271,25 @@ border-radius: ${brSm};
   box-shadow: 0px 0px 0px 4px
   ${(props) => (props.focus?props.isReview&& !props.valid ? '#f6e0e0' : '#d9eaf7':'rgba(0,0,0,0)')};
 `
+
+export const AskPostButton=styled(AskFormButton)`
+margin:0px;
+`
+export const AskDiscardButton=styled(AskFormButton)`
+color: #c22e32;
+padding: 10.4px;
+margin:0px 8px;
+pointer-events: auto;
+opacity:1;
+background-color: transparent;
+box-shadow:none;
+&:hover {
+background-color: #fdf2f2;
+}
+`
+
+export const AskPostButtonWrapper=styled.div`
+display: flex;
+align-items: center;
+margin:12px 0px 0px;
+`
