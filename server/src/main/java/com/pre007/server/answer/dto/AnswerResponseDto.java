@@ -18,12 +18,21 @@ public class AnswerResponseDto {
     private String content;
     private LocalDateTime createAt;
     private Integer votes = 0;
+//
+//    public AnswerResponseDto(Answer entity){
+//        this.user = entity.getUser().getDisplayName();
+//        this.answerId = entity.getAnswerId();
+//        this.content = entity.getContent();
+//        this.createAt = entity.getCreatedAt();
+////        this.votes = entity
+//    }
+    public static AnswerResponseDto createByEntity(Answer entity){
+        AnswerResponseDto dto = new AnswerResponseDto();
+        dto.setUser(entity.getUser().getDisplayName());
+        dto.setAnswerId(entity.getAnswerId());
+        dto.setContent(entity.getContent());
+        dto.setCreateAt(entity.getCreatedAt());
 
-    public AnswerResponseDto(Answer entity){
-        this.user = entity.getUser().getDisplayName();
-        this.answerId = entity.getAnswerId();
-        this.content = entity.getContent();
-        this.createAt = entity.getCreatedAt();
-//        this.votes = entity
+        return dto;
     }
 }
