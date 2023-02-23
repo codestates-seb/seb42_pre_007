@@ -43,10 +43,13 @@ export const Counting = styled.div`
   justify-content: center;
   width: 13%;
   max-width: 84px;
-  font-size: 14px;
+  font-size: 13px;
 
   div {
     padding: 5px;
+    height: 25px;
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -74,7 +77,8 @@ export const QuestionsContent = styled.div`
 
   .content-username,
   .content-date {
-    margin-left: 10px;
+    margin: 5px 0px 5px 10px;
+    font-size: 13px;
   }
 
   .content-body {
@@ -84,15 +88,13 @@ export const QuestionsContent = styled.div`
     -webkit-line-clamp: 2;
     line-height: 1.2em;
     height: 2.4em;
-    word-wrap: break-word;
     -webkit-box-orient: vertical;
+    font-size: 13px;
+    margin-bottom: 5px;
   }
 
   h3 {
     padding: 5px 0;
-  }
-
-  div {
-    margin: 5px 0;
+    font-weight: 500;
   }
 `;

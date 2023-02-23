@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export const SERVER_URL = process.env.REACT_APP_SERVER_HOST;
 
@@ -10,13 +10,13 @@ const QuestionsDetail = () => {
 
   const { id } = useParams();
 
-  const getQuestions = async () => {
-    const questions = await axios.get(`${SERVER_URL}/question/${id}`);
-    setQuestions(questions.data);
-  };
   useEffect(() => {
+    const getQuestions = async () => {
+      const questions = await axios.get(`${SERVER_URL}/question/${id}`);
+      setQuestions(questions.data);
+    };
     getQuestions();
-  }, []);
+  }, [id]);
 
   return (
     <div className='questions-detail'>

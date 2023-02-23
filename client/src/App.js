@@ -1,13 +1,13 @@
-import './style/variable.css';
-import Questions from './page/Questions';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import './style/variable.css';
+import './App.css';
+import Questions from './page/Questions';
 import QuestionsHeader from './questionsComponent/QuestionsHeader';
 import QuestionsDetail from './questionsComponent/QuestionsDetail';
-import './App.css';
-import useScrollTop from './util/useScrollTop';
 import QuestionsPagination from './questionsComponent/QuestionsPagination';
+import useScrollTop from './util/useScrollTop';
 
 export const SERVER_URL = process.env.REACT_APP_SERVER_HOST;
 
@@ -76,6 +76,7 @@ function App() {
                   <Questions questions={currentQuestions(questions)} />
                   <QuestionsPagination
                     postsPerPage={postsPerPage}
+                    setPostsPerPage={setPostsPerPage}
                     totalQuestions={questions.length}
                     setCurrentPage={setCurrentPageHandler}
                     currentPage={currentPage}
