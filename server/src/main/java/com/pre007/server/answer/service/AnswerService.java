@@ -1,62 +1,48 @@
 package com.pre007.server.answer.service;
 
+import com.pre007.server.answer.dto.AnswerCreateDto;
 import com.pre007.server.answer.dto.AnswerResponseDto;
 import com.pre007.server.answer.dto.AnswerUpdateDto;
 import com.pre007.server.answer.entity.Answer;
 import com.pre007.server.answer.repository.AnswerRepository;
+import com.pre007.server.answer.repository.QuestionRepository;
 import com.pre007.server.question.entity.Question;
+import com.pre007.server.user.entity.User;
+import com.pre007.server.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 // AnswerRepository에 대한 데이터 액세스 로직을 제공
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
+    private final QuestionRepository questionRepository;
+    private final UserRepository userRepository;
 
-    public AnswerService(AnswerRepository answerRepository){
-        this.answerRepository = answerRepository;
-    }
-
-    @Transactional
-    public Answer saveAnswer(Answer answer){
-        return answerRepository.save(answer);
-    }
-    private Answer getAnswerById(Long id) {
-        return answerRepository.findById(id)
-                .orElseThrow(()-> new NoSuchElementException("Answer not found for id: "+id));
-    }
-
-    public List<Answer> getAnswerByQuestionId(Long questionId){
-        return answerRepository.findByQuestionId(questionId);
-    }
-
-
-    public List<AnswerResponseDto> findAnswerByQuestionId(Long questionId){
-        List<Answer> answers = answerRepository.findByQuestionId(questionId);
-        return answers.stream()
-                .map(AnswerResponseDto::new)
-                .collect(Collectors.toList());
-    }
-    public Answer createAnswer(@NotNull String requestDto){
-        Question question = new Question();
-        question.setQuestionId(requestDto.getQuestionId());
+    public void createAnswer(AnswerCreateDto requestDto, Long questionId){
+        Question question = questionRepository.findById(questionId).get();
+        User user = userRepository.findByDisplayName(requestDto.getUser()).get();
         Answer answer = new Answer();
+        answer.setUser(user);
         answer.setContent(requestDto.getContent());
-        answer.setAnswerId(requestDto.getAnswerId());
-        return answerRepository.save(answer);
+        answerRepository.save(answer);
     }
 
-    @Transactional
-    public Answer updateAnswer(Long id, AnswerUpdateDto requestDto){
-        Answer answer = getAnswerById(id);
-        return answer;
+    public void updateAnswer(Long id, AnswerUpdateDto requestDto){
+        // Answer answer = getAnswerById(id);
+        Answer answer = answerRepository.findById(id).get();
+        answer.setContent(requestDto.getContent());
+        answerRepository.save(answer);
     }
 
-    @Transactional
     public void deleteAnswer(Long id){
         answerRepository.deleteById(id);
     }

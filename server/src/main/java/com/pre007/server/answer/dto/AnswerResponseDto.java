@@ -27,6 +27,5 @@ public class AnswerResponseDto {
         this.content = entity.getContent();
         this.createAt = entity.getCreatedAt();
         this.modified = entity.getModified();
-
     }
 }
