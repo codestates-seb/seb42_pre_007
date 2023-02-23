@@ -13,19 +13,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnswerResponseDto {
+    private String user;
     private Long answerId;
-    private Long userId;
-    private Long questionId;
     private String content;
     private LocalDateTime createAt;
-    private LocalDateTime modified;
+    private Integer votes = 0;
 
     public AnswerResponseDto(Answer entity){
+        this.user = entity.getUser().getDisplayName();
         this.answerId = entity.getAnswerId();
-        this.userId = entity.getUser().getUserId();
-        this.questionId = entity.getQuestion().getQuestionId();
         this.content = entity.getContent();
         this.createAt = entity.getCreatedAt();
-        this.modified = entity.getModified();
+//        this.votes = entity
     }
 }
