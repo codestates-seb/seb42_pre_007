@@ -12,7 +12,7 @@ import {
 } from '../styles/authform';
 import axios from 'axios';
 
-const Login = () => {
+const Login = ({setUser, setIsLogin,setAuth}) => {
   const navigate = useNavigate();
   const URI = process.env.REACT_APP_API_URI;
 
@@ -38,7 +38,14 @@ const Login = () => {
         email,
         password,
       },
-    });
+    })
+    .then((res)=>{ 
+      setAuth(res.headers.authorization) 
+      navigate('/')
+      setIsLogin(true)
+      setUser(res.data)
+    })
+    .catch(()=>{})
   };
 
   return (
