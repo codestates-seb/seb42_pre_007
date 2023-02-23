@@ -1,13 +1,13 @@
 import "./styles/variable.css";
-import { GlobalStyle } from "./globalStyle.js";
+import { GlobalStyle } from "./styles/globalStyle";
 import { BrowserRouter,Routes,Route } from "react-router-dom";
+import { useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Main from "./pages/Main";
-import { useState } from "react";
 
 function App() {
   const [ user, setUser ] = useState(null)
@@ -27,6 +27,6 @@ function App() {
       <Footer/>
     </BrowserRouter>
   )
- }
+}
 
 export default App;
