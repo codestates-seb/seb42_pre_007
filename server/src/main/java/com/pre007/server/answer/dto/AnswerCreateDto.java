@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -15,6 +16,6 @@ public class AnswerCreateDto {
     @NotNull
     private String user;
 
-    @NotNull
+    @NotEmpty
     private String content;
 }
