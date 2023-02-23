@@ -1,5 +1,6 @@
 package com.pre007.server.user.controller;
 
+import com.pre007.server.globaldto.ResponseDto;
 import com.pre007.server.user.dto.UserCreatedDto;
 import com.pre007.server.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,9 @@ public class UserController {
     public ResponseEntity postUser(@RequestBody @Valid UserCreatedDto dto) {
         Long id = userService.create(dto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(id);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(id, 201));
     }
 
     @GetMapping("/{user-id}")
