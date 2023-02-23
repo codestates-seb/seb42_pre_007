@@ -14,6 +14,7 @@ import javax.validation.constraints.Positive;
 @RestController
 @Validated
 @RequestMapping("/users")
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;

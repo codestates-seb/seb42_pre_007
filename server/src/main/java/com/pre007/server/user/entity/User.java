@@ -2,9 +2,12 @@ package com.pre007.server.user.entity;
 
 import lombok.*;
 import org.hibernate.type.DateType;
+import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +25,9 @@ public class User {
     private String password;
 
     private String displayName;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
