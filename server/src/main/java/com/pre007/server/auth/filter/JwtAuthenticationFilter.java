@@ -13,9 +13,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,8 +51,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = delegateAccessToken(user);
         String refreshToken = delegateRefreshToken(user);
 
+        // header
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
+
+        // cookie
+        Cookie cookie = new Cookie("Authorization", "Bearer" + accessToken);
+        cookie.setMaxAge(jwtTokenizer.getAccessTokenExpirationMinutes());
+//        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+        Cookie refresh = new Cookie("Refresh", refreshToken);
+        refresh.setMaxAge(jwtTokenizer.getRefreshTokenExpirationMinutes());
+//        refresh.setHttpOnly(true);
+        response.addCookie(refresh);
+
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
