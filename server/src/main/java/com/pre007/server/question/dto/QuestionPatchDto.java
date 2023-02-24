@@ -3,7 +3,7 @@ package com.pre007.server.question.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -11,8 +11,8 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 public class QuestionPatchDto {
 
-    @Positive
-    private Long questionId;
+    @Size(min = 3, max = 15)
+    private String user;
 
     @NotBlank(message = "제목은 공백이 아니어야 합니다.")
     private String title;

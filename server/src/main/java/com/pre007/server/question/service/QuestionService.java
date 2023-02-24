@@ -1,13 +1,15 @@
 package com.pre007.server.question.service;
 
+import com.pre007.server.answer.dto.AnswerResponseDto;
 import com.pre007.server.answer.entity.Answer;
+import com.pre007.server.question.dto.QuestionPage;
 import com.pre007.server.question.dto.QuestionPatchDto;
 import com.pre007.server.question.dto.QuestionPostDto;
 import com.pre007.server.question.dto.QuestionResponseDto;
 import com.pre007.server.question.entity.Question;
 import com.pre007.server.question.repository.QuestionRepository;
 import com.pre007.server.user.dto.UserResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,37 +18,19 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuestionService {
 
-    @Autowired
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
 
-    // 전체 조회
-    public List<QuestionResponseDto> getAllQuestions(){
-        List<Question> questions = questionRepository.findAll();
+    // 페이지별 조회
+    public void getQuestionsByQuestionPage(QuestionPage questionPage){
 
-        return questions.stream()
-                .map(question -> {
-                    QuestionResponseDto dto = new QuestionResponseDto();
-                    dto.setQuestionId(question.getQuestionId());
-                    dto.setTitle(question.getTitle());
-                    dto.setContent(question.getContent());
-                    dto.setView(question.getView());
-                    dto.setUser(UserResponseDto.fromEntity(question.getUser()));
-                    List<Long> answerIds = question.getAnswers().stream()
-                            .map(Answer::getAnswerId)
-                            .collect(Collectors.toList());
-                    dto.setAnswerIds((answerIds));
-                    dto.setCreatedAt(question.getCreatedAt());
-                    dto.setModified(question.getModified());
-
-                    return dto;
-        }).collect(Collectors.toList());
     }
 
     // 단일 조회
     public QuestionResponseDto getQuestion(Long id){
-        Question getQuestion = questionRepository.findById(id).get();
+        Question getQuestion = questionRepository.findById(id).get(); // advanced : id로 조회된 값이 null일때 처리
 
         QuestionResponseDto dto = new QuestionResponseDto();
 
@@ -55,12 +39,10 @@ public class QuestionService {
         dto.setContent(getQuestion.getContent());
         dto.setView(getQuestion.getView());
         dto.setUser(UserResponseDto.fromEntity(getQuestion.getUser()));
-        List<Long> answerIds = getQuestion.getAnswers().stream()
-                                .map(Answer::getAnswerId)
-                                .collect(Collectors.toList());
-        dto.setAnswerIds((answerIds));
+        dto.setAnswers(getQuestion.getAnswers().stream()
+                .map(AnswerResponseDto::createByEntity)
+                .collect(Collectors.toList()));
         dto.setCreatedAt(getQuestion.getCreatedAt());
-        dto.setModified(getQuestion.getModified());
 
         return dto;
     }
@@ -68,7 +50,6 @@ public class QuestionService {
     // 생성
     public Long createQuestion(QuestionPostDto dto){
         Question question = new Question();
-        question.setQuestionId(dto.getQuestionId());
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());
 
@@ -76,30 +57,13 @@ public class QuestionService {
     }
 
     // 수정
-    public QuestionPatchDto updateQuestion(QuestionPatchDto dto) {
+    public void updateQuestion(QuestionPatchDto dto, Long id) {
 
-        Question question = questionRepository.findById(dto.getQuestionId())
-                .orElseThrow(() -> new RuntimeException("Question not found with id: " + dto.getQuestionId()));
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Question not found with id: " + id));
 
-        if (dto.getTitle() != null) {
-            question.setTitle(dto.getTitle());
-        }
-
-        if (dto.getContent() != null) {
-            question.setContent(dto.getContent());
-        }
-
-//        if (dto.getTags() != null) {
-//            question.setTags(dto.getTags());
-//        }
-
-        QuestionPatchDto dto2 = new QuestionPatchDto();
-        dto2.setQuestionId(question.getQuestionId());
-        dto2.setTitle(question.getTitle());
-        dto2.setContent(question.getContent());
-//        dto2.setTags(question.getTags());
-
-        return dto2;
+        question.setTitle(dto.getTitle());
+        question.setContent(dto.getContent());
     }
 
     // 삭제

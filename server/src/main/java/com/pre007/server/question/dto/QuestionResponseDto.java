@@ -1,5 +1,6 @@
 package com.pre007.server.question.dto;
 
+import com.pre007.server.answer.dto.AnswerResponseDto;
 import com.pre007.server.user.dto.UserResponseDto;
 import lombok.*;
 
@@ -20,9 +21,7 @@ public class QuestionResponseDto {
 
     private UserResponseDto user;
 
-    private List<Long> answerIds;
+    private List<AnswerResponseDto> answers;
 
     private LocalDateTime createdAt;
-
-    private LocalDateTime modified;
 }

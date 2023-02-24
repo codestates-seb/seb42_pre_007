@@ -1,10 +1,14 @@
 package com.pre007.server.question.controller;
 
+import com.pre007.server.question.dto.QuestionPage;
 import com.pre007.server.question.dto.QuestionPatchDto;
 import com.pre007.server.question.dto.QuestionPostDto;
 import com.pre007.server.question.dto.QuestionResponseDto;
+import com.pre007.server.question.entity.Question;
+import com.pre007.server.question.repository.QuestionRepository;
 import com.pre007.server.question.service.QuestionService;
 import com.pre007.server.user.dto.UserCreatedDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -25,11 +30,12 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-    // 전체 조회
-    @GetMapping
-    public List<QuestionResponseDto> getAllQuestions() {
-        return questionService.getAllQuestions();
-    }
+    // 페이지별 조회
+//    @GetMapping
+//    public ResponseEntity getQuestionsByPage(@RequestParam QuestionPage){
+//        return ResponseEntity.status(HttpStatus.OK).build();
+//    }
+
 
     // 단일 조회
     @GetMapping("/{question-id}")
@@ -49,8 +55,8 @@ public class QuestionController {
     @PatchMapping("/{question-id}")
     public ResponseEntity updateQuestion(@PathVariable("question-id") @Positive Long id,
                                          @RequestBody @Valid QuestionPatchDto dto) {
-        dto.setQuestionId(id);
-        questionService.updateQuestion(dto);
+
+        questionService.updateQuestion(dto, id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
