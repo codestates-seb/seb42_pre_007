@@ -36,4 +36,10 @@ public class UserController {
     public ResponseEntity getUser(@PathVariable("user-id") @Positive Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findUser(id));
     }
+
+    @DeleteMapping("/{user-id}")
+    public ResponseEntity deleteUser(@PathVariable("user-id") @Positive Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

@@ -1,6 +1,7 @@
 package com.pre007.server.auth.handler;
 
 import com.google.gson.Gson;
+import com.pre007.server.globaldto.ErrorResponse;
 import com.pre007.server.globaldto.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,14 +24,15 @@ public class UserAuthenticationFailureHandler implements AuthenticationFailureHa
 
         log.error("# Authentication failed : {}", exception.getMessage());
 
-        sendErrorResponse(response);
+        sendErrorResponse(response, exception.getMessage());
     }
 
-    private void sendErrorResponse(HttpServletResponse response) throws IOException {
+    private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
         Gson gson = new Gson();
-        ResponseDto dto = new ResponseDto("UNAUTHORIZED", 400);
+//        ResponseDto dto = new ResponseDto("UNAUTHORIZED", 400);
+        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.UNAUTHORIZED, message);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.getWriter().write(gson.toJson(dto, ResponseDto.class));
+        response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
     }
 }
