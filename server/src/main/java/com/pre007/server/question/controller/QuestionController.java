@@ -1,9 +1,11 @@
 package com.pre007.server.question.controller;
 
 import com.pre007.server.globaldto.ResponseDto;
+import com.pre007.server.question.dto.QuestionPage;
 import com.pre007.server.question.dto.QuestionPatchDto;
 import com.pre007.server.question.dto.QuestionPostDto;
 import com.pre007.server.question.service.QuestionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,19 +17,19 @@ import javax.validation.constraints.Positive;
 @RestController
 @Validated
 @RequestMapping("/questions")
+@RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
 
-    public QuestionController(QuestionService questionService) {
-        this.questionService = questionService;
-    }
-
     // 페이지별 조회
-//    @GetMapping
-//    public ResponseEntity getQuestionsByPage(@RequestParam QuestionPage){
-//        return ResponseEntity.status(HttpStatus.OK).build();
-//    }
+    @GetMapping // @RequestParam QuestionPage questionPage
+    public ResponseEntity getQuestionsByPage(@RequestParam("page") int page){
+        QuestionPage questionPage = new QuestionPage(page);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(questionService.getQuestionsByQuestionPage(questionPage), 200));
+    }
 
 
     // 단일 조회

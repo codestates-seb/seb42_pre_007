@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface QuestionRepository extends JpaRepository<Question, Long>{
+public interface QuestionRepository extends JpaRepository<Question, Long>, QuestionRepositoryCustom {
 //    @Query(value = "select " +
 //            "q.questionId" +
 //            "q.title" +

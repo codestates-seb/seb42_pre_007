@@ -4,8 +4,11 @@ import com.google.gson.Gson;
 import com.pre007.server.exception.BusinessLogicException;
 import com.pre007.server.question.dto.QuestionPatchDto;
 import com.pre007.server.question.dto.QuestionPostDto;
+import com.pre007.server.question.entity.Question;
+import com.pre007.server.question.repository.QuestionRepository;
 import com.pre007.server.question.service.QuestionService;
 import com.pre007.server.user.dto.UserCreatedDto;
+import com.pre007.server.user.service.FindUserService;
 import com.pre007.server.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -16,15 +19,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @Transactional
@@ -42,6 +46,12 @@ class QuestionControllerTest {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    FindUserService findUserService;
+
+    @Autowired
+    QuestionRepository questionRepository;
 
     @Test
     @DisplayName("글생성이 성공적으로 이루어져야 합니다.")
@@ -149,6 +159,35 @@ class QuestionControllerTest {
                 .andDo(print());
         Assertions.assertThrows(BusinessLogicException.class, () ->
                 questionService.getQuestion(questionId));
+    }
+
+    // 서비스 테스트로 빼야하나
+    @Test
+    @DisplayName("질문글 페이징 조회가 성공적으로 이루어져야 합니다.")
+    public void getQuestionsByQuestionPage() throws Exception {
+        //given
+        UserCreatedDto user = new UserCreatedDto("asdf", "asdf@asdf.com", "asdf1234");
+        createUser(user);
+
+        QuestionPostDto questionPostDto1 = new QuestionPostDto("foo1", "bar1", "asdf");
+        Long questionId1 = createQuestion(questionPostDto1);
+
+        QuestionPostDto questionPostDto2 = new QuestionPostDto("foo2", "bar2", "asdf");
+        Long questionId2 = createQuestion(questionPostDto2);
+
+        QuestionPostDto questionPostDto3 = new QuestionPostDto("foo3", "bar3", "asdf");
+        Long questionId3 = createQuestion(questionPostDto3);
+
+        //when
+        ResultActions actions =
+                mockMvc.perform(get("/questions")
+                        .param("page", "1")
+                        .accept(MediaType.APPLICATION_JSON));
+
+        //then
+        actions
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
 

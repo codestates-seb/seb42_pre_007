@@ -4,10 +4,7 @@ import com.pre007.server.answer.dto.AnswerResponseDto;
 import com.pre007.server.answer.entity.Answer;
 import com.pre007.server.exception.BusinessLogicException;
 import com.pre007.server.exception.ExceptionCode;
-import com.pre007.server.question.dto.QuestionPage;
-import com.pre007.server.question.dto.QuestionPatchDto;
-import com.pre007.server.question.dto.QuestionPostDto;
-import com.pre007.server.question.dto.QuestionResponseDto;
+import com.pre007.server.question.dto.*;
 import com.pre007.server.question.entity.Question;
 import com.pre007.server.question.repository.QuestionRepository;
 import com.pre007.server.user.service.FindUserService;
@@ -15,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,8 +25,9 @@ public class QuestionService {
     private final FindUserService findUserService;
 
     // 페이지별 조회
-    public void getQuestionsByQuestionPage(QuestionPage questionPage){
-
+    public List<QuestionResponseSimple> getQuestionsByQuestionPage(QuestionPage questionPage){
+        List<QuestionResponseSimple> questionsByQuestionPage = questionRepository.getQuestionsByQuestionPage(questionPage);
+        return questionsByQuestionPage;
     }
 
     // 단일 조회

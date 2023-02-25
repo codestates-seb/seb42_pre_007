@@ -1,5 +1,11 @@
 package com.pre007.server.question.repository;
 
-public class QuestionRepositoryCustom {
+import com.pre007.server.question.dto.QuestionPage;
+import com.pre007.server.question.dto.QuestionResponseSimple;
 
+import java.util.List;
+
+public interface QuestionRepositoryCustom {
+
+    List<QuestionResponseSimple> getQuestionsByQuestionPage(QuestionPage questionPage);
 }

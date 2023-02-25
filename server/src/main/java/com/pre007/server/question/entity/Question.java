@@ -26,11 +26,13 @@ public class Question {
 
     private String content;
 
-    private Integer view = 0;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    private Integer votes = 0;
+
+    private Integer view = 0;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Answer> answers = new ArrayList<>();
