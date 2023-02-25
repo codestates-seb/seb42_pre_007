@@ -38,7 +38,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("회원가입이 성공적으로 이루어져야 합니다.")
-    public void createSuccess() throws Exception {
+    public void createUserSuccess() throws Exception {
         //given
         UserCreatedDto dto = new UserCreatedDto("asdf", "asdf@asdf.com", "asdf1234");
         String body = gson.toJson(dto);

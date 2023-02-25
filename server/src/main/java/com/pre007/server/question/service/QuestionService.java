@@ -2,18 +2,19 @@ package com.pre007.server.question.service;
 
 import com.pre007.server.answer.dto.AnswerResponseDto;
 import com.pre007.server.answer.entity.Answer;
+import com.pre007.server.exception.BusinessLogicException;
+import com.pre007.server.exception.ExceptionCode;
 import com.pre007.server.question.dto.QuestionPage;
 import com.pre007.server.question.dto.QuestionPatchDto;
 import com.pre007.server.question.dto.QuestionPostDto;
 import com.pre007.server.question.dto.QuestionResponseDto;
 import com.pre007.server.question.entity.Question;
 import com.pre007.server.question.repository.QuestionRepository;
-import com.pre007.server.user.dto.UserResponseDto;
+import com.pre007.server.user.service.FindUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final FindQuestionService findQuestionService;
+    private final FindUserService findUserService;
 
     // 페이지별 조회
     public void getQuestionsByQuestionPage(QuestionPage questionPage){
@@ -30,7 +33,7 @@ public class QuestionService {
 
     // 단일 조회
     public QuestionResponseDto getQuestion(Long id){
-        Question getQuestion = questionRepository.findById(id).get(); // advanced : id로 조회된 값이 null일때 처리
+        Question getQuestion = findQuestionService.id(id);
 
         QuestionResponseDto dto = new QuestionResponseDto();
 
@@ -38,7 +41,7 @@ public class QuestionService {
         dto.setTitle(getQuestion.getTitle());
         dto.setContent(getQuestion.getContent());
         dto.setView(getQuestion.getView());
-        dto.setUser(UserResponseDto.fromEntity(getQuestion.getUser()));
+        dto.setUser(getQuestion.getUser().getDisplayName());
         dto.setAnswers(getQuestion.getAnswers().stream()
                 .map(AnswerResponseDto::createByEntity)
                 .collect(Collectors.toList()));
@@ -52,6 +55,7 @@ public class QuestionService {
         Question question = new Question();
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());
+        question.setUser(findUserService.displayName(dto.getUser()));
 
         return questionRepository.save(question).getQuestionId();
     }
@@ -59,8 +63,7 @@ public class QuestionService {
     // 수정
     public void updateQuestion(QuestionPatchDto dto, Long id) {
 
-        Question question = questionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Question not found with id: " + id));
+        Question question = findQuestionService.id(id);
 
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());

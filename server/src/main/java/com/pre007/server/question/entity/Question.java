@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,14 +26,14 @@ public class Question {
 
     private String content;
 
-    private Integer view;
+    private Integer view = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Answer> answers;
+    private List<Answer> answers = new ArrayList<>();
 
     private LocalDateTime createdAt = LocalDateTime.now();
 

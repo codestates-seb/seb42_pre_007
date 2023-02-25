@@ -21,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+    private final FindUserService findUserService;
 
     public Long create(UserCreatedDto dto) {
         User user = new User();

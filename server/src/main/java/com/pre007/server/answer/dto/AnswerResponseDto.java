@@ -13,9 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnswerResponseDto {
-    private String user;
+
     private Long answerId;
     private String content;
+    private String user;
     private LocalDateTime createAt;
     private Integer votes = 0;
 //

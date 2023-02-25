@@ -17,11 +17,13 @@ public class QuestionResponseDto {
 
     private String content;
 
-    private Integer view;
-
-    private UserResponseDto user;
-
-    private List<AnswerResponseDto> answers;
+    private String user;
 
     private LocalDateTime createdAt;
+
+    private Integer votes = 0;
+
+    private Integer view = 0;
+
+    private List<AnswerResponseDto> answers;
 }

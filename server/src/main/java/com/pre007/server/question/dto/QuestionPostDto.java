@@ -11,14 +11,14 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class QuestionPostDto {
 
-    @Size(min = 3, max = 15)
-    private String user;
-
     @NotBlank(message = "제목은 공백이 아니어야 합니다.")
     private String title;
 
     @NotBlank(message = "내용은 공백이 아니어야 합니다.")
     private String content;
+
+    @Size(min = 3, max = 15)
+    private String user;
 
     //@NotBlank(message = "Tags")
     //private String[] tag;
