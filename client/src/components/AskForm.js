@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { FaQuestionCircle } from 'react-icons/fa';
 //styled components
 import {
   AskContainer,
@@ -18,9 +19,13 @@ import {
   AskPostButtonWrapper,
   AskPostButton,
   AskDiscardButton,
+  AskTagOfferContainer,
+  AskTagOffered,
 } from '../styles/askform';
 //markdown editor
 import MDEditor from '@uiw/react-md-editor';
+
+let getTagsTimeout = null;
 
 export function AskForm({ user }) {
   const navigate = useNavigate();
@@ -47,6 +52,38 @@ export function AskForm({ user }) {
   //유사 :focus 효과를 위한 state
   const [isMdEditorFocus, setIsMdEditorFocus] = useState(false);
   const [isAskTagInputFocus, setIsAskTagInputFocus] = useState(false);
+  //tagInput에 따른 tag 제안
+  const [tagsOffer, setTagsOffer] = useState([]);
+
+  //get taglist from stackexchange api after a second
+  useEffect(() => {
+    if (tagInput.length !== 0) {
+      console.log(`getTagsTimeout Start`);
+      if (getTagsTimeout) clearTimeout(getTagsTimeout);
+      getTagsTimeout = setTimeout(() => {
+        axios({
+          method: 'get',
+          url: 'https://api.stackexchange.com/2.3/tags',
+          params: {
+            order: 'desc',
+            sort: 'popular',
+            site: 'stackoverflow',
+            inname: tagInput,
+          },
+        })
+          .then((res) => {
+            setTagsOffer(res.data);
+            console.log(`getTagsTimeout Axios`);
+          })
+          .catch((err) => console.log(err));
+      }, 500);
+    } else setTagsOffer([]);
+  }, [tagInput]);
+
+  //test console.log
+  useEffect(() => {
+    console.log(tagsOffer);
+  }, [tagsOffer]);
 
   //next버튼은 현재 step에서 1을 추가합니다.
   const nextButtonHandler = (e) => {
@@ -60,15 +97,17 @@ export function AskForm({ user }) {
     setTitle(e.target.value);
   };
   //tag 추가
-  const tagInputHandler = () => {
-    if (tagInput.length === 0) return;
-    if (tags.includes(tagInput)) {
+  const tagInputHandler = (newTag) => {
+    console.log(newTag);
+    if (newTag.length === 0) return;
+    if (tags.includes(newTag)) {
       setTagInput('');
+      setTagsOffer([]);
       return;
     }
-
-    setTags([...tags, tagInput]);
+    setTags([...tags, newTag]);
     setTagInput('');
+    setTagsOffer([]);
   };
   //tag 제거
   const tagButtonHandler = (e) => {
@@ -108,7 +147,9 @@ export function AskForm({ user }) {
       data,
     })
       .then((res) => navigate(`${URI}/question/${res.data.questionid}`))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
   //Discard draft 버튼
   const discardButtonHandler = () => {
@@ -198,7 +239,7 @@ export function AskForm({ user }) {
         <AskIntroduceCard step={0} nowFocus={nowFocus} nowStep={nowStep}>
           <div className='introduce-card-title'>Writing a good title</div>
           <div className='introduce-card-content'>
-            <img></img>
+            <img alt='introduce-card'></img>
             <div className='introduce-card-paragraph'>
               <p>Your title should summarize the problem.</p>
               <p>
@@ -255,7 +296,7 @@ export function AskForm({ user }) {
               Proof-read before posting
             </div>
             <div className='introduce-card-content'>
-              <img></img>
+              <img alt='introduce-card'></img>
               <div className='introduce-card-paragraph'>
                 <p>
                   Now that you’re ready to post your question, read through
@@ -275,7 +316,7 @@ export function AskForm({ user }) {
               Introduce the problem
             </div>
             <div className='introduce-card-content'>
-              <img></img>
+              <img alt='introduce-card'></img>
               <div className='introduce-card-paragraph'>
                 <p>
                   Explain how you encountered the problem you’re trying to
@@ -324,8 +365,13 @@ export function AskForm({ user }) {
               }}
               onChange={(e) => {
                 setTagInput(e.target.value);
-              }}
-              onClick={tagInputHandler}></input>
+              }}></input>
+            <AskTagsOffer
+              isAskTagInputFocus={isAskTagInputFocus}
+              setIsAskTagInputFocus={setIsAskTagInputFocus}
+              tagsOffer={tagsOffer}
+              tagInputHandler={tagInputHandler}
+            />
           </AskTagInput>
           {isReview && tags.length === 0 ? (
             <AskWarning>
@@ -346,7 +392,7 @@ export function AskForm({ user }) {
         <AskIntroduceCard step={2} nowFocus={nowFocus} nowStep={nowStep}>
           <div className='introduce-card-title'>Adding tags</div>
           <div className='introduce-card-content'>
-            <img></img>
+            <img alt='introduce-card'></img>
             <div className='introduce-card-paragraph'>
               <p>
                 Tags help ensure that your question will get attention from
@@ -382,53 +428,38 @@ export function AskForm({ user }) {
   );
 }
 
-const tagList = [
-  'javascript',
-  'python',
-  'java',
-  'c#',
-  'php',
-  'android',
-  'html',
-  'jquery',
-  'c++',
-  'css',
-  'ios',
-  'mysql',
-  'sql',
-  'r',
-  'node.js',
-  'reactjs',
-  'arrays',
-  'c',
-  'asp.net',
-  'json',
-  'ruby-on-rails',
-  'python-3.x',
-  '.net',
-  'sql-server',
-  'swift',
-  'django',
-  'objective-c',
-  'angular',
-  'excel',
-  'pandas',
-  'angularjs',
-  'regex',
-  'ruby',
-  'linux',
-  'iphone',
-  'ajax',
-  'xml',
-  'typescript',
-  'vba',
-  'spring',
-  'laravel',
-  'asp.net-mvc',
-  'database',
-  'wordpress',
-  'string',
-  'mongodb',
-  'wpf',
-  'postgresql',
-];
+function AskTagsOffer({
+  isAskTagInputFocus,
+  setIsAskTagInputFocus,
+  tagsOffer,
+  tagInputHandler,
+}) {
+  if (tagsOffer['items'])
+    return (
+      <AskTagOfferContainer>
+        {tagsOffer['items'].length > 0 ? (
+          tagsOffer['items'].map((obj, idx) => {
+            if (idx < 6)
+              return (
+                <AskTagOffered
+                  key={obj.name}
+                  onClick={() => {
+                    setIsAskTagInputFocus(true);
+                    tagInputHandler(obj.name);
+                  }}>
+                  <div>
+                    <AskTag>{obj.name}</AskTag>
+                    <span className='ask-tag-offered-count'>
+                      {obj.count}
+                    </span>
+                  </div>
+                  <FaQuestionCircle style={{ color: '#6A737C' }} />
+                </AskTagOffered>
+              );
+          })
+        ) : (
+          <span>No results found</span>
+        )}
+      </AskTagOfferContainer>
+    );
+}

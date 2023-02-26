@@ -111,12 +111,14 @@ export const AskSingleForm = styled(AskArticle)`
         props.isReview && !props.valid ? '#de4f54' : 'hsl(210, 8%, 75%)'};
     border-radius: ${brSm};
   }
-  > input {
-    font-size: 13px;
-    height: 32.6px;
+  input {
     ::placeholder {
       color: lightgray;
     }
+  }
+  > input {
+    font-size: 13px;
+    height: 32.6px;
     :focus {
       border: 1px solid
         ${(props) =>
@@ -148,7 +150,7 @@ export const AskFormButton = styled.button`
   border-radius: ${brSm};
   width: auto;
   cursor: pointer;
-  box-shadow: rgba(255,255,255,0.4) 0px 1px 0px 0px inset;
+  box-shadow: rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset;
   &:hover {
     background-color: #0074cc;
   }
@@ -210,8 +212,8 @@ export const AskWarning = styled.span`
   }
 `;
 export const AskTag = styled.span`
-display:flex;
-align-items: center;
+  display: flex;
+  align-items: center;
   margin: 2px;
   padding: 0px 4px;
   height: 24px;
@@ -223,31 +225,48 @@ align-items: center;
     border-radius: ${brSm};
     margin-left: 4px;
     padding: 1px 3px;
-    color:#39739d;
-    cursor:pointer;
+    color: #39739d;
+    cursor: pointer;
     &:hover {
-      background-color:#39739d;
-      color:#e1ecf4;
+      background-color: #39739d;
+      color: #e1ecf4;
     }
   }
 `;
 
 export const AskTagInput = styled.div`
   ${(props) => (props.focus ? '' : '')};
+  position: relative;
   padding: 2px 9px 2px 2px;
   width: 100%;
-  display:flex;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   border: 1px solid
-  ${(props) => (props.isReview&&!props.valid?'#de4f54':props.focus?props.isReview&& !props.valid ? '#de4f54' : '#59a4de':'hsl(210, 8%, 75%)')};
-    /* ${(props) =>
-      !(props.isReview)&&props.focus?'#59a4de': props.isReview && !props.valid ? '#de4f54' : 'hsl(210, 8%, 75%)'}; */
+    ${(props) =>
+      props.isReview && !props.valid
+        ? '#de4f54'
+        : props.focus
+        ? props.isReview && !props.valid
+          ? '#de4f54'
+          : '#59a4de'
+        : 'hsl(210, 8%, 75%)'};
+  /* ${(props) =>
+    !props.isReview && props.focus
+      ? '#59a4de'
+      : props.isReview && !props.valid
+      ? '#de4f54'
+      : 'hsl(210, 8%, 75%)'}; */
   border-radius: ${brSm};
   font-size: 13px;
   min-height: 37px;
   box-shadow: 0px 0px 0px 4px
-  ${(props) => (props.focus?props.isReview&& !props.valid ? '#f6e0e0' : '#d9eaf7':'rgba(0,0,0,0)')};
+    ${(props) =>
+      props.focus
+        ? props.isReview && !props.valid
+          ? '#f6e0e0'
+          : '#d9eaf7'
+        : 'rgba(0,0,0,0)'};
   > input {
     padding-left: 4px;
     flex-grow: 1;
@@ -255,41 +274,88 @@ export const AskTagInput = styled.div`
   }
 `;
 
-export const AskMdEditorWrapper=styled.div`
-position: relative;
-`
+export const AskMdEditorWrapper = styled.div`
+  position: relative;
+`;
 
-export const AskMdEditorBorder=styled.div`
-position: absolute;
-width:100%;
-height:100%;
-z-index: 999;
-pointer-events: none;
-border-radius: ${brSm};
- border: 1px solid
-  ${(props) => (props.isReview&&!props.valid?'#de4f54':props.focus?props.isReview&& !props.valid ? '#de4f54' : '#59a4de':'hsl(210, 8%, 75%)')};
+export const AskMdEditorBorder = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  pointer-events: none;
+  border-radius: ${brSm};
+  border: 1px solid
+    ${(props) =>
+      props.isReview && !props.valid
+        ? '#de4f54'
+        : props.focus
+        ? props.isReview && !props.valid
+          ? '#de4f54'
+          : '#59a4de'
+        : 'hsl(210, 8%, 75%)'};
   box-shadow: 0px 0px 0px 4px
-  ${(props) => (props.focus?props.isReview&& !props.valid ? '#f6e0e0' : '#d9eaf7':'rgba(0,0,0,0)')};
-`
+    ${(props) =>
+      props.focus
+        ? props.isReview && !props.valid
+          ? '#f6e0e0'
+          : '#d9eaf7'
+        : 'rgba(0,0,0,0)'};
+`;
 
-export const AskPostButton=styled(AskFormButton)`
-margin:0px;
-`
-export const AskDiscardButton=styled(AskFormButton)`
-color: #c22e32;
-padding: 10.4px;
-margin:0px 8px;
-pointer-events: auto;
-opacity:1;
-background-color: transparent;
-box-shadow:none;
-&:hover {
-background-color: #fdf2f2;
-}
-`
+export const AskPostButton = styled(AskFormButton)`
+  margin: 0px;
+`;
+export const AskDiscardButton = styled(AskFormButton)`
+  color: #c22e32;
+  padding: 10.4px;
+  margin: 0px 8px;
+  pointer-events: auto;
+  opacity: 1;
+  background-color: transparent;
+  box-shadow: none;
+  &:hover {
+    background-color: #fdf2f2;
+  }
+`;
 
-export const AskPostButtonWrapper=styled.div`
+export const AskPostButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 12px 0px 0px;
+`;
+export const AskTagOfferContainer = styled(AskArticle)`
+padding:6px;
+  width:100%;
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  left:0;
+  top: 100%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  z-index: 999;
+  ;
+`;
+
+export const AskTagOffered=styled.div`
+width:200px;
 display: flex;
+cursor: pointer;
+* {
+  cursor: pointer;
+}
+&:hover {
+  background-color: #F1F2F3;
+}
+margin:5px;
 align-items: center;
-margin:12px 0px 0px;
+justify-content: space-between;
+div {
+  display:flex;
+  align-items: center;
+ .ask-tag-offered-count {
+    font-size: 11px;
+    padding-left: 5px;
+  }
+}
 `
