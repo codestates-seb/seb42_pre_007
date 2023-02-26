@@ -1,11 +1,13 @@
 package com.pre007.server.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
 import com.pre007.server.auth.jwt.JwtTokenizer;
 import com.pre007.server.globaldto.ErrorResponse;
 import com.pre007.server.globaldto.LoginDto;
 import com.pre007.server.user.dto.UserResponseDto;
+import com.pre007.server.user.dto.UserResponseSimple;
 import com.pre007.server.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -32,7 +34,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-    private final Gson gson;
+    private final ObjectMapper objectMapper;
 
     @SneakyThrows
     @Override
@@ -73,14 +75,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addCookie(refresh);
 
         // body
-        UserResponseDto dto = new UserResponseDto();
+        UserResponseSimple dto = new UserResponseSimple();
         dto.setUserId(user.getUserId());
         dto.setEmail(user.getEmail());
         dto.setDisplayName(user.getDisplayName());
-        dto.setCreatedAt(user.getCreatedAt());
+        //dto.setCreatedAt(user.getCreatedAt());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        response.getWriter().write(gson.toJson(dto, UserResponseDto.class));
+//        response.getWriter().write(gson.toJson(dto));
+        response.getWriter().write(objectMapper
+//                .registerModule(new JavaTimeModule()) // LocalDateTime 값은 안보내기로 함
+                .writeValueAsString(dto));
 
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);

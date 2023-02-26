@@ -1,5 +1,6 @@
 package com.pre007.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.pre007.server.auth.authorityutils.CustomAuthorityUtils;
 import com.pre007.server.auth.filter.JwtAuthenticationFilter;
@@ -32,7 +33,7 @@ public class WebSecurityConfig {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-    private final Gson gson;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
@@ -97,7 +98,7 @@ public class WebSecurityConfig {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter =
-                    new JwtAuthenticationFilter(authenticationManager,jwtTokenizer, gson);
+                    new JwtAuthenticationFilter(authenticationManager,jwtTokenizer, objectMapper);
             jwtAuthenticationFilter.setFilterProcessesUrl("/users/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler());
