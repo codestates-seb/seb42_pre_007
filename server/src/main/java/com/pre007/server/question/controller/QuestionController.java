@@ -22,6 +22,14 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
+    // 생성
+    @PostMapping("/ask")
+    public ResponseEntity postQuestion(@RequestBody @Valid QuestionPostDto dto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(questionService.createQuestion(dto), 200));
+    }
+
     // 페이지별 조회
     @GetMapping // @RequestParam QuestionPage questionPage
     public ResponseEntity getQuestionsByPage(@RequestParam("page") int page){
@@ -38,14 +46,6 @@ public class QuestionController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseDto(questionService.getQuestion(id), 200));
-    }
-
-    // 생성
-    @PostMapping("/ask")
-    public ResponseEntity postQuestion(@RequestBody @Valid QuestionPostDto dto) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new ResponseDto(questionService.createQuestion(dto), 200));
     }
 
     // 수정

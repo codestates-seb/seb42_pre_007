@@ -6,8 +6,10 @@ import com.pre007.server.answer.entity.Answer;
 import com.pre007.server.answer.repository.AnswerRepository;
 import com.pre007.server.question.entity.Question;
 import com.pre007.server.question.repository.QuestionRepository;
+import com.pre007.server.question.service.FindQuestionService;
 import com.pre007.server.user.entity.User;
 import com.pre007.server.user.repository.UserRepository;
+import com.pre007.server.user.service.FindUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +22,16 @@ import javax.transaction.Transactional;
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
-    private final QuestionRepository questionRepository;
-    private final UserRepository userRepository;
+    private final FindUserService findUserService;
+    private final FindQuestionService findQuestionService;
 
     public void createAnswer(AnswerCreateDto requestDto, Long questionId){
-        Question question = questionRepository.findById(questionId).get();
-        User user = userRepository.findByDisplayName(requestDto.getUser()).get();
+        Question question = findQuestionService.id(questionId);
+        User user = findUserService.displayName(requestDto.getUser());
         Answer answer = new Answer();
         answer.setUser(user);
         answer.setContent(requestDto.getContent());
+        answer.setQuestion(question);
         answerRepository.save(answer);
     }
 

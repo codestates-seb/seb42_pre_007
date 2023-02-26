@@ -31,8 +31,12 @@ public class QuestionService {
     }
 
     // 단일 조회
+    /**
+     * fetch join 으로 성능개선의 여지가 있음
+     */
     public QuestionResponseDto getQuestion(Long id){
         Question getQuestion = findQuestionService.id(id);
+        getQuestion.setView(getQuestion.getView() + 1);
 
         QuestionResponseDto dto = new QuestionResponseDto();
 
