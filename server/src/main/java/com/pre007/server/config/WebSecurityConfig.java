@@ -84,6 +84,9 @@ public class WebSecurityConfig {
         config.setAllowedHeaders(Arrays.asList("*"));
 //        config.setAllowCredentials(true);
 
+        config.addExposedHeader("Authorization");
+        config.addExposedHeader("Refresh");
+
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 
