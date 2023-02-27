@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import Nav from '../components/Nav';
+import Content from '../components/Content';
+import Footer from '../components/Footer';
 
 const MainWrap = styled.div`
   position: relative;
@@ -11,11 +13,15 @@ const MainWrap = styled.div`
   width: 100%;
   padding: 0 10vw;
 `;
-const Main = () => {
+const Main = ({user}) => {
   return (
-    <MainWrap>
-
-    </MainWrap>
+    <>
+      <MainWrap>
+        <Nav/>
+        <Content user={user} />
+      </MainWrap>
+      <Footer/>
+    </>
   )
 }
 

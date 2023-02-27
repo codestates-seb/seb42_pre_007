@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom'
@@ -24,18 +24,34 @@ const HeaderContent = styled.div`
   padding: 0 var(--gap-md);
 `;
 const Logo = styled.div`
-  height: 30px;
+  height: 100%;
+  padding: 0 10px;
   cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  &:hover {
+    background: #dcdcdc;
+  }
   > img {
     width: auto;
-    height: 100%; object-fit: cover;
+    height: 60%; object-fit: cover;
     vertical-align: middle;
+  }
+`;
+const QuestionBtn = styled.button`
+  font-size: 13px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 40px;
+  &:hover {
+    background: #dcdcdc;
   }
 `;
 const SearchBar = styled.div`
   position: relative;
   flex: 1;
-  margin: 0 var(--gap-large);
+  margin: 0 var(--gap-sm);
   > span {
     position: absolute;
     left: 10px;
@@ -75,8 +91,13 @@ const HeaderBtn = styled.button`
 const MyPageBtn = styled.button`
   width: 32px; 
   height: 32px;
+  overflow: hidden;
   border-radius: 4px;
-  background: seagreen;
+  > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 const Header = ({user,isLogin,setUser,setIsLogin}) => {
   const navigate = useNavigate();
@@ -84,12 +105,14 @@ const Header = ({user,isLogin,setUser,setIsLogin}) => {
     setUser(null)
     setIsLogin(false)
     navigate('/')
+    // 토큰없애주기
   }
 
   return (
     <HeaderWrap>
       <HeaderContent>
         <Logo onClick={()=>navigate('/')} ><img src='/logo.png' alt='stack overflow logo' /></Logo>
+        <QuestionBtn>Questions</QuestionBtn>
         <SearchBar>
           <span><FaSearch/></span>
           <SearchInput type='text' />
@@ -99,7 +122,7 @@ const Header = ({user,isLogin,setUser,setIsLogin}) => {
           isLogin 
           ? (
             <HeaderBtnWrap>
-              <MyPageBtn/>
+              <MyPageBtn><img src='https://picsum.photos/200' alt={`{user.displayName}`} /></MyPageBtn>
               <HeaderBtn onClick={logoutHander} marginLeft='10px' background='var(--skyblue)' color='var(--blue)' hoverBg='var(--skyblue-hover)'>Log out</HeaderBtn>
             </HeaderBtnWrap>
           )

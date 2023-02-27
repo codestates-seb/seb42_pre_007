@@ -44,7 +44,13 @@ const SignUp = () => {
         email,
         password,
       },
-    });
+      // withCredentials:true
+    })
+    .then((res)=>{ 
+      alert('회원가입 완료')
+      navigate('/users/login')
+    })
+    .catch((err)=>{console.log(err)})
   };
 
   return (

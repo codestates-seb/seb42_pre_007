@@ -26,10 +26,10 @@ const FooterBox = styled.div`
   width: 20%;
   h3 {
     font-size: 16px;
+    line-height: 20px;
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 20px;
-    white-space: nowrap;
   }
   li {
     font-size: 13px;

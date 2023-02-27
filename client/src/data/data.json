@@ -1,0 +1,71 @@
+[
+  {
+    "questionId": 1,
+    "title": "title 1",
+    "content": "I'm building this program in C# in which you can enter membership details, confirm them, and view previously stored memberships. I am still very much a beginner and this is just some school homework. My teacher suggested to write and read membership details to a file but I had no idea how to do this efficiently so just added them all to a list. I wrote this part to retrieve the username, password and membership type. However, how do I stop an 'unhandled' error if the user enters a value in which doesn't have any stored data? Here is the code: the list is called membersList.",
+    "user": "seb42-001",
+    "createdAt": "2023-02-19T15:24:31Z",
+    "votes": 13,
+    "view": 255,
+    "answer" : [
+      {
+        "answerId": 1,
+        "content": "answer answeransweranswer answeransweranswer",
+        "user": "answer001",
+        "createdAt" : "2023-02-20T15:24:31Z",
+        "votes": 20
+      }
+    ]
+  },
+  {
+    "questionId": 2,
+    "title": "title2222222",
+    "content": "I have connected the domain with my wordpress website and the homepage the main page is working but other pages are showing errors",
+    "user": "qggqgqggqg",
+    "createdAt": "2023-02-19T15:24:31Z",
+    "votes": 2,
+    "view": 200,
+    "answer" : [
+      {
+        "answerId": 1,
+        "content": "나 집에 가고싶어",
+        "user": "answer001",
+        "createdAt" : "2023-02-20T15:24:31Z",
+        "votes": 20
+      },
+      {
+        "answerId": 2,
+        "content": "비타민 먹어야지",
+        "user": "answer002",
+        "createdAt" : "2023-02-21T15:24:31Z",
+        "votes": 120
+      }
+    ]
+  },
+  {
+    "questionId": 3,
+    "title": "title 333333",
+    "content": "I am working with deeplink integration with js project. But deeplink work on some android devices but not working in some another android devices. Can you help for same What is issue here",
+    "user": "asdfasdf",
+    "createdAt": "2023-02-15T15:24:31Z",
+    "votes": 130,
+    "view": 2550,
+    "answer" : [
+      {
+        "answerId": 1,
+        "content": "말하는 감자~~~~~",
+        "user": "gkgkgkgk",
+        "createdAt" : "2023-02-17T15:24:31Z",
+        "votes": 202
+      },
+      {
+        "answerId": 2,
+        "content": "와어렵다ㅏㅏㅏㅏㅏ 신난다아아아아ㅏ아",
+        "user": "dddddd777",
+        "createdAt" : "2023-02-19T15:24:31Z",
+        "votes": 2
+      }
+    ]
+  }
+]
+
