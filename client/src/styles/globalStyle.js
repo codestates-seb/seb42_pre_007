@@ -12,7 +12,7 @@ export const GlobalStyle = createGlobalStyle`
   input:-webkit-autofill, 
   input:-webkit-autofill:hover, 
   input:-webkit-autofill:focus, 
-  input:-webkit-autofill:active {background: transparent;background-clip: text;-webkit-background-clip: text; -webkit-text-fill-color: white;}
+  input:-webkit-autofill:active {background: transparent;background-clip: text;-webkit-background-clip: text; -webkit-text-fill-color: var(--black);}
   textarea {resize: none;} 
   ::placeholder {font: inherit;}
   a {text-decoration: none;color: inherit;}

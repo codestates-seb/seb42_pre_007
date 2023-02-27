@@ -12,7 +12,7 @@ import {
 } from '../styles/authform';
 import axios from 'axios';
 
-const Login = () => {
+const Login = ({setUser, setIsLogin,setAuth}) => {
   const navigate = useNavigate();
   const URI = process.env.REACT_APP_API_URI;
 
@@ -38,8 +38,22 @@ const Login = () => {
         email,
         password,
       },
-    });
+      //cookie credential 
+      // withCredentials:true
+    })
+    .then((res)=>{ 
+      setAuth(res.headers.authorization) 
+      navigate('/')
+      setIsLogin(true)
+      setUser(res.data)
+      console.log(res.data)
+      console.log(res.headers.authorization)
+    })
+    .catch((err)=>{console.log(err)})
   };
+
+  //* 로그인 시도 -> 토큰발행api 요청 보내 -> 토큰을 response -> 
+  //* 우리가 헤더에 껴서 보냄 -> 서버가 토큰 비교해서 -> 로그인 요청한 애한테 정보 제공 ????
 
   return (
     <AuthFormWrap>
