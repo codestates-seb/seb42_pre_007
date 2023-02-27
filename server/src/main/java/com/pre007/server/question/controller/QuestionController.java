@@ -1,7 +1,7 @@
 package com.pre007.server.question.controller;
 
 import com.pre007.server.globaldto.ResponseDto;
-import com.pre007.server.question.dto.QuestionPage;
+import com.pre007.server.question.dto.QuestionSearch;
 import com.pre007.server.question.dto.QuestionPatchDto;
 import com.pre007.server.question.dto.QuestionPostDto;
 import com.pre007.server.question.service.QuestionService;
@@ -31,12 +31,11 @@ public class QuestionController {
     }
 
     // 페이지별 조회
-    @GetMapping // @RequestParam QuestionPage questionPage
-    public ResponseEntity getQuestionsByPage(@RequestParam("page") int page){
-        QuestionPage questionPage = new QuestionPage(page);
+    @GetMapping
+    public ResponseEntity getQuestionsByPage(@ModelAttribute QuestionSearch questionSearch){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto(questionService.getQuestionsByQuestionPage(questionPage), 200));
+                .body(new ResponseDto(questionService.getQuestionsByQuestionPage(questionSearch), 200));
     }
 
 

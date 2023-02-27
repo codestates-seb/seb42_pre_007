@@ -1,11 +1,12 @@
 package com.pre007.server.question.repository;
 
 import com.pre007.server.answer.entity.QAnswer;
-import com.pre007.server.question.dto.QuestionPage;
+import com.pre007.server.question.dto.QuestionSearch;
 import com.pre007.server.question.dto.QuestionResponseSimple;
 import com.pre007.server.question.entity.QQuestion;
 import com.pre007.server.user.entity.QUser;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +18,7 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<QuestionResponseSimple> getQuestionsByQuestionPage(QuestionPage questionPage) {
+    public List<QuestionResponseSimple> getQuestionsByQuestionPage(QuestionSearch questionSearch) {
 
         QQuestion question = QQuestion.question;
         QUser user = QUser.user;
@@ -38,12 +39,21 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
                 .on(question.user.userId.eq(user.userId))
                 .leftJoin(question.answers, answer)
                 .on(question.questionId.eq(answer.question.questionId))
+                .where(questionEq(questionSearch, question)) // 검색
                 .groupBy(question.questionId)
-                .limit(30)
-                .offset((long) (questionPage.getPage() - 1) * 30)
+                .limit(questionSearch.getSize())
+                .offset((long) (questionSearch.getPage() - 1) * questionSearch.getSize())
                 .orderBy(question.questionId.desc())
                 .fetch();
 
         return result;
+    }
+
+    private static BooleanExpression questionEq(QuestionSearch questionSearch, QQuestion question) {
+        if (questionSearch.getQ() == null) {
+            return null;
+        }
+        return question.content.contains(questionSearch.getQ())
+                .or(question.title.contains(questionSearch.getQ()));
     }
 }

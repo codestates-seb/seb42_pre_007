@@ -1,9 +1,6 @@
 package com.pre007.server.question.service;
 
 import com.pre007.server.answer.dto.AnswerResponseDto;
-import com.pre007.server.answer.entity.Answer;
-import com.pre007.server.exception.BusinessLogicException;
-import com.pre007.server.exception.ExceptionCode;
 import com.pre007.server.question.dto.*;
 import com.pre007.server.question.entity.Question;
 import com.pre007.server.question.repository.QuestionRepository;
@@ -25,8 +22,8 @@ public class QuestionService {
     private final FindUserService findUserService;
 
     // 페이지별 조회
-    public List<QuestionResponseSimple> getQuestionsByQuestionPage(QuestionPage questionPage){
-        List<QuestionResponseSimple> questionsByQuestionPage = questionRepository.getQuestionsByQuestionPage(questionPage);
+    public List<QuestionResponseSimple> getQuestionsByQuestionPage(QuestionSearch questionSearch){
+        List<QuestionResponseSimple> questionsByQuestionPage = questionRepository.getQuestionsByQuestionPage(questionSearch);
         return questionsByQuestionPage;
     }
 
