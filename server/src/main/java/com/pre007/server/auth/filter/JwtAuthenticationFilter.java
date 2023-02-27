@@ -14,6 +14,7 @@ import lombok.SneakyThrows;
 import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -65,15 +66,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Refresh", refreshToken);
 
         // cookie
-        Cookie cookie = new Cookie("Authorization", "Bearer" + accessToken);
-        cookie.setMaxAge(jwtTokenizer.getAccessTokenExpirationMinutes());
-//        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie
+                .from("Authorization", "Bearer"+accessToken)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(false)
+                .secure(true)
+                .maxAge(jwtTokenizer.getAccessTokenExpirationMinutes())
+                .build();
 
-        Cookie refresh = new Cookie("Refresh", refreshToken);
-        refresh.setMaxAge(jwtTokenizer.getRefreshTokenExpirationMinutes());
-//        refresh.setHttpOnly(true);
-        response.addCookie(refresh);
+        ResponseCookie refresh = ResponseCookie
+                .from("Refresh", refreshToken)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(false)
+                .secure(true)
+                .maxAge(jwtTokenizer.getRefreshTokenExpirationMinutes())
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+        response.addHeader("Set-Cookie", refresh.toString());
 
         // body
         UserResponseSimple dto = new UserResponseSimple();
