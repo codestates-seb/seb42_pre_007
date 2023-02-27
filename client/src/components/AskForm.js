@@ -58,7 +58,7 @@ export function AskForm({ user }) {
   //get taglist from stackexchange api after a second
   useEffect(() => {
     if (tagInput.length !== 0) {
-      console.log(`getTagsTimeout Start`);
+      // console.log(`getTagsTimeout Start`);
       if (getTagsTimeout) clearTimeout(getTagsTimeout);
       getTagsTimeout = setTimeout(() => {
         axios({
@@ -73,7 +73,7 @@ export function AskForm({ user }) {
         })
           .then((res) => {
             setTagsOffer(res.data);
-            console.log(`getTagsTimeout Axios`);
+            // console.log(`getTagsTimeout Axios`);
           })
           .catch((err) => console.log(err));
       }, 500);
@@ -81,9 +81,9 @@ export function AskForm({ user }) {
   }, [tagInput]);
 
   //test console.log
-  useEffect(() => {
-    console.log(tagsOffer);
-  }, [tagsOffer]);
+  // useEffect(() => {
+  //   console.log(tagsOffer);
+  // }, [tagsOffer]);
 
   //next버튼은 현재 step에서 1을 추가합니다.
   const nextButtonHandler = (e) => {
@@ -98,7 +98,7 @@ export function AskForm({ user }) {
   };
   //tag 추가
   const tagInputHandler = (newTag) => {
-    console.log(newTag);
+    // console.log(newTag);
     if (newTag.length === 0) return;
     if (tags.includes(newTag)) {
       setTagInput('');
@@ -140,17 +140,17 @@ export function AskForm({ user }) {
       user,
       tags,
     };
-    console.log(data)
+    // console.log(data)
     axios({
       method: 'post',
       url: `${URI}/questions/ask`,
       data,
     })
       .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
       navigate(`/question/${res.data['data']}`)})
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
   //Discard draft 버튼
@@ -164,9 +164,9 @@ export function AskForm({ user }) {
     setNowFocus(0);
   };
 
-  useEffect(()=>{
-    console.log(URI);
-  },[])
+  // useEffect(()=>{
+  //   console.log(URI);
+  // },[])
 
   return (
     <AskContainer>

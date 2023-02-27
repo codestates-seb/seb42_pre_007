@@ -9,6 +9,7 @@ export const AskContainer = styled.section`
   display: flex;
   flex-direction: column;
   max-width: 1300px;
+  flex-grow: 1;
 `;
 export const AskArticle = styled.article`
   width: 100%;
