@@ -18,6 +18,7 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
 
     @Override
     public List<QuestionResponseSimple> getQuestionsByQuestionPage(QuestionPage questionPage) {
+
         QQuestion question = QQuestion.question;
         QUser user = QUser.user;
         QAnswer answer = QAnswer.answer;
@@ -27,7 +28,7 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
                         question.questionId,
                         question.title,
                         question.content,
-                        user.displayName,
+                        user.displayName.as("user"),
                         question.createdAt,
                         question.votes,
                         question.view,

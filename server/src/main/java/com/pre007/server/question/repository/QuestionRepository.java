@@ -10,19 +10,4 @@ import java.util.Optional;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long>, QuestionRepositoryCustom {
-//    @Query(value = "select " +
-//            "q.questionId" +
-//            "q.title" +
-//            "q.content" +
-//            "q.view" +
-//            "u.displayName" +
-//            "q.createdAt" +
-//            "count(a.answerId) " +
-//            "from Question q" +
-//            "join User u on u.userId = q.userId" +
-//            "left join Answer a on q.questionId = a.questionId" +
-//            "group by answerId" +
-//            "order by questionId desc"
-//            ,nativeQuery = true)
-//    Optional<Question> findByQuestionPage(QuestionPage questionPage);
 }

@@ -26,7 +26,7 @@ public class User {
 
     private String displayName;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> roles = new ArrayList<>();
 
     private LocalDateTime createdAt = LocalDateTime.now();
