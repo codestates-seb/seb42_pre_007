@@ -30,11 +30,23 @@ export const AskTitle = styled.div`
   align-items: center;
   text-align: left;
   height: 130px;
+  justify-content: space-between;
   h1 {
+    display: block;
     font-weight: 600;
     line-height: 1.3;
     font-size: 27px;
     margin: 24px 0px 27px;
+    width: 300px;
+    min-width: 300px;
+  }
+  div {
+    @media screen and (min-width: 1100px) {
+      width: 500px;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-image: url(/ask-background.svg);
+    }
   }
 `;
 export const AskNotice = styled(AskArticle)`
@@ -325,37 +337,37 @@ export const AskPostButtonWrapper = styled.div`
   margin: 12px 0px 0px;
 `;
 export const AskTagOfferContainer = styled(AskArticle)`
-padding:6px;
-  width:100%;
+
+  padding: 6px;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   position: absolute;
-  left:0;
+  left: 0;
   top: 100%;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-  z-index: 999;
-  ;
+  z-index: 999; ;
 `;
 
-export const AskTagOffered=styled.div`
-width:200px;
-display: flex;
-cursor: pointer;
-* {
+export const AskTagOffered = styled.div`
+  width: 200px;
+  display: flex;
   cursor: pointer;
-}
-&:hover {
-  background-color: #F1F2F3;
-}
-margin:5px;
-align-items: center;
-justify-content: space-between;
-div {
-  display:flex;
-  align-items: center;
- .ask-tag-offered-count {
-    font-size: 11px;
-    padding-left: 5px;
+  * {
+    cursor: pointer;
   }
-}
-`
+  &:hover {
+    background-color: #f1f2f3;
+  }
+  margin: 5px;
+  align-items: center;
+  justify-content: space-between;
+  div {
+    display: flex;
+    align-items: center;
+    .ask-tag-offered-count {
+      font-size: 11px;
+      padding-left: 5px;
+    }
+  }
+`;
