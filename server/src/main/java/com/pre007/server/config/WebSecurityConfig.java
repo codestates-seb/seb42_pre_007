@@ -80,12 +80,14 @@ public class WebSecurityConfig {
 //        config.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
 
         config.setAllowedOrigins(Arrays.asList("*"));
+        //config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost", "localhost:3000", "localhost", "https://localhost:3000", "https://localhost"));
         config.setAllowedMethods(Arrays.asList("*"));
         config.setAllowedHeaders(Arrays.asList("*"));
 //        config.setAllowCredentials(true);
 
         config.addExposedHeader("Authorization");
         config.addExposedHeader("Refresh");
+        config.addExposedHeader("Set-Cookie");
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();

@@ -11,6 +11,7 @@ import com.pre007.server.user.dto.UserResponseSimple;
 import com.pre007.server.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.boot.web.servlet.server.CookieSameSiteSupplier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
