@@ -22,7 +22,7 @@ function App() {
         <Route path='/' element={<Index/>} />
         <Route path='/users/login' element={<Login setUser={setUser} setIsLogin={setIsLogin} setAuth={setAuth} />} />
         <Route path='/users/signup' element={<SignUp/>} />
-        <Route path='/questions/:questionId' element={<Main user={user} />} />
+        <Route path='/questions/:questionId' element={<Main user={user} auth={auth} />} />
         <Route path='/questions/ask' element={<Ask/>} />
       </Routes>
     </BrowserRouter>

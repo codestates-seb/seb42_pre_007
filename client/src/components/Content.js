@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import data from '../data/data.json';
 import MyAnswer from './MyAnswer';
 import ContentAnswer from './ContentAnswer';
@@ -15,17 +15,23 @@ dayjs.locale("ko");
 const Content = ({user}) => {
   const URI = process.env.REACT_APP_API_URI;
   const { questionId } = useParams(); 
-  const filtered = data.filter((item)=> item.questionId === parseInt(questionId) )[0];
-  const [ questionVote, setQuestionVote ] = useState(filtered.votes);
+  const [ contentData, setContentData ] = useState([])
+  const [ questionVote, setQuestionVote ] = useState(contentData.votes);
 
-  //! user id랑 로그인된 id랑 같으면 delete 버튼 노출???
+  const getQuestion = async () => {
+    const questionContent = await axios.get(`${URI}/questions/${questionId}`)
+    setContentData(questionContent.data)
+  }
+  useEffect(()=>{
+    getQuestion()
+  },[])
 
   // vote 클릭
   const questionVoteUp = () =>{
     setQuestionVote(questionVote+1)
     axios({
       method: 'post',
-      url: `${URI}/question/${questionId}`,
+      url: `${URI}/questions/${questionId}`,
       params: {},
       data: {
         votes : questionVote
@@ -38,7 +44,7 @@ const Content = ({user}) => {
     setQuestionVote(questionVote-1)
     axios({
       method: 'post',
-      url: `${URI}/question/${questionId}`,
+      url: `${URI}/questions/${questionId}`,
       params: {},
       data: {
         votes : questionVote
@@ -52,11 +58,11 @@ const Content = ({user}) => {
     <ContentWrap>
       <ContentTop>
         <ContentTopTitle>
-          <h2>{filtered.title}</h2>
+          <h2>{contentData.title}</h2>
           <ul>
-            <li><span>Asked</span>{dayjs(filtered.createdAt).fromNow()}</li>
-            <li><span>Modified</span>{dayjs(filtered.createdAt).fromNow()}</li>
-            <li><span>Viewed</span> {filtered.view}</li>
+            <li><span>Asked</span>{dayjs(contentData.createdAt).fromNow()}</li>
+            <li><span>Modified</span>{dayjs(contentData.createdAt).fromNow()}</li>
+            <li><span>Viewed</span> {contentData.view}</li>
           </ul>
         </ContentTopTitle>
         <BlueButton>Ask Questions</BlueButton>
@@ -69,7 +75,7 @@ const Content = ({user}) => {
         </Vote>
         <ContentBox>
           <ContentText>
-            {filtered.content}
+            {contentData.content}
           </ContentText>
           <TagBox>
             <div className='tag'>git</div>
@@ -83,29 +89,29 @@ const Content = ({user}) => {
             </ButtonBox>
             <WriterBox>
               <div background='#fff'>
-                <div>Modified {dayjs(filtered.createdAt).fromNow()}</div>
-                <p><img src='https://picsum.photos/200' alt={`${filtered.user}`} /><span>{filtered.user}</span></p>
+                <div>Modified {dayjs(contentData.createdAt).fromNow()}</div>
+                <p><img src='https://picsum.photos/200' alt={`${contentData.user}`} /><span>{contentData.user}</span></p>
               </div>
               <div>
-                <div>asked {dayjs(filtered.createdAt).fromNow()}</div>
-                <p><img src='https://picsum.photos/200' alt={`${filtered.user}`} /><span>{filtered.user}</span></p>
+                <div>asked {dayjs(contentData.createdAt).fromNow()}</div>
+                <p><img src='https://picsum.photos/200' alt={`${contentData.user}`} /><span>{contentData.user}</span></p>
               </div>
             </WriterBox>
           </ContentBottom>
         </ContentBox>
       </ContentContainer>
-      <h3 className='divider'>{filtered.answer.length} Answers</h3>
+      <h3 className='divider'>{contentData.answer.length} Answers</h3>
 
       {
-        filtered.answer && (
-          filtered.answer.map(answer => (
+        contentData.answer && (
+          contentData.answer.map(answer => (
             <ContentAnswer answer={answer} key={answer.answerId} />
           ))
         )
       }
 
       <h3 className='divider'>Your Answers</h3>
-      <MyAnswer user={user} filtered={filtered} />
+      <MyAnswer user={user} contentData={contentData} />
     </ContentWrap>
   )
 }
