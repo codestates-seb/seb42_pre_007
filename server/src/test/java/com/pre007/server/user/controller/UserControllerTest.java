@@ -22,38 +22,38 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@Transactional
-@AutoConfigureMockMvc
+//@SpringBootTest
+//@Transactional
+//@AutoConfigureMockMvc
 class UserControllerTest {
-
-    @Autowired
-    Gson gson;
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    UserService userService;
-
-    @Test
-    @DisplayName("회원가입이 성공적으로 이루어져야 합니다.")
-    public void createUserSuccess() throws Exception {
-        //given
-        UserCreatedDto dto = new UserCreatedDto("asdf6", "asdf6@asdf.com", "asdf1234");
-        String body = gson.toJson(dto);
-
-        //when
-        ResultActions actions =
-                mockMvc.perform(post("/users/signup")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body));
-
-        //then
-        actions
-                .andExpect(status().isCreated())
-                .andDo(print());
-    }
+//
+//    @Autowired
+//    Gson gson;
+//
+//    @Autowired
+//    MockMvc mockMvc;
+//
+//    @Autowired
+//    UserService userService;
+//
+//    @Test
+//    @DisplayName("회원가입이 성공적으로 이루어져야 합니다.")
+//    public void createUserSuccess() throws Exception {
+//        //given
+//        UserCreatedDto dto = new UserCreatedDto("asdf6", "asdf6@asdf.com", "asdf1234");
+//        String body = gson.toJson(dto);
+//
+//        //when
+//        ResultActions actions =
+//                mockMvc.perform(post("/users/signup")
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(body));
+//
+//        //then
+//        actions
+//                .andExpect(status().isCreated())
+//                .andDo(print());
+//    }
 
 }

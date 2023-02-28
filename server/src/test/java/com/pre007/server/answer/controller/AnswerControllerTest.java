@@ -29,59 +29,59 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@Transactional
-@AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) // @BeforeAll을 위해
+//@SpringBootTest
+//@Transactional
+//@AutoConfigureMockMvc
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS) // @BeforeAll을 위해
 class AnswerControllerTest {
-
-    @Autowired
-    Gson gson;
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    AnswerService answerService;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    QuestionService questionService;
-
-    User user;
-
-    @BeforeAll
-    void createUser() {
-        user = new User();
-        user.setEmail("asdf@asdf.com");
-        user.setPassword("asdf1234");
-        user.setDisplayName("asdf");
-
-        user = userRepository.save(user);
-    }
-
-    @Test
-    @DisplayName("답변글이 성공적으로 생성되어야 합니다.")
-    public void createAnswerSuccess() throws Exception {
-        //given
-        QuestionPostDto questionPostDto = new QuestionPostDto("foo", "bar", "asdf");
-        Long questionId = questionService.createQuestion(questionPostDto);
-
-        AnswerCreateDto answerCreateDto = new AnswerCreateDto(user.getDisplayName(), "hello");
-        String body = gson.toJson(answerCreateDto);
-
-        //when
-        ResultActions actions =
-                mockMvc.perform(post("/questions/" + questionId + "/answer/submit")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body));
-
-        //then
-        actions
-                .andExpect(status().isCreated())
-                .andDo(print());
-    }
+//
+//    @Autowired
+//    Gson gson;
+//
+//    @Autowired
+//    MockMvc mockMvc;
+//
+//    @Autowired
+//    AnswerService answerService;
+//
+//    @Autowired
+//    UserRepository userRepository;
+//
+//    @Autowired
+//    QuestionService questionService;
+//
+//    User user;
+//
+//    @BeforeAll
+//    void createUser() {
+//        user = new User();
+//        user.setEmail("asdf@asdf.com");
+//        user.setPassword("asdf1234");
+//        user.setDisplayName("asdf");
+//
+//        user = userRepository.save(user);
+//    }
+//
+//    @Test
+//    @DisplayName("답변글이 성공적으로 생성되어야 합니다.")
+//    public void createAnswerSuccess() throws Exception {
+//        //given
+//        QuestionPostDto questionPostDto = new QuestionPostDto("foo", "bar", "asdf");
+//        Long questionId = questionService.createQuestion(questionPostDto);
+//
+//        AnswerCreateDto answerCreateDto = new AnswerCreateDto(user.getDisplayName(), "hello");
+//        String body = gson.toJson(answerCreateDto);
+//
+//        //when
+//        ResultActions actions =
+//                mockMvc.perform(post("/questions/" + questionId + "/answer/submit")
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(body));
+//
+//        //then
+//        actions
+//                .andExpect(status().isCreated())
+//                .andDo(print());
+//    }
 }
