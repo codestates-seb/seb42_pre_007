@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     /**
      * 클래스 네이밍이 좀 별로인듯. 적당한게 없을까?
      */
-    private final class UserDetailsImpl extends User implements UserDetails {
+    public final class UserDetailsImpl extends User implements UserDetails {
 
         // 리팩토링 필요 (entity에 setter 사용 배제시)
         UserDetailsImpl(User user) {

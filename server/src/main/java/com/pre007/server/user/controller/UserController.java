@@ -1,10 +1,14 @@
 package com.pre007.server.user.controller;
 
+import com.pre007.server.auth.userdetails.UserDetailsServiceImpl;
 import com.pre007.server.globaldto.ResponseDto;
 import com.pre007.server.user.dto.UserCreatedDto;
+import com.pre007.server.user.dto.UserResponseSimple;
+import com.pre007.server.user.entity.User;
 import com.pre007.server.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +34,13 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(id, 201));
+    }
+
+    @GetMapping("/auth") // email을 받아오고 조회해서 쿼리문을 한번더 날릴 필요가 있을까?
+    public ResponseEntity authenticateUser(@AuthenticationPrincipal String email) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(userService.getUserSimpleByEmail(email), 200));
     }
 
     @GetMapping("/{user-id}")

@@ -5,6 +5,7 @@ import com.pre007.server.exception.BusinessLogicException;
 import com.pre007.server.exception.ExceptionCode;
 import com.pre007.server.user.dto.UserCreatedDto;
 import com.pre007.server.user.dto.UserResponseDto;
+import com.pre007.server.user.dto.UserResponseSimple;
 import com.pre007.server.user.entity.User;
 import com.pre007.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class UserService {
     }
 
     public UserResponseDto findUser(Long id) {
-        User findUser = userRepository.findById(id).get();
+        User findUser = findUserService.id(id);
 
         UserResponseDto dto = new UserResponseDto();
 
@@ -48,6 +49,15 @@ public class UserService {
         dto.setCreatedAt(findUser.getCreatedAt());
 
         return dto;
+    }
+
+    public UserResponseSimple getUserSimpleByEmail(String email) {
+        User findUser = findUserService.email(email);
+
+        return new UserResponseSimple(
+                findUser.getUserId(),
+                findUser.getDisplayName(),
+                findUser.getEmail());
     }
 
     public void deleteUser(Long id) {
