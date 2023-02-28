@@ -3,34 +3,34 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './styles/variable.css';
 import './App.css';
+import { GlobalStyle } from './styles/globalStyle';
+import Header from './components/Header';
+import Index from './pages/Index';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import Main from './pages/Main';
+import Ask from './pages/Ask';
 import Questions from './pages/Questions';
-import QuestionsHeader from './components/QuestionsHeader';
-import QuestionsDetail from './components/QuestionsDetail';
 import QuestionsPagination from './components/QuestionsPagination';
 import useScrollTop from './util/useScrollTop';
 
-export const SERVER_URL = process.env.REACT_APP_SERVER_HOST;
-import "./styles/variable.css";
-import { GlobalStyle } from "./styles/globalStyle";
-import { BrowserRouter,Routes,Route } from "react-router-dom";
-import { useState } from "react";
-import Header from "./components/Header";
-import Index from "./pages/Index";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Main from "./pages/Main";
-import Ask from "./pages/Ask";
+export const URI = process.env.REACT_APP_API_URI;
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [isLogin, setIsLogin] = useState(false);
+  const [auth, setAuth] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   // 한 페이지 당 보여줄 게시글의 갯수
   const [postsPerPage, setPostsPerPage] = useState(15);
+  const [totalQuestions, setTotalQuestions] = useState(0);
 
   useEffect(() => {
     const getQuestions = async () => {
-      const questions = await axios.get(`${SERVER_URL}/question`);
+      const questions = await axios.get(`${URI}/questions`);
       setQuestions(questions.data);
+      setTotalQuestions(questions.data.length);
     };
     getQuestions();
   }, []);
@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(
-        `${SERVER_URL}/question?page=${currentPage}`
+        `${URI}/questions?page=${currentPage}`
       );
       setQuestions(response.data);
     };
@@ -59,63 +59,74 @@ function App() {
 
   useScrollTop(currentPage);
 
-  const [ user, setUser ] = useState(null)
-  const [ isLogin, setIsLogin ] = useState(false)
-  const [ auth, setAuth ] = useState(null)
-
   return (
     <BrowserRouter>
-      <div className='App'>
-        <div className='questions-container'>
-          <QuestionsHeader questions={questions} />
-          <Routes>
-            <Route
-              path='/'
-              element={
-                <>
-                  <Questions questions={currentQuestions(questions)} />
-                  <QuestionsPagination
-                    postsPerPage={postsPerPage}
-                    totalQuestions={questions.length}
-                    setCurrentPage={setCurrentPageHandler}
-                    currentPage={currentPage}
-                  />
-                </>
-              }
-            />
-            <Route
-              path='/question'
-              element={
-                <>
-                  <Questions questions={currentQuestions(questions)} />
-                  <QuestionsPagination
-                    postsPerPage={postsPerPage}
-                    setPostsPerPage={setPostsPerPage}
-                    totalQuestions={questions.length}
-                    setCurrentPage={setCurrentPageHandler}
-                    currentPage={currentPage}
-                  />
-                </>
-              }
-            />
-            <Route path='/question/:id' element={<QuestionsDetail />} />
-          </Routes>
-        </div>
-      </div>
-    </BrowserRouter>
-  );
-    <BrowserRouter>
-      <GlobalStyle/>
-      <Header isLogin={isLogin} user={user} setUser={setUser} setIsLogin={setIsLogin} />
+      <GlobalStyle />
+      <Header
+        isLogin={isLogin}
+        user={user}
+        setUser={setUser}
+        setIsLogin={setIsLogin}
+      />
       <Routes>
-        <Route path='/' element={<Index/>} />
-        <Route path='/users/login' element={<Login setUser={setUser} setIsLogin={setIsLogin} setAuth={setAuth} />} />
-        <Route path='/users/signup' element={<SignUp/>} />
-        <Route path='/questions/:questionId' element={<Main user={user} />} />
-        <Route path='/questions/ask' element={<Ask/>} />
+        {isLogin === false ? (
+          <Route path='/' element={<Index />} />
+        ) : (
+          <Route
+            path='/'
+            element={
+              <>
+                <Questions
+                  questions={currentQuestions(questions)}
+                  totalQuestions={totalQuestions}
+                />
+                <QuestionsPagination
+                  postsPerPage={postsPerPage}
+                  totalQuestions={totalQuestions}
+                  setCurrentPage={setCurrentPageHandler}
+                  currentPage={currentPage}
+                />
+              </>
+            }
+          />
+        )}
+        <Route
+          path='/users/login'
+          element={
+            <Login
+              setUser={setUser}
+              setIsLogin={setIsLogin}
+              setAuth={setAuth}
+            />
+          }
+        />
+        <Route path='/users/signup' element={<SignUp />} />
+        <Route
+          path='/questions'
+          element={
+            <>
+              <Questions
+                questions={currentQuestions(questions)}
+                totalQuestions={totalQuestions}
+              />
+              <QuestionsPagination
+                postsPerPage={postsPerPage}
+                setPostsPerPage={setPostsPerPage}
+                totalQuestions={totalQuestions}
+                setCurrentPage={setCurrentPageHandler}
+                currentPage={currentPage}
+              />
+            </>
+          }
+        />
+        <Route
+          path='/questions/:questionId'
+          element={<Main user={user} />}
+        />
+        <Route path='/questions/ask' element={<Ask />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
 export default App;
