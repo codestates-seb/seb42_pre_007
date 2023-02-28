@@ -5,7 +5,7 @@ import {
   PageButton,
   PrevButton,
   NextButton,
-} from '../style/questionsPagination';
+} from '../styles/questionsPagination';
 
 const QuestionsPagination = ({
   postsPerPage,

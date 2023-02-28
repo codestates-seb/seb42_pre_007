@@ -7,7 +7,7 @@ import {
   QuestionsSection,
   Counting,
   QuestionsContent,
-} from '../style/questionsList';
+} from '../styles/questionsList';
 
 const QuestionsList = ({ questions }) => {
   // 작성일자 출력 설정 함수

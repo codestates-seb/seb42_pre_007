@@ -1,4 +1,4 @@
-import QuestionsList from '../questionsComponent/QuestionsList';
+import QuestionsList from '../components/QuestionsList';
 
 export const SERVER_URL = process.env.REACT_APP_SERVER_HOST;
 

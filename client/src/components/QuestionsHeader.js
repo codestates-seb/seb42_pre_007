@@ -5,7 +5,7 @@ import {
   SubContainer,
   QuestionsCount,
   FilterButtons,
-} from '../style/questionsHeader';
+} from '../styles/questionsHeader';
 
 const QuestionsHeader = ({ questions }) => {
   // 필터 버튼 select 상태 유지를 위한 useState

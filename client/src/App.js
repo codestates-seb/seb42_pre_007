@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './style/variable.css';
+import './styles/variable.css';
 import './App.css';
-import Questions from './page/Questions';
-import QuestionsHeader from './questionsComponent/QuestionsHeader';
-import QuestionsDetail from './questionsComponent/QuestionsDetail';
-import QuestionsPagination from './questionsComponent/QuestionsPagination';
+import Questions from './pages/Questions';
+import QuestionsHeader from './components/QuestionsHeader';
+import QuestionsDetail from './components/QuestionsDetail';
+import QuestionsPagination from './components/QuestionsPagination';
 import useScrollTop from './util/useScrollTop';
 
 export const SERVER_URL = process.env.REACT_APP_SERVER_HOST;
