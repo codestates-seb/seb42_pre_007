@@ -27,11 +27,11 @@ import MDEditor from '@uiw/react-md-editor';
 
 let getTagsTimeout = null;
 
-export function AskForm({ user }) {
+export function AskForm({ user,auth }) {
+
   const navigate = useNavigate();
   const URI = process.env.REACT_APP_API_URI;
   //user 프롭이 없으면 더미 데이터 삽입
-  if (!user) user = 'hello';
 
   //title,content,tags의 내용을 저장
   const [title, setTitle] = useState('');
@@ -137,7 +137,7 @@ export function AskForm({ user }) {
     const data = {
       title,
       content,
-      user,
+      user:user['displayName'],
       tags,
     };
     // console.log(data)
@@ -145,10 +145,13 @@ export function AskForm({ user }) {
       method: 'post',
       url: `${URI}/questions/ask`,
       data,
+      headers:{
+        authorization:auth
+      }
     })
       .then((res) => {
         // console.log(res.data)
-      navigate(`/question/${res.data['data']}`)})
+      navigate(`/questions/${res.data['data']}`)})
       .catch((err) => {
         // console.log(err);
       });

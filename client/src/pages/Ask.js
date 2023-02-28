@@ -13,10 +13,10 @@ padding-top:50px;
 height: 100vh;
 `
 
-function Ask ({user}) {
+function Ask ({user,auth}) {
   return (
     <AskPage>
-      <AskForm user={user}/>
+      <AskForm user={user} auth={auth} />
       <Footer/>
     </AskPage>
   )

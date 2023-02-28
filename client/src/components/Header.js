@@ -99,13 +99,16 @@ const MyPageBtn = styled.button`
     object-fit: cover;
   }
 `;
-const Header = ({user,isLogin,setUser,setIsLogin}) => {
+const Header = ({user,isLogin,setUser,setIsLogin,setAuth}) => {
   const navigate = useNavigate();
   const logoutHander=()=>{
     setUser(null)
     setIsLogin(false)
     navigate('/')
     // 토큰없애주기
+    setAuth(null);
+    sessionStorage.removeItem("authorization");
+    localStorage.removeItem("refresh");
   }
 
   return (
