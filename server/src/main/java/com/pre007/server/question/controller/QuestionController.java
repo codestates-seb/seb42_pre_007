@@ -18,6 +18,7 @@ import javax.validation.constraints.Positive;
 @Validated
 @RequestMapping("/questions")
 @RequiredArgsConstructor
+@CrossOrigin
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -67,7 +68,6 @@ public class QuestionController {
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
-
 
 
 }

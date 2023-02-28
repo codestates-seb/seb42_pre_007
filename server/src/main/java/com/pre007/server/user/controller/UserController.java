@@ -36,7 +36,7 @@ public class UserController {
                 .body(new ResponseDto(id, 201));
     }
 
-    @GetMapping("/auth") // email을 받아오고 조회해서 쿼리문을 한번더 날릴 필요가 있을까?
+    @PostMapping("/auth") // email을 받아오고 조회해서 쿼리문을 한번더 날릴 필요가 있을까?
     public ResponseEntity authenticateUser(@AuthenticationPrincipal String email) {
         return ResponseEntity
                 .status(HttpStatus.OK)

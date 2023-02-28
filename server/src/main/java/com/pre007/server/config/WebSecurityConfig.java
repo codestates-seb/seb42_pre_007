@@ -34,6 +34,8 @@ public class WebSecurityConfig {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final ObjectMapper objectMapper;
+    
+    //도메인
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
@@ -60,6 +62,7 @@ public class WebSecurityConfig {
                                 .antMatchers("/users/signup").permitAll()
                                 .antMatchers("/users/login").permitAll()
                                 .antMatchers("/users/**").hasRole("USER")
+                                .antMatchers("/questions/ask").hasAnyRole("USER", "USER_ROLE")
 //                                .antMatchers("/h2/**").permitAll()
 //                                .anyRequest().hasAnyRole("USER", "ROLE_USER")
                                 .anyRequest().permitAll()
@@ -80,7 +83,6 @@ public class WebSecurityConfig {
 //        config.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE"));
 
         config.setAllowedOrigins(Arrays.asList("*"));
-        //config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost", "localhost:3000", "localhost", "https://localhost:3000", "https://localhost"));
         config.setAllowedMethods(Arrays.asList("*"));
         config.setAllowedHeaders(Arrays.asList("*"));
 //        config.setAllowCredentials(true);
