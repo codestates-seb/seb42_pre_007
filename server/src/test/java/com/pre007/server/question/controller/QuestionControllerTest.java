@@ -57,10 +57,10 @@ class QuestionControllerTest {
     @DisplayName("글생성이 성공적으로 이루어져야 합니다.")
     public void createQuestionSuccess() throws Exception {
         //given
-        UserCreatedDto user = new UserCreatedDto("asdf", "asdf@asdf.com", "asdf1234");
+        UserCreatedDto user = new UserCreatedDto("asdf1", "asdf1@asdf.com", "asdf1234");
         createUser(user);
 
-        QuestionPostDto dto = new QuestionPostDto("foo", "bar", "asdf");
+        QuestionPostDto dto = new QuestionPostDto("foo", "bar", user.getDisplayName());
         String body = gson.toJson(dto);
 
         //when
@@ -80,10 +80,10 @@ class QuestionControllerTest {
     @DisplayName("글조회가 성공적으로 이루어져야 합니다.")
     public void getQuestionSuccess() throws Exception {
         //given
-        UserCreatedDto user = new UserCreatedDto("asdf", "asdf@asdf.com", "asdf1234");
+        UserCreatedDto user = new UserCreatedDto("asdf2", "asdf2@asdf.com", "asdf1234");
         createUser(user);
 
-        QuestionPostDto dto = new QuestionPostDto("foo", "bar", "asdf");
+        QuestionPostDto dto = new QuestionPostDto("foo", "bar", user.getDisplayName());
         Long questionId = createQuestion(dto);
 
 
@@ -106,13 +106,13 @@ class QuestionControllerTest {
     @DisplayName("글수정이 성공적으로 이루어져야 합니다.")
     public void updateQuestionSuccess() throws Exception {
         //given
-        UserCreatedDto user = new UserCreatedDto("asdf", "asdf@asdf.com", "asdf1234");
+        UserCreatedDto user = new UserCreatedDto("asdf3", "asdf3@asdf.com", "asdf1234");
         createUser(user);
 
-        QuestionPostDto questionPostDto = new QuestionPostDto("foo", "bar", "asdf");
+        QuestionPostDto questionPostDto = new QuestionPostDto("foo", "bar", user.getDisplayName());
         Long questionId = createQuestion(questionPostDto);
 
-        QuestionPatchDto dto = new QuestionPatchDto("hello", "world", "asdf");
+        QuestionPatchDto dto = new QuestionPatchDto("hello", "world", user.getDisplayName());
         String body = gson.toJson(dto);
 
         //when
@@ -142,10 +142,10 @@ class QuestionControllerTest {
     @DisplayName("글삭제가 성공적으로 이루어져야 합니다.")
     public void deleteQuestionSuccess() throws Exception {
         //givne
-        UserCreatedDto user = new UserCreatedDto("asdf", "asdf@asdf.com", "asdf1234");
+        UserCreatedDto user = new UserCreatedDto("asdf4", "asdf@asdf4.com", "asdf1234");
         createUser(user);
 
-        QuestionPostDto questionPostDto = new QuestionPostDto("foo", "bar", "asdf");
+        QuestionPostDto questionPostDto = new QuestionPostDto("foo", "bar", user.getDisplayName());
         Long questionId = createQuestion(questionPostDto);
 
         //when
@@ -166,16 +166,16 @@ class QuestionControllerTest {
     @DisplayName("질문글 페이징 조회가 성공적으로 이루어져야 합니다.")
     public void getQuestionsByQuestionPage() throws Exception {
         //given
-        UserCreatedDto user = new UserCreatedDto("asdf", "asdf@asdf.com", "asdf1234");
+        UserCreatedDto user = new UserCreatedDto("asdf5", "asdf5@asdf.com", "asdf1234");
         createUser(user);
 
-        QuestionPostDto questionPostDto1 = new QuestionPostDto("foo1", "bar1", "asdf");
+        QuestionPostDto questionPostDto1 = new QuestionPostDto("foo1", "bar1", user.getDisplayName());
         Long questionId1 = createQuestion(questionPostDto1);
 
-        QuestionPostDto questionPostDto2 = new QuestionPostDto("foo2", "bar2", "asdf");
+        QuestionPostDto questionPostDto2 = new QuestionPostDto("foo2", "bar2", user.getDisplayName());
         Long questionId2 = createQuestion(questionPostDto2);
 
-        QuestionPostDto questionPostDto3 = new QuestionPostDto("foo3", "bar3", "asdf");
+        QuestionPostDto questionPostDto3 = new QuestionPostDto("foo3", "bar3", user.getDisplayName());
         Long questionId3 = createQuestion(questionPostDto3);
 
         //when
