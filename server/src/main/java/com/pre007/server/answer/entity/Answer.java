@@ -2,7 +2,6 @@ package com.pre007.server.answer.entity;
 
 import com.pre007.server.question.entity.Question;
 import com.pre007.server.user.entity.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

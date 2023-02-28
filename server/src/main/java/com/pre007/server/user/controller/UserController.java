@@ -1,5 +1,6 @@
 package com.pre007.server.user.controller;
 
+import com.pre007.server.globaldto.ResponseDto;
 import com.pre007.server.user.dto.UserCreatedDto;
 import com.pre007.server.user.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Positive;
 @RestController
 @Validated
 @RequestMapping("/users")
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;
@@ -25,11 +27,19 @@ public class UserController {
     public ResponseEntity postUser(@RequestBody @Valid UserCreatedDto dto) {
         Long id = userService.create(dto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(id);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(id, 201));
     }
 
     @GetMapping("/{user-id}")
     public ResponseEntity getUser(@PathVariable("user-id") @Positive Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findUser(id));
+    }
+
+    @DeleteMapping("/{user-id}")
+    public ResponseEntity deleteUser(@PathVariable("user-id") @Positive Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
