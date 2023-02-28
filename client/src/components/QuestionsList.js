@@ -29,24 +29,22 @@ const QuestionsList = ({ questions }) => {
     <QuestionsContainer>
       {questions &&
         questions.map(question => (
-          <React.Fragment key={question.id}>
-            <QuestionsSection hasAnswers={question.answers > 0}>
+          <React.Fragment key={question.questionId}>
+            <QuestionsSection hasAnswers={question.answer.length > 0}>
               <Counting>
                 <div className='count-votes'>{question.votes} votes</div>
                 <div className='count-answers'>
-                  {question.answers} answers
+                  {question.answer.length} answers
                 </div>
-                <div className='count-views'>{question.views} views</div>
+                <div className='count-views'>{question.view} views</div>
               </Counting>
               <QuestionsContent>
-                <Link to={`/question/${question.id}`}>
+                <Link to={`/questions/${question.questionId}`}>
                   <h3 className='content-title'>{question.title}</h3>
                 </Link>
                 <div className='content-body'>{question.content}</div>
                 <div className='content-created'>
-                  <div className='content-username'>
-                    {question.userName}
-                  </div>
+                  <div className='content-username'>{question.user}</div>
                   <div className='content-date'>
                     {timeFromNow(new Date(question.createdAt))}
                   </div>

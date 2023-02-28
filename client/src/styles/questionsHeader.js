@@ -2,13 +2,16 @@ import styled from 'styled-components';
 
 // 최상단 Header 전체를 감싸는 Container
 export const HeaderContainer = styled.div`
-  /* width: 100%; */
   height: auto;
   margin: 30px 20px 0px 20px;
   box-sizing: content-box;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+
+  h1 {
+    font-size: 2em;
+  }
 `;
 
 // Title, Ask Questions 버튼을 감싸는 Container

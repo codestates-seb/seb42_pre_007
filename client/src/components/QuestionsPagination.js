@@ -43,14 +43,14 @@ const QuestionsPagination = ({
       {currentPage === 1 ? (
         <PrevButton disabled>prev</PrevButton>
       ) : (
-        <Link to={`/question?page=${currentPage - 1}`}>
+        <Link to={`/questions?page=${currentPage - 1}`}>
           <PrevButton onClick={() => setCurrentPage(currentPage - 1)}>
             prev
           </PrevButton>
         </Link>
       )}
       {pageNumbers.map(number => (
-        <Link key={number} to={`/question?page=${number}`}>
+        <Link key={number} to={`/questions?page=${number}`}>
           <PageButton
             onClick={() => setCurrentPage(number)}
             currentPage={currentPage === number}>
@@ -61,7 +61,7 @@ const QuestionsPagination = ({
       {currentPage === totalPages ? (
         <NextButton disabled>next</NextButton>
       ) : (
-        <Link to={`/question?page=${currentPage + 1}`}>
+        <Link to={`/questions?page=${currentPage + 1}`}>
           <NextButton onClick={() => setCurrentPage(currentPage + 1)}>
             next
           </NextButton>

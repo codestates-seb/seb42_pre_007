@@ -1,13 +1,23 @@
+import QuestionsHeader from '../components/QuestionsHeader';
 import QuestionsList from '../components/QuestionsList';
+import styled from 'styled-components';
 
-export const SERVER_URL = process.env.REACT_APP_SERVER_HOST;
+const QuestionsListPage = styled.div`
+  margin-top: 80px;
+`;
 
 // Questions을 뿌려주는 List Page
-const Questions = ({ questions }) => {
+const Questions = ({ questions, totalQuestions }) => {
   return (
-    <div className='questions-list-page'>
+    <QuestionsListPage>
+      {questions && (
+        <QuestionsHeader
+          questions={questions}
+          totalQuestions={totalQuestions}
+        />
+      )}
       {questions && <QuestionsList questions={questions} />}
-    </div>
+    </QuestionsListPage>
   );
 };
 

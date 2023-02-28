@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   HeaderContainer,
   TitleContainer,
@@ -7,7 +8,7 @@ import {
   FilterButtons,
 } from '../styles/questionsHeader';
 
-const QuestionsHeader = ({ questions }) => {
+const QuestionsHeader = ({ totalQuestions }) => {
   // 필터 버튼 select 상태 유지를 위한 useState
   const [selected, setSelected] = useState('newest');
 
@@ -20,12 +21,12 @@ const QuestionsHeader = ({ questions }) => {
     <HeaderContainer>
       <TitleContainer>
         <h1 className='article-title'>Questions</h1>
-        <button className='ask-button'>Ask Questions</button>
+        <Link to={'/questions/ask'}>
+          <button className='ask-button'>Ask Questions</button>
+        </Link>
       </TitleContainer>
       <SubContainer>
-        <QuestionsCount>
-          {questions && questions.length} questions
-        </QuestionsCount>
+        <QuestionsCount>{totalQuestions} questions</QuestionsCount>
         <div className='filter-button-section'>
           <FilterButtons
             selected={selected === 'newest'}
