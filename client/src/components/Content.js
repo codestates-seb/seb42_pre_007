@@ -3,7 +3,7 @@ import data from '../data/data.json';
 import MyAnswer from './MyAnswer';
 import ContentAnswer from './ContentAnswer';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { BlueButton } from '../styles/authform';
 import { FaCaretUp,FaCaretDown } from "react-icons/fa";
 import { ContentWrap,ContentTop,ContentTopTitle,ContentContainer,Vote,ContentBox,ContentText,ContentBottom,TagBox,ButtonBox,WriterBox } from '../styles/contentcss';
@@ -13,6 +13,7 @@ dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
 const Content = ({user}) => {
+  const navigate=useNavigate();
   const URI = process.env.REACT_APP_API_URI;
   const { questionId } = useParams(); 
   const [ contentData, setContentData ] = useState([])
@@ -20,7 +21,7 @@ const Content = ({user}) => {
 
   const getQuestion = async () => {
     const questionContent = await axios.get(`${URI}/questions/${questionId}`)
-    setContentData(questionContent.data)
+    setContentData(questionContent.data.data)
   }
   useEffect(()=>{
     getQuestion()
@@ -65,7 +66,7 @@ const Content = ({user}) => {
             <li><span>Viewed</span> {contentData.view}</li>
           </ul>
         </ContentTopTitle>
-        <BlueButton>Ask Questions</BlueButton>
+        <BlueButton onClick={(()=>navigate('/questions/ask'))}>Ask Questions</BlueButton>
       </ContentTop>
       <ContentContainer>
         <Vote>
@@ -100,7 +101,7 @@ const Content = ({user}) => {
           </ContentBottom>
         </ContentBox>
       </ContentContainer>
-      <h3 className='divider'>{contentData.answer.length} Answers</h3>
+      {contentData.answer&&<h3 className='divider'>{contentData.answer.length} Answers</h3>}
 
       {
         contentData.answer && (

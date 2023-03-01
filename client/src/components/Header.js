@@ -126,12 +126,12 @@ const Header = ({user,isLogin,setUser,setIsLogin,setAuth}) => {
           ? (
             <HeaderBtnWrap>
               <MyPageBtn><img src='https://picsum.photos/200' alt={`{user.displayName}`} /></MyPageBtn>
-              <HeaderBtn onClick={logoutHander} marginLeft='10px' background='var(--skyblue)' color='var(--blue)' hoverBg='var(--skyblue-hover)'>Log out</HeaderBtn>
+              <HeaderBtn onClick={logoutHander} marginLeft='10px' background='var(--white)' color='var(--blue)' hoverBg='var(--skyblue-hover)'>Log out</HeaderBtn>
             </HeaderBtnWrap>
           )
           : (
             <HeaderBtnWrap>
-              <HeaderBtn background='var(--skyblue)' color='var(--blue)' hoverBg='var(--skyblue-hover)' onClick={()=>navigate('/users/login')}>Log in</HeaderBtn>
+              <HeaderBtn background='var(--white)' color='var(--blue)' hoverBg='var(--skyblue-hover)' onClick={()=>navigate('/users/login')}>Log in</HeaderBtn>
               <HeaderBtn marginLeft='10px' onClick={()=>navigate('/users/signup')}>Sign up</HeaderBtn>
             </HeaderBtnWrap>
           )

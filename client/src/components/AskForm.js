@@ -27,11 +27,14 @@ import MDEditor from '@uiw/react-md-editor';
 
 let getTagsTimeout = null;
 
-export function AskForm({ user,auth }) {
-
+export function AskForm({ user, auth }) {
   const navigate = useNavigate();
   const URI = process.env.REACT_APP_API_URI;
-  //user 프롭이 없으면 더미 데이터 삽입
+  //토큰이 없으면 메인으로 네비게이트
+  useEffect(() => {
+    const authorization = sessionStorage.getItem('authorization');
+    if (!authorization) navigate('/');
+  }, []);
 
   //title,content,tags의 내용을 저장
   const [title, setTitle] = useState('');
@@ -137,23 +140,25 @@ export function AskForm({ user,auth }) {
     const data = {
       title,
       content,
-      user:user['displayName'],
+      user: user['displayName'],
       tags,
     };
-    // console.log(data)
+    console.log(JSON.stringify(data))
     axios({
       method: 'post',
       url: `${URI}/questions/ask`,
       data,
-      headers:{
-        authorization:auth
-      }
+      headers: {
+        authorization: auth,
+      },
     })
       .then((res) => {
         // console.log(res.data)
-      navigate(`/questions/${res.data['data']}`)})
+        navigate(`/questions/${res.data['data']}`);
+      })
       .catch((err) => {
-        // console.log(err);
+        console.log(auth)
+        console.log(err);
       });
   };
   //Discard draft 버튼
@@ -177,9 +182,7 @@ export function AskForm({ user,auth }) {
         <h1>
           {isReview ? 'Review your question' : 'Ask a public question'}
         </h1>
-        <div>
-          
-        </div>
+        <div></div>
       </AskTitle>
       {isReview ? (
         <AskNotice padding={16}>
@@ -251,7 +254,7 @@ export function AskForm({ user,auth }) {
         <AskIntroduceCard step={0} nowFocus={nowFocus} nowStep={nowStep}>
           <div className='introduce-card-title'>Writing a good title</div>
           <div className='introduce-card-content'>
-          <AskSvgPencil/>
+            <AskSvgPencil />
             <div className='introduce-card-paragraph'>
               <p>Your title should summarize the problem.</p>
               <p>
@@ -308,7 +311,7 @@ export function AskForm({ user,auth }) {
               Proof-read before posting
             </div>
             <div className='introduce-card-content'>
-            <AskSvgPencil/>
+              <AskSvgPencil />
               <div className='introduce-card-paragraph'>
                 <p>
                   Now that you’re ready to post your question, read through
@@ -328,7 +331,7 @@ export function AskForm({ user,auth }) {
               Introduce the problem
             </div>
             <div className='introduce-card-content'>
-            <AskSvgPencil/>
+              <AskSvgPencil />
               <div className='introduce-card-paragraph'>
                 <p>
                   Explain how you encountered the problem you’re trying to
@@ -369,7 +372,7 @@ export function AskForm({ user,auth }) {
                 tags.length === 0 ? `e.g. (django python .net)` : ''
               }
               onBlur={() => {
-                  setIsAskTagInputFocus(false);
+                setIsAskTagInputFocus(false);
               }}
               onFocus={() => {
                 setIsAskTagInputFocus(true);
@@ -404,7 +407,7 @@ export function AskForm({ user,auth }) {
         <AskIntroduceCard step={2} nowFocus={nowFocus} nowStep={nowStep}>
           <div className='introduce-card-title'>Adding tags</div>
           <div className='introduce-card-content'>
-          <AskSvgPencil/>
+            <AskSvgPencil />
             <div className='introduce-card-paragraph'>
               <p>
                 Tags help ensure that your question will get attention from
@@ -475,8 +478,16 @@ function AskTagsOffer({
     );
 }
 
-function AskSvgPencil(){
+function AskSvgPencil() {
   return (
-    <svg aria-hidden="true" className="ask-svg-pencil" style={{width:"48px",minWidth:"48px", height:"48px"}}><path d="M31.52 5.2a.34.34 0 0 0-.46.08L7 39.94a.34.34 0 0 0-.06.16l-.54 5.21c-.03.26.24.45.48.34l4.77-2.29c.05-.02.1-.06.13-.1L35.83 8.58a.34.34 0 0 0-.09-.47l-4.22-2.93Z" opacity=".2"></path><path d="M28.53 2.82c.4-.58 1.2-.73 1.79-.32l4.22 2.92c.58.4.72 1.2.32 1.79L10.82 41.87c-.13.18-.3.33-.5.43l-4.77 2.28c-.9.44-1.93-.29-1.83-1.29l.55-5.2c.02-.22.1-.43.22-.6L28.53 2.81Zm4.43 3.81L29.74 4.4 28.2 6.6l3.22 2.24 1.53-2.21Zm-2.6 3.76-3.23-2.24-20.32 29.3 3.22 2.24 20.32-29.3ZM5.7 42.4 8.62 41l-2.57-1.78-.34 3.18Zm35.12.3a1 1 0 1 0-.9-1.78 35 35 0 0 1-7.94 3.06c-1.93.43-3.8.3-5.71-.04-.97-.17-1.93-.4-2.92-.64l-.3-.07c-.9-.21-1.81-.43-2.74-.62-2.9-.58-6.6-.49-9.43.65a1 1 0 0 0 .74 1.86c2.4-.96 5.68-1.07 8.3-.55.88.18 1.77.4 2.66.6l.3.08c1 .24 2 .48 3.03.66 2.07.37 4.22.53 6.5.02 3-.67 5.77-1.9 8.41-3.22Z"></path></svg>
-  )
+    <svg
+      aria-hidden='true'
+      className='ask-svg-pencil'
+      style={{ width: '48px', minWidth: '48px', height: '48px' }}>
+      <path
+        d='M31.52 5.2a.34.34 0 0 0-.46.08L7 39.94a.34.34 0 0 0-.06.16l-.54 5.21c-.03.26.24.45.48.34l4.77-2.29c.05-.02.1-.06.13-.1L35.83 8.58a.34.34 0 0 0-.09-.47l-4.22-2.93Z'
+        opacity='.2'></path>
+      <path d='M28.53 2.82c.4-.58 1.2-.73 1.79-.32l4.22 2.92c.58.4.72 1.2.32 1.79L10.82 41.87c-.13.18-.3.33-.5.43l-4.77 2.28c-.9.44-1.93-.29-1.83-1.29l.55-5.2c.02-.22.1-.43.22-.6L28.53 2.81Zm4.43 3.81L29.74 4.4 28.2 6.6l3.22 2.24 1.53-2.21Zm-2.6 3.76-3.23-2.24-20.32 29.3 3.22 2.24 20.32-29.3ZM5.7 42.4 8.62 41l-2.57-1.78-.34 3.18Zm35.12.3a1 1 0 1 0-.9-1.78 35 35 0 0 1-7.94 3.06c-1.93.43-3.8.3-5.71-.04-.97-.17-1.93-.4-2.92-.64l-.3-.07c-.9-.21-1.81-.43-2.74-.62-2.9-.58-6.6-.49-9.43.65a1 1 0 0 0 .74 1.86c2.4-.96 5.68-1.07 8.3-.55.88.18 1.77.4 2.66.6l.3.08c1 .24 2 .48 3.03.66 2.07.37 4.22.53 6.5.02 3-.67 5.77-1.9 8.41-3.22Z'></path>
+    </svg>
+  );
 }

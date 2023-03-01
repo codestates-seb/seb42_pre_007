@@ -49,7 +49,7 @@ function App() {
   const startIdx = endIdx - postsPerPage;
   const currentQuestions = questions => {
     let currentQuestions = 0;
-    currentQuestions = questions.slice(startIdx, endIdx);
+    if(questions.length>0) currentQuestions = questions.slice(startIdx, endIdx);
     return currentQuestions;
   };
 
