@@ -42,7 +42,10 @@ const Login = ({setUser, setIsLogin,setAuth}) => {
       // withCredentials:true
     })
     .then((res)=>{ 
-      setAuth(res.headers.authorization) 
+      const {authorization,refresh}=res.headers;
+      sessionStorage.setItem("authorization",authorization);
+      localStorage.setItem("refresh",refresh);
+      setAuth(authorization) 
       navigate('/')
       setIsLogin(true)
       setUser(res.data)

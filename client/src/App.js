@@ -59,6 +59,48 @@ function App() {
 
   useScrollTop(currentPage);
 
+  const URI=process.env.REACT_APP_API_URI;
+
+useEffect(()=>{
+  const authorization=sessionStorage.getItem("authorization");
+  const refresh=localStorage.getItem("refresh");
+  if(authorization){
+    console.log(authorization);
+    axios({
+      method:'post',
+      url:`${URI}/users/auth`,
+      headers : {
+        authorization
+      }
+    })
+    .then(res=>{
+      // console.log(res.data);
+      setAuth(authorization);
+      setIsLogin(true);
+      setUser(res.data.data);
+      console.log(res.data.data)
+    })
+    .catch(err=>console.log(err))
+  }
+  // else if(refresh) {
+  //   console.log(refresh);
+  //   axios({
+  //     method:'post',
+  //     url:`${URI}/users/auth`,
+  //     headers : {
+  //       refresh
+  //     }
+  //   })
+  //   .then(res=>{
+  //     console.log(res.headers['authorization'])
+  //     console.log(res.data)
+  //   })
+  //   .catch(err=>{
+  //     console.log(err);
+  //   })
+  // }
+},[])
+
   return (
     <BrowserRouter>
       <GlobalStyle />
@@ -67,6 +109,7 @@ function App() {
         user={user}
         setUser={setUser}
         setIsLogin={setIsLogin}
+        setAuth={setAuth}
       />
       <Routes>
         {isLogin === false ? (
@@ -123,7 +166,7 @@ function App() {
           path='/questions/:questionId'
           element={<Main user={user} auth={auth} />}
         />
-        <Route path='/questions/ask' element={<Ask />} />
+        <Route path='/questions/ask' element={<Ask user={user} auth={auth}/>} />
       </Routes>
     </BrowserRouter>
   );

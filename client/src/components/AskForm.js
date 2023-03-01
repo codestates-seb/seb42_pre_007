@@ -27,11 +27,11 @@ import MDEditor from '@uiw/react-md-editor';
 
 let getTagsTimeout = null;
 
-export function AskForm({ user }) {
+export function AskForm({ user,auth }) {
+
   const navigate = useNavigate();
   const URI = process.env.REACT_APP_API_URI;
   //user 프롭이 없으면 더미 데이터 삽입
-  if (!user) user = 'hello';
 
   //title,content,tags의 내용을 저장
   const [title, setTitle] = useState('');
@@ -58,7 +58,7 @@ export function AskForm({ user }) {
   //get taglist from stackexchange api after a second
   useEffect(() => {
     if (tagInput.length !== 0) {
-      console.log(`getTagsTimeout Start`);
+      // console.log(`getTagsTimeout Start`);
       if (getTagsTimeout) clearTimeout(getTagsTimeout);
       getTagsTimeout = setTimeout(() => {
         axios({
@@ -73,7 +73,7 @@ export function AskForm({ user }) {
         })
           .then((res) => {
             setTagsOffer(res.data);
-            console.log(`getTagsTimeout Axios`);
+            // console.log(`getTagsTimeout Axios`);
           })
           .catch((err) => console.log(err));
       }, 500);
@@ -81,9 +81,9 @@ export function AskForm({ user }) {
   }, [tagInput]);
 
   //test console.log
-  useEffect(() => {
-    console.log(tagsOffer);
-  }, [tagsOffer]);
+  // useEffect(() => {
+  //   console.log(tagsOffer);
+  // }, [tagsOffer]);
 
   //next버튼은 현재 step에서 1을 추가합니다.
   const nextButtonHandler = (e) => {
@@ -98,7 +98,7 @@ export function AskForm({ user }) {
   };
   //tag 추가
   const tagInputHandler = (newTag) => {
-    console.log(newTag);
+    // console.log(newTag);
     if (newTag.length === 0) return;
     if (tags.includes(newTag)) {
       setTagInput('');
@@ -137,20 +137,23 @@ export function AskForm({ user }) {
     const data = {
       title,
       content,
-      user,
+      user:user['displayName'],
       tags,
     };
-    console.log(data)
+    // console.log(data)
     axios({
       method: 'post',
       url: `${URI}/questions/ask`,
       data,
+      headers:{
+        authorization:auth
+      }
     })
       .then((res) => {
-        console.log(res.data)
-      navigate(`/question/${res.data['data']}`)})
+        // console.log(res.data)
+      navigate(`/questions/${res.data['data']}`)})
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
   //Discard draft 버튼
@@ -164,9 +167,9 @@ export function AskForm({ user }) {
     setNowFocus(0);
   };
 
-  useEffect(()=>{
-    console.log(URI);
-  },[])
+  // useEffect(()=>{
+  //   console.log(URI);
+  // },[])
 
   return (
     <AskContainer>
