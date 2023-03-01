@@ -1,11 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&display=swap');
-
 :root {
   /* gap */
   --gap-large: 30px;
   --gap-big: 20px;
   --gap-md: 15px;
   --gap-sm: 10px;
+
+  /* font-family */
+  --ft-notoSansRegular: 'notoSansRegular';
+  --ft-notoSansMedium: 'notoSansMedium';
+  --ft-notoSansLight: 'notoSansLight';
+  --ft-notoSansExtraLight: 'notoSansExtraLight';
+  --ft-notoSansBold: 'notoSansBold';
 
   /* font-size */
   --fz-large: 20px;
@@ -16,14 +21,17 @@
   /* color */
   --blue: rgb(10, 149, 255);
   --blue-hover: rgb(0, 116, 204);
-  --skyblue: rgb(219, 239, 254);
+  --dblue: rgb(0, 84, 163);
+  --skyblue: rgb(101, 163, 255);
   --skyblue-hover: rgb(192, 218, 234);
   --black: rgb(35, 38, 41);
+  --white: rgb(255, 255, 255);
   --dgray: rgb(106, 115, 124);
   --lgray: rgb(186, 191, 196);
-  --silver: rgb(241,242,243);
+  --silver: rgb(241, 242, 243);
   --orange: rgb(244, 130, 37);
   --green: rgb(47, 111, 68);
   /* shadow */
-  --shadow: 0 10px 24px hsla(0,0%,0%,0.05), 0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
+  --shadow: 0 10px 24px hsla(0, 0%, 0%, 0.05),
+    0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
 }
