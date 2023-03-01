@@ -121,7 +121,7 @@ function App() {
         />
         <Route
           path='/questions/:questionId'
-          element={<Main user={user} />}
+          element={<Main user={user} auth={auth} />}
         />
         <Route path='/questions/ask' element={<Ask />} />
       </Routes>
