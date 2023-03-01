@@ -5,6 +5,7 @@ import com.pre007.server.user.dto.UserResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -26,4 +27,6 @@ public class QuestionResponseDto {
     private Integer view = 0;
 
     private List<AnswerResponseDto> answers;
+
+    private List<String> tags;
 }

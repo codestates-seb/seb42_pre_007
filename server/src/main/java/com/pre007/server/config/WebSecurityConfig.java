@@ -10,6 +10,7 @@ import com.pre007.server.auth.handler.UserAuthenticationEntryPoint;
 import com.pre007.server.auth.handler.UserAuthenticationFailureHandler;
 import com.pre007.server.auth.handler.UserAuthenticationSuccessHandler;
 import com.pre007.server.auth.jwt.JwtTokenizer;
+import com.pre007.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,7 @@ public class WebSecurityConfig {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
     
     //도메인
 
@@ -61,8 +63,11 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                                 .antMatchers("/users/signup").permitAll()
                                 .antMatchers("/users/login").permitAll()
+                                .antMatchers("/users/refresh").permitAll()
                                 .antMatchers("/users/**").hasRole("USER")
-                                .antMatchers("/questions/ask").hasAnyRole("USER", "USER_ROLE")
+                                .antMatchers("/questions/ask").hasRole("USER")
+                                .antMatchers("/question/*/answer").hasRole("USER")
+                                .antMatchers("/question/*/votes").hasRole("USER")
 //                                .antMatchers("/h2/**").permitAll()
 //                                .anyRequest().hasAnyRole("USER", "ROLE_USER")
                                 .anyRequest().permitAll()
@@ -113,7 +118,7 @@ public class WebSecurityConfig {
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter =
-                    new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+                    new JwtVerificationFilter(jwtTokenizer, authorityUtils, userRepository);
 
             builder
                     .addFilter(jwtAuthenticationFilter)

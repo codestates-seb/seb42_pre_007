@@ -20,10 +20,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @Column(nullable = false, length = 30)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false, length = 15)
     private String displayName;
 
     @ElementCollection(fetch = FetchType.LAZY)

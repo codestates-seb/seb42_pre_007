@@ -1,6 +1,7 @@
 package com.pre007.server.question.repository;
 
 import com.pre007.server.answer.entity.QAnswer;
+import com.pre007.server.globaldto.PageableInfo;
 import com.pre007.server.question.dto.QuestionSearch;
 import com.pre007.server.question.dto.QuestionResponseSimple;
 import com.pre007.server.question.entity.QQuestion;
@@ -18,6 +19,20 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
+    public List<PageableInfo> getQuestionsCount() {
+
+        QQuestion question = QQuestion.question;
+
+        List<PageableInfo> result = jpaQueryFactory
+                .select(Projections.fields(PageableInfo.class,
+                        question.count().as("totalCount")))
+                .from(question)
+                .fetch();
+
+        return result;
+    }
+
+    @Override
     public List<QuestionResponseSimple> getQuestionsByQuestionPage(QuestionSearch questionSearch) {
 
         QQuestion question = QQuestion.question;
@@ -33,13 +48,15 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
                         question.createdAt,
                         question.votes,
                         question.view,
-                        answer.count().as("answers")))
+                        answer.count().as("answers"),
+                        question.tags))
                 .from(question)
                 .join(question.user, user)
                 .on(question.user.userId.eq(user.userId))
                 .leftJoin(question.answers, answer)
                 .on(question.questionId.eq(answer.question.questionId))
-                .where(questionEq(questionSearch, question)) // 검색
+                .where(tagEq(questionSearch, question)) // 태그검색
+                .where(questionEq(questionSearch, question)) // 단어검색
                 .groupBy(question.questionId)
                 .limit(questionSearch.getSize())
                 .offset((long) (questionSearch.getPage() - 1) * questionSearch.getSize())
@@ -47,6 +64,13 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
                 .fetch();
 
         return result;
+    }
+
+    private static BooleanExpression tagEq(QuestionSearch questionSearch, QQuestion question) {
+        if (questionSearch.getTag() == null) {
+            return null;
+        }
+        return question.tags.contains(questionSearch.getTag());
     }
 
     private static BooleanExpression questionEq(QuestionSearch questionSearch, QQuestion question) {

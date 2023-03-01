@@ -20,6 +20,5 @@ public class QuestionPostDto {
     @Size(min = 3, max = 15)
     private String user;
 
-    //@NotBlank(message = "Tags")
-    //private String[] tag;
+    private String[] tags = {};
 }

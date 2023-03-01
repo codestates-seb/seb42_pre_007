@@ -19,4 +19,6 @@ public class FindQuestionService {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
     }
+
+
 }

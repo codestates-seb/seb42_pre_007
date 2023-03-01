@@ -19,6 +19,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
 
+    @Column(length = 1000, nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

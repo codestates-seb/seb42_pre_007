@@ -38,10 +38,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final JwtTokenizer jwtTokenizer;
     private final ObjectMapper objectMapper;
 
+
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                HttpServletResponse response) {
+
         ObjectMapper objectMapper = new ObjectMapper();
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
 
@@ -58,8 +60,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication authResult) throws ServletException, IOException {
         User user = (User) authResult.getPrincipal();
 
-        String accessToken = delegateAccessToken(user);
-        String refreshToken = delegateRefreshToken(user);
+        String accessToken = jwtTokenizer.generateAccessTokenByUser(user);
+        String refreshToken = jwtTokenizer.generateRefreshTokenByUser(user);
 
         // header
         response.setHeader("Authorization", "Bearer " + accessToken);
@@ -104,37 +106,32 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
 
-    private String delegateAccessToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("username", user.getEmail());
-        claims.put("roles", user.getRoles());
-
-        String subject = user.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
-
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        String accessToken =
-                jwtTokenizer.generateAccessToken(
-                        claims,
-                        subject,
-                        expiration,
-                        base64EncodedSecretKey);
-
-        return accessToken;
-    }
-
-    private String delegateRefreshToken(User user) {
-        String subject = user.getEmail();
-        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-
-        String refreshToken =
-                jwtTokenizer.generateRefreshToken(
-                        subject,
-                        expiration,
-                        base64EncodedSecretKey);
-
-        return refreshToken;
-    }
+//    private String delegateAccessToken(User user) {
+//        Map<String, Object> claims = new HashMap<>();
+//        claims.put("username", user.getEmail());
+//        claims.put("roles", user.getRoles());
+//
+//        String subject = user.getEmail();
+//        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
+//
+//        String accessToken =
+//                jwtTokenizer.generateAccessToken(
+//                        claims,
+//                        subject,
+//                        expiration);
+//
+//        return accessToken;
+//    }
+//
+//    private String delegateRefreshToken(User user) {
+//        String subject = user.getEmail();
+//        Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
+//
+//        String refreshToken =
+//                jwtTokenizer.generateRefreshToken(
+//                        subject,
+//                        expiration);
+//
+//        return refreshToken;
+//    }
 }

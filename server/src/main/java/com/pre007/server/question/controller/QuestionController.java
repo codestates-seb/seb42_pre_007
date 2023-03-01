@@ -1,5 +1,6 @@
 package com.pre007.server.question.controller;
 
+import com.pre007.server.globaldto.PageableResponseDto;
 import com.pre007.server.globaldto.ResponseDto;
 import com.pre007.server.question.dto.QuestionSearch;
 import com.pre007.server.question.dto.QuestionPatchDto;
@@ -8,6 +9,7 @@ import com.pre007.server.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,6 @@ import javax.validation.constraints.Positive;
 @Validated
 @RequestMapping("/questions")
 @RequiredArgsConstructor
-@CrossOrigin
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -36,7 +37,7 @@ public class QuestionController {
     public ResponseEntity getQuestionsByPage(@ModelAttribute QuestionSearch questionSearch){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto(questionService.getQuestionsByQuestionPage(questionSearch), 200));
+                .body(questionService.getQuestionsByQuestionPage(questionSearch));
     }
 
 
@@ -57,7 +58,7 @@ public class QuestionController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto(dto, 200));
+                .body(new ResponseDto(id, 200));
     }
 
     // 삭제
@@ -69,5 +70,25 @@ public class QuestionController {
                 .build();
     }
 
+    /**
+     * votes
+     */
 
+    @PostMapping("/{question-id}/votes/up")
+    public ResponseEntity postVoteUp(@PathVariable("question-id") @Positive Long id,
+                                   @AuthenticationPrincipal String email) {
+        questionService.addVote(id, email, 1);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(id, 200));
+    }
+
+    @PostMapping("/{question-id}/votes/down")
+    public ResponseEntity postVoteDown(@PathVariable("question-id") @Positive Long id,
+                                   @AuthenticationPrincipal String email) {
+        questionService.addVote(id, email, -1);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(id, 200));
+    }
 }
