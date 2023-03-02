@@ -21,7 +21,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 50, nullable = false)
     private String title;
 
     @Column(length = 1000, nullable = false)
