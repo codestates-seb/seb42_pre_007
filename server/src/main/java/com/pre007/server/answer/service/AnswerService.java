@@ -36,8 +36,7 @@ public class AnswerService {
         Answer answer = new Answer();
         answer.setUser(user);
         answer.setContent(requestDto.getContent());
-        answer.setQuestion(question);
-        answerRepository.save(answer);
+        answerRepository.save(question.addAnswer(answer));
     }
 
     public void updateAnswer(Long id, AnswerUpdateDto requestDto, String email){

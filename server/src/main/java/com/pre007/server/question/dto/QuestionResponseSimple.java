@@ -29,7 +29,7 @@ public class QuestionResponseSimple {
         private String content;
         private String user;
         private LocalDateTime createdAt;
-        private Integer votes = 0;
+        private Long votes = 0L;
         private Integer view = 0;
         private Long answers = 0L;
         private String[] tags;
@@ -40,7 +40,7 @@ public class QuestionResponseSimple {
             this.content = simple.getContent();
             this.user = simple.getUser();
             this.createdAt = simple.getCreatedAt();
-            this.votes = simple.getVotes();
+            this.votes = (long) simple.getVotes() / simple.getAnswers();
             this.view = simple.getView();
             this.answers = simple.getAnswers();
             this.tags = simple.getTags().split(" ");

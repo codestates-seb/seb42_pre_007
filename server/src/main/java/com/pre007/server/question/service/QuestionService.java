@@ -62,7 +62,7 @@ public class QuestionService {
 
         dto.setVotes(getQuestion.getVotes().size() == 0 ? 0 :
                 getQuestion.getVotes().stream()
-                        .mapToInt(QuestionVote::getVote)
+                        .mapToInt(QuestionVote::getVoteQ)
                         .sum());
 
         dto.setTags(Arrays.asList(getQuestion.getTags().split(" ")));

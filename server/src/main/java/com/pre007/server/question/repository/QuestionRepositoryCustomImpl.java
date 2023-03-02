@@ -48,16 +48,16 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
                         question.content,
                         user.displayName.as("user"),
                         question.createdAt,
-                        vote.vote.sum().as("votes"),
+                        vote.voteQ.sum().as("votes"),
                         question.view,
                         answer.count().as("answers"),
                         question.tags))
                 .from(question)
                 .join(question.user, user)
                 .on(question.user.userId.eq(user.userId))
-                .leftJoin(question.answers, answer)
+                .join(question.answers, answer)
                 .on(question.questionId.eq(answer.question.questionId))
-                .leftJoin(question.votes, vote)
+                .join(question.votes, vote)
                 .on(question.questionId.eq(vote.question.questionId))
                 .where(tagEq(questionSearch, question)) // 태그검색
                 .where(questionEq(questionSearch, question)) // 단어검색

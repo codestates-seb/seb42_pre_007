@@ -31,7 +31,7 @@ public class AnswerResponseDto {
         dto.setSelection(entity.getSelection());
         dto.setVotes(entity.getVotes().size() == 0 ? 0 :
                 entity.getVotes().stream()
-                        .mapToInt(AnswerVote::getVote)
+                        .mapToInt(AnswerVote::getVoteR)
                         .sum());
 
         return dto;

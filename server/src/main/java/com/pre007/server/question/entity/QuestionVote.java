@@ -23,11 +23,11 @@ public class QuestionVote {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    private Integer vote;
+    private Integer voteQ;
 
-    public QuestionVote(User user, Question question, Integer vote) {
+    public QuestionVote(User user, Question question, Integer voteQ) {
         this.user = user;
         this.question = question;
-        this.vote = vote;
+        this.voteQ = voteQ;
     }
 }

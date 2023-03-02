@@ -26,11 +26,11 @@ public class AnswerVote {
     @JoinColumn(name = "answer_id")
     private Answer answer;
 
-    private Integer vote;
+    private Integer voteR;
 
-    public AnswerVote(User user, Answer answer, Integer vote) {
+    public AnswerVote(User user, Answer answer, Integer voteR) {
         this.user = user;
         this.answer = answer;
-        this.vote = vote;
+        this.voteR = voteR;
     }
 }
