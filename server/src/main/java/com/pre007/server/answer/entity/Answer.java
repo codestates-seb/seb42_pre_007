@@ -42,9 +42,8 @@ public class Answer {
     private LocalDateTime modified = LocalDateTime.now();
 
     public AnswerVote addVote(AnswerVote vote) {
-        List<AnswerVote> newVotes = new ArrayList<>(votes);
-        newVotes.add(vote);
-        this.votes = newVotes;
+        this.votes.add(vote);
+        vote.setAnswer(this);
         return vote;
     }
 }
