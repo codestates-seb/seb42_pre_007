@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long>, QuestionRepositoryCustom {
 
     @Override
-    @EntityGraph(attributePaths = {"user", "answers", "answers.votes"})
+    @EntityGraph(attributePaths = {"user", "answers"})
 //    @Query("select q" +
 //            " from Question q" +
 //            " join fetch q.user u" +
