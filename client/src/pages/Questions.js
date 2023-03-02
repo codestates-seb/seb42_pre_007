@@ -3,10 +3,7 @@ import QuestionsList from '../components/QuestionsList';
 import styled from 'styled-components';
 
 const QuestionsListPage = styled.div`
-  /* margin-top: 80px; */
-  width: calc(100% - 165px);
-  margin-left: 165px;
-  padding: var(--gap-large);
+  margin-top: 50px;
 `;
 
 // Questions을 뿌려주는 List Page

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const HeaderContainer = styled.div`
   /* width: 100%; */
   height: auto;
-  margin: 30px 20px 0px 20px;
+  /* margin: 30px 20px 0px 20px; */
   box-sizing: content-box;
   display: flex;
   justify-content: space-between;
@@ -14,7 +14,7 @@ export const HeaderContainer = styled.div`
 // Title, Ask Questions 버튼을 감싸는 Container
 export const TitleContainer = styled.div`
   width: 90%;
-  max-width: 800px;
+  /* max-width: 800px; */
   height: auto;
   margin: 0 auto;
   box-sizing: content-box;
@@ -44,7 +44,7 @@ export const TitleContainer = styled.div`
 // 총 Questions 갯수와 Filter 버튼을 감싸는 Container
 export const SubContainer = styled.div`
   width: 90%;
-  max-width: 800px;
+  /* max-width: 800px; */
   height: auto;
   margin: 0 auto;
   box-sizing: content-box;
