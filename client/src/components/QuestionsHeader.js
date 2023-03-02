@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   HeaderContainer,
   TitleContainer,
@@ -8,7 +9,8 @@ import {
   FilterButtons,
 } from '../styles/questionsHeader';
 
-const QuestionsHeader = ({ totalQuestions }) => {
+const QuestionsHeader = ({ totalQuestions ,isSearch}) => {
+  const {searchString}=useParams();
   // 필터 버튼 select 상태 유지를 위한 useState
   const [selected, setSelected] = useState('newest');
 
@@ -20,7 +22,7 @@ const QuestionsHeader = ({ totalQuestions }) => {
   return (
     <HeaderContainer>
       <TitleContainer>
-        <h1 className='article-title'>Questions</h1>
+        <h1 className='article-title'>{isSearch?`Results for ${searchString}`:'Questions'}</h1>
         <Link to={'/questions/ask'}>
           <button className='ask-button'>Ask Questions</button>
         </Link>

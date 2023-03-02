@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
 
 const HeaderWrap = styled.div`
   width: 100%;
@@ -100,6 +101,7 @@ const MyPageBtn = styled.button`
   }
 `;
 const Header = ({user,isLogin,setUser,setIsLogin,setAuth}) => {
+  const [searchString,setSearchString]=useState('');
   const navigate = useNavigate();
   const logoutHander=()=>{
     setUser(null)
@@ -111,6 +113,14 @@ const Header = ({user,isLogin,setUser,setIsLogin,setAuth}) => {
     localStorage.removeItem("refresh");
   }
 
+  const searchStringHandler=(e)=>{
+    setSearchString(()=>e.target.value)
+  }
+
+  const search=(e)=>{
+    if(e.key==='Enter') navigate(`/search/${searchString}`)
+  }
+
   return (
     <HeaderWrap>
       <HeaderContent>
@@ -118,7 +128,7 @@ const Header = ({user,isLogin,setUser,setIsLogin,setAuth}) => {
         <QuestionBtn>Questions</QuestionBtn>
         <SearchBar>
           <span><FaSearch/></span>
-          <SearchInput type='text' />
+          <SearchInput value={searchString} type='text' onChange={searchStringHandler} onKeyDown={search}/>
         </SearchBar>
 
         {

@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import Questions from './Questions';
-import QuestionsPagination from '../components/QuestionsPagination';
-import axios from 'axios';
 import { URI } from '../App';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import useScrollTop from '../util/useScrollTop';
 import styled from 'styled-components';
-import Footer from '../components/Footer';
 import Nav from '../components/Nav';
+import Footer from '../components/Footer';
+import Questions from './Questions';
+import QuestionsPagination from '../components/QuestionsPagination';
 
 const QuestionPageContainer = styled.main`
 /* display: flex; */
@@ -26,7 +26,9 @@ const PageWrap = styled.div`
   margin-left: 165px;
   padding: var(--gap-large);
 `;
-export function QuestionsPage() {
+
+function Search() {
+  const {searchString}=useParams();
   const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   // 한 페이지 당 보여줄 게시글의 갯수
@@ -34,22 +36,33 @@ export function QuestionsPage() {
   const [totalQuestions, setTotalQuestions] = useState(0);
 
   useEffect(() => {
-
     if (currentPage === 1) {
       const getQuestions = async () => {
-        const questions = await axios.get(`${URI}/questions`);
+        const questions = await axios({
+          method: 'get',
+          url: `${URI}/questions`,
+          params:{
+            page:1,
+            q:searchString
+          }
+        });
         setQuestions(questions.data.data);
-        setTotalQuestions(questions.data.pageableInfo.totalCount);
+        setTotalQuestions(questions.data.pageableInfo.resultCount);
       };
       getQuestions();
     }
-  }, []);
+  }, [searchString]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(
-        `${URI}/questions?page=${currentPage}`
-      );
+      const response = await axios({
+        method: 'get',
+        url: `${URI}/questions`,
+        params:{
+          page:currentPage,
+          q:searchString
+        }
+      });
       // console.log(response.data)
       setQuestions(response.data.data);
     };
@@ -87,6 +100,7 @@ export function QuestionsPage() {
             <Questions
             questions={currentQuestions(questions)}
             totalQuestions={totalQuestions}
+            isSearch={true}
             />
             )}
           {questions && (
@@ -104,3 +118,5 @@ export function QuestionsPage() {
     </div>
   );
 }
+
+export default Search;

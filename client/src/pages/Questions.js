@@ -7,11 +7,12 @@ const QuestionsListPage = styled.div`
 `;
 
 // Questions을 뿌려주는 List Page
-const Questions = ({ questions, totalQuestions }) => {
+const Questions = ({ questions, totalQuestions,isSearch }) => {
   return (
     <QuestionsListPage>
       {questions && (
         <QuestionsHeader
+        isSearch={isSearch}
           questions={questions}
           totalQuestions={totalQuestions}
         />
