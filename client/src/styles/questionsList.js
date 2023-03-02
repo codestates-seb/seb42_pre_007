@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 // 게시글을 각각 담을 Container
 export const QuestionsContainer = styled.div`
-  max-width: 800px;
+  /* max-width: 800px; */
   height: auto;
   margin: 0 auto;
   box-sizing: content-box;
@@ -58,8 +58,8 @@ export const QuestionsContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  width: 70%;
-  min-width: 600px;
+  width: 80%;
+  /* min-width: 600px; */
 
   .content-title,
   .content-username {

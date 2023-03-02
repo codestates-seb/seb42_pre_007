@@ -11,7 +11,20 @@ import Nav from '../components/Nav';
 const QuestionPageContainer = styled.main`
 /* display: flex; */
 `;
-
+const MainWrap = styled.div`
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0 10vw;
+`;
+const PageWrap = styled.div`
+  width: calc(100% - 165px);
+  margin-left: 165px;
+  padding: var(--gap-large);
+`;
 export function QuestionsPage() {
   const [questions, setQuestions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,23 +78,25 @@ export function QuestionsPage() {
   return (
     <div>
       <QuestionPageContainer>
-        <div>
-          <Nav />
+        <MainWrap>
+        <Nav />
+        <PageWrap>
           {questions && (
             <Questions
-              questions={currentQuestions(questions)}
-              totalQuestions={totalQuestions}
+            questions={currentQuestions(questions)}
+            totalQuestions={totalQuestions}
             />
-          )}
+            )}
           {questions && (
             <QuestionsPagination
-              postsPerPage={postsPerPage}
-              totalQuestions={totalQuestions}
-              setCurrentPage={setCurrentPageHandler}
-              currentPage={currentPage}
+            postsPerPage={postsPerPage}
+            totalQuestions={totalQuestions}
+            setCurrentPage={setCurrentPageHandler}
+            currentPage={currentPage}
             />
-          )}
-        </div>
+            )}
+            </PageWrap>
+        </MainWrap>
       </QuestionPageContainer>
       <Footer />
     </div>

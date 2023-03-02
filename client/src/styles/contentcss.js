@@ -51,6 +51,9 @@ export const Vote = styled.div`
   width: 60px;
   text-align: center;
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   > button {
     font-size: 50px;
     color: var(--lgray);
