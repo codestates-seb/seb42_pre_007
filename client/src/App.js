@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Main from './pages/Main';
 import Ask from './pages/Ask';
+import Edit from './pages/Edit';
 import Questions from './pages/Questions';
 import QuestionsPagination from './components/QuestionsPagination';
 import useScrollTop from './util/useScrollTop';
@@ -172,6 +173,10 @@ useEffect(()=>{
         <Route
           path='/questions/:questionId'
           element={<Main user={user} auth={auth} />}
+        />
+        <Route
+          path='/questions/:questionId/edit'
+          element={<Edit user={user} auth={auth} />}
         />
         <Route path='/questions/ask' element={<Ask user={user} auth={auth}/>} />
       </Routes>

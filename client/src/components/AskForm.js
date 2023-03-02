@@ -348,7 +348,7 @@ export function AskForm({ user, auth }) {
         <AskSingleForm
           step={2}
           nowStep={nowStep}
-          valid={isTitleValid}
+          valid={isTagsValid}
           isReview={isReview}>
           <label className='s-label'>Tags</label>
           <label className='description'>

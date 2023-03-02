@@ -17,7 +17,7 @@ export const AskArticle = styled.article`
   padding: 24px;
   text-align: left;
   border-radius: ${brSm};
-  border: 1px solid hsl(210, 8%, 90%);
+  border: ${props=>props.isEdit?'0px':'1px'} solid hsl(210, 8%, 90%);
   margin: 12px 0px 0px;
   @media screen and (min-width: 1100px) {
     margin: 0px;

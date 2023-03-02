@@ -74,6 +74,10 @@ const Content = ({user,auth}) => {
     .catch(err=>console.log(err));
   }
 
+const questionEdit=()=>{
+  navigate(`/questions/${questionId}/edit`)
+}
+
   return (
     <ContentWrap>
       <ContentTop>
@@ -105,7 +109,7 @@ const Content = ({user,auth}) => {
           <ContentBottom>
             <ButtonBox>
               <button>Share</button>
-              <button>Edit</button>
+              <button onClick={questionEdit}>Edit</button>
               <button onClick={questionRemove}>Delete</button>
             </ButtonBox>
             <WriterBox>
