@@ -47,4 +47,4 @@ jwt:
 #    key-store-password: changeit
 
 config:
-  domain: *
+  domain: "*"
