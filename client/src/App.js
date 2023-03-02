@@ -3,19 +3,19 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './styles/variable.css';
 import './App.css';
-import { GlobalStyle } from './styles/globalStyle';
-import Header from './components/Header';
-import Index from './pages/Index';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import Main from './pages/Main';
-import Ask from './pages/Ask';
-import Edit from './pages/Edit';
-import Search from './pages/Search';
-import Questions from './pages/Questions';
-import QuestionsPagination from './components/QuestionsPagination';
-import useScrollTop from './util/useScrollTop';
-import { QuestionsPage } from './pages/QuestionsPage';
+import { GlobalStyle } from './styles/globalStyle.js';
+import Header from './components/Header.js';
+import Index from './pages/Index.js';
+import Login from './pages/Login.js';
+import SignUp from './pages/SignUp.js';
+import Main from './pages/Main.js';
+import Ask from './pages/Ask.js';
+import Edit from './pages/Edit.js';
+import Search from './pages/Search.js';
+import Questions from './pages/Questions.js';
+import QuestionsPagination from './components/QuestionsPagination.js';
+import useScrollTop from './util/useScrollTop.js';
+import { QuestionsPage } from './pages/QuestionsPage.js';
 
 export const URI = process.env.REACT_APP_API_URI;
 
@@ -74,14 +74,14 @@ function App() {
           authorization,
         },
       })
-        .then((res) => {
+        .then(res => {
           // console.log(res.data);
           setAuth(authorization);
           setIsLogin(true);
           setUser(res.data.data);
           // console.log(res.data.data);
         })
-        .catch((err) => {
+        .catch(err => {
           // console.log(err);
           sessionStorage.removeItem('authorization');
           getAuthByRefresh(refresh);
@@ -92,7 +92,7 @@ function App() {
     }
   }, []);
 
-  const getAuthByRefresh = (refresh) => {
+  const getAuthByRefresh = refresh => {
     axios({
       method: 'get',
       url: `${URI}/users/auth`,
@@ -100,14 +100,14 @@ function App() {
         refresh,
       },
     })
-      .then((res) => {
+      .then(res => {
         const authorization = res.headers['authorization'];
         sessionStorage.setItem('authorization', authorization);
         setAuth(authorization);
         setUser(res.data);
         setIsLogin(true);
       })
-      .catch((err) => {
+      .catch(err => {
         localStorage.removeItem('refresh');
         // console.log(err);
       });
@@ -188,10 +188,7 @@ function App() {
           path='/questions/ask'
           element={<Ask user={user} auth={auth} />}
         />
-        <Route
-          path='/search/:searchString'
-          element={<Search/>}
-        />
+        <Route path='/search/:searchString' element={<Search />} />
       </Routes>
     </BrowserRouter>
   );

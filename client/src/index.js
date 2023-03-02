@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './App.js';
 import './styles/variable.css';
+import '../public/logo.png';
 
 // 작성일자 설정을 위한 dayjs 라이브러리 및 플러그인 설정
 import dayjs from 'dayjs';
