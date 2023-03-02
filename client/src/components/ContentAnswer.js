@@ -1,20 +1,61 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { FaCaretUp,FaCaretDown } from "react-icons/fa";
 import { ContentContainer,Vote,ContentBox,ContentText,ContentBottom,ButtonBox,WriterBox } from '../styles/contentcss';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { URI } from '../App';
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
-const ContentAnswer = ({answer}) => {
+const ContentAnswer = ({answer,auth,questionId}) => {
   const [ answerVote, setAnswerVote ] = useState(answer.votes);
+
+useEffect(()=>{
+  console.log(answer)
+},[])
+
   const answerVoteUp = ()=>{
-    setAnswerVote(answerVote+1)
+    axios({
+      method:'post',
+      url:`${URI}/questions/${questionId}/answer/submit/${answer.answerId}/votes/up`,
+      headers:{
+        authorization:auth
+      }
+    }).then(res=>{
+      console.log(res)
+      setAnswerVote(answerVote+1)
+    });
   }
   const answerVoteDown = ()=>{
-    setAnswerVote(answerVote-1)
+    axios({
+      method:'post',
+      url:`${URI}/questions/${questionId}/answer/submit/${answer.answerId}/votes/down`,
+      headers:{
+        authorization:auth
+      }
+    }).then(res=>{
+      console.log(res)
+      setAnswerVote(answerVote-1)
+    });
   }
+
+  const answerRemove=()=>{
+    axios({
+      method:'delete',
+      url:`${URI}/questions/${questionId}/answer/submit/${answer.answerId}`,
+      headers:{
+        authorization:auth
+      }
+    }).then(res=> {
+      console.log(res);
+      window.location.reload();
+    })
+  }
+
+  useEffect(()=>{
+    console.log(answer)
+  },[])
 
   return (
     <ContentContainer>
@@ -31,7 +72,7 @@ const ContentAnswer = ({answer}) => {
         <ButtonBox>
           <button>Share</button>
           <button>Edit</button>
-          <button>Delete</button>
+          <button onClick={answerRemove}>Delete</button>
         </ButtonBox>
         <WriterBox>
           <div background='#fff'>

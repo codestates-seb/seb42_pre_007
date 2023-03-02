@@ -13,12 +13,12 @@ const MainWrap = styled.div`
   width: 100%;
   padding: 0 10vw;
 `;
-const Main = ({user}) => {
+const Main = ({user,auth}) => {
   return (
     <>
       <MainWrap>
         <Nav/>
-        <Content user={user} />
+        <Content user={user} auth={auth}/>
       </MainWrap>
       <Footer/>
     </>

@@ -92,7 +92,7 @@ export const TagBox = styled.div`
     text-align: center;
     padding: 0 6px;
     border-radius: 4px;
-    background: var(--skyblue);
+    background: var(--light-skyblue);
     color: var(--blue);
     font-size: 12px;
     margin-right: 4px;

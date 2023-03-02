@@ -69,7 +69,7 @@ const Nav = () => {
         <p className='nav-item'>Home</p>
         <span>PUBLIC</span>
         <NavList>
-          <NavItem><p className={`${location}.includes('question') ? nav-item active : nav-item`} onClick={()=>navigate('/users/login')}><span><FaGlobeAmericas/></span> Questions</p></NavItem>
+          <NavItem><p className={`${location}.includes('question') ? nav-item active : nav-item`} onClick={()=>navigate('/questions')}><span><FaGlobeAmericas/></span> Questions</p></NavItem>
           <NavItem><p className='nav-item'>Tags</p></NavItem>
           <NavItem><p className='nav-item'>Users</p></NavItem>
         </NavList>

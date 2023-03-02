@@ -35,7 +35,7 @@ const QuestionsPagination = ({
   }
   // startPage부터 endPage까지의 숫자를 pageNumbers 배열에 추가
   for (let i = startPage; i <= endPage; i++) {
-    pageNumbers.push(i);
+    if (i > 0) pageNumbers.push(i);
   }
 
   return (

@@ -12,7 +12,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
-const Content = ({user}) => {
+const Content = ({user,auth}) => {
   const navigate=useNavigate();
   const URI = process.env.REACT_APP_API_URI;
   const { questionId } = useParams(); 
@@ -27,32 +27,51 @@ const Content = ({user}) => {
     getQuestion()
   },[])
 
+  useEffect(()=>{
+    setQuestionVote(contentData.votes)
+  },[contentData])
+
   // vote 클릭
   const questionVoteUp = () =>{
-    setQuestionVote(questionVote+1)
     axios({
       method: 'post',
-      url: `${URI}/questions/${questionId}`,
-      params: {},
-      data: {
-        votes : questionVote
-      },
+      url: `${URI}/questions/${questionId}/votes/up`,
+      headers:{
+        Authorization:auth
+      }
     })
-    .then((res)=>{console.log(res)})
+    .then((res)=>{
+      console.log(res)
+      setQuestionVote(prevState=>prevState+1)
+    })
     .catch((err)=>{console.log(err)})
   }
   const questionVoteDown = () =>{
-    setQuestionVote(questionVote-1)
     axios({
       method: 'post',
-      url: `${URI}/questions/${questionId}`,
-      params: {},
-      data: {
-        votes : questionVote
-      },
+      url: `${URI}/questions/${questionId}/votes/down`,
+      headers:{
+        Authorization:auth
+      }
     })
-    .then((res)=>{console.log(res)})
+    .then((res)=>{
+      console.log('votes result')
+      console.log(res)
+      setQuestionVote(prevState=>prevState-1)
+    })
     .catch((err)=>{console.log(err)})
+  }
+
+  const questionRemove=()=>{
+    console.log(auth);
+    axios({
+      method:'delete',
+      url:`${URI}/questions/${questionId}`,
+      headers:{
+        authorization:auth
+      }
+    }).then(res=>navigate('/'))
+    .catch(err=>console.log(err));
   }
 
   return (
@@ -78,15 +97,16 @@ const Content = ({user}) => {
           <ContentText>
             {contentData.content}
           </ContentText>
-          <TagBox>
-            <div className='tag'>git</div>
-            <div className='tag'>github</div>
-          </TagBox>
+          {contentData.tags&&<TagBox>
+            {contentData.tags.map(tag=>{
+              return <div key={tag} className='tag'>{tag}</div>
+            })}
+          </TagBox>}
           <ContentBottom>
             <ButtonBox>
               <button>Share</button>
               <button>Edit</button>
-              <button>Delete</button>
+              <button onClick={questionRemove}>Delete</button>
             </ButtonBox>
             <WriterBox>
               <div background='#fff'>
@@ -101,18 +121,18 @@ const Content = ({user}) => {
           </ContentBottom>
         </ContentBox>
       </ContentContainer>
-      {contentData.answer&&<h3 className='divider'>{contentData.answer.length} Answers</h3>}
+      {contentData.answers&&<h3 className='divider'>{contentData.answers.length} Answers</h3>}
 
       {
-        contentData.answer && (
-          contentData.answer.map(answer => (
-            <ContentAnswer answer={answer} key={answer.answerId} />
+        contentData.answers && (
+          contentData.answers.map(answer => (
+            <ContentAnswer answer={answer} key={answer.answerId} auth={auth} questionId={questionId} />
           ))
         )
       }
 
       <h3 className='divider'>Your Answers</h3>
-      <MyAnswer user={user} contentData={contentData} />
+      <MyAnswer user={user} contentData={contentData} auth={auth} />
     </ContentWrap>
   )
 }

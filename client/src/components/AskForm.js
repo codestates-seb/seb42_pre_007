@@ -143,6 +143,7 @@ export function AskForm({ user, auth }) {
       user: user['displayName'],
       tags,
     };
+    console.log(URI)
     console.log(JSON.stringify(data))
     axios({
       method: 'post',

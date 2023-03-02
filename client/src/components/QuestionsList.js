@@ -30,11 +30,11 @@ const QuestionsList = ({ questions }) => {
       {questions &&
         questions.map(question => (
           <React.Fragment key={question.questionId}>
-            <QuestionsSection hasAnswers={question.answer.length > 0}>
+            <QuestionsSection hasAnswers={question.answers > 0}>
               <Counting>
                 <div className='count-votes'>{question.votes} votes</div>
                 <div className='count-answers'>
-                  {question.answer.length} answers
+                  {question.answers} answers
                 </div>
                 <div className='count-views'>{question.view} views</div>
               </Counting>

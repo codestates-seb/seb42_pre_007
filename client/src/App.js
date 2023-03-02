@@ -13,6 +13,7 @@ import Ask from './pages/Ask';
 import Questions from './pages/Questions';
 import QuestionsPagination from './components/QuestionsPagination';
 import useScrollTop from './util/useScrollTop';
+import { QuestionsPage } from './pages/QuestionsPage';
 
 export const URI = process.env.REACT_APP_API_URI;
 
@@ -20,46 +21,44 @@ function App() {
   const [user, setUser] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
   const [auth, setAuth] = useState(null);
-  const [questions, setQuestions] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  // 한 페이지 당 보여줄 게시글의 갯수
-  const [postsPerPage, setPostsPerPage] = useState(15);
-  const [totalQuestions, setTotalQuestions] = useState(0);
+  // const [questions, setQuestions] = useState([]);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // // 한 페이지 당 보여줄 게시글의 갯수
+  // const [postsPerPage, setPostsPerPage] = useState(15);
+  // const [totalQuestions, setTotalQuestions] = useState(0);
 
-  useEffect(() => {
-    const getQuestions = async () => {
-      const questions = await axios.get(`${URI}/questions`);
-      setQuestions(questions.data);
-      setTotalQuestions(questions.data.length);
-    };
-    getQuestions();
-  }, []);
+  // useEffect(() => {
+  //   const getQuestions = async () => {
+  //     const questions = await axios.get(`${URI}/questions`);
+  //     setQuestions(questions.data);
+  //     setTotalQuestions(questions.data.length);
+  //   };
+  //   getQuestions();
+  // }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        `${URI}/questions?page=${currentPage}`
-      );
-      setQuestions(response.data);
-    };
-    fetchData();
-  }, [currentPage]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await axios.get(
+  //       `${URI}/questions?page=${currentPage}`
+  //     );
+  //     setQuestions(response.data);
+  //   };
+  //   fetchData();
+  // }, [currentPage]);
 
-  const endIdx = currentPage * postsPerPage;
-  const startIdx = endIdx - postsPerPage;
-  const currentQuestions = questions => {
-    let currentQuestions = 0;
-    if(questions.length>0) currentQuestions = questions.slice(startIdx, endIdx);
-    return currentQuestions;
-  };
+  // const endIdx = currentPage * postsPerPage;
+  // const startIdx = endIdx - postsPerPage;
+  // const currentQuestions = questions => {
+  //   let currentQuestions = 0;
+  //   if(questions.length>0) currentQuestions = questions.slice(startIdx, endIdx);
+  //   return currentQuestions;
+  // };
 
-  const setCurrentPageHandler = pageNumber => {
-    setCurrentPage(pageNumber);
-  };
+  // const setCurrentPageHandler = pageNumber => {
+  //   setCurrentPage(pageNumber);
+  // };
 
-  useScrollTop(currentPage);
-
-  const URI=process.env.REACT_APP_API_URI;
+  // useScrollTop(currentPage);
 
 useEffect(()=>{
   const authorization=sessionStorage.getItem("authorization");
@@ -67,7 +66,7 @@ useEffect(()=>{
   if(authorization){
     console.log(authorization);
     axios({
-      method:'post',
+      method:'get',
       url:`${URI}/users/auth`,
       headers : {
         authorization
@@ -80,25 +79,31 @@ useEffect(()=>{
       setUser(res.data.data);
       console.log(res.data.data)
     })
-    .catch(err=>console.log(err))
+    .catch(err=>{
+      console.log(err)
+      sessionStorage.removeItem("authorization");
+    })
   }
-  // else if(refresh) {
-  //   console.log(refresh);
-  //   axios({
-  //     method:'post',
-  //     url:`${URI}/users/auth`,
-  //     headers : {
-  //       refresh
-  //     }
-  //   })
-  //   .then(res=>{
-  //     console.log(res.headers['authorization'])
-  //     console.log(res.data)
-  //   })
-  //   .catch(err=>{
-  //     console.log(err);
-  //   })
-  // }
+  else if(refresh) {
+    console.log(refresh);
+    axios({
+      method:'get',
+      url:`${URI}/users/auth`,
+      headers : {
+        refresh
+      }
+    })
+    .then(res=>{
+      const authorization=res.headers['authorization']
+      sessionStorage.setItem("authorization",authorization);
+      setAuth(authorization);
+      setUser(res.data);
+      setIsLogin(true);
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  }
 },[])
 
   return (
@@ -119,7 +124,7 @@ useEffect(()=>{
             path='/'
             element={
               <>
-                <Questions
+                {/* <Questions
                   questions={currentQuestions(questions)}
                   totalQuestions={totalQuestions}
                 />
@@ -128,7 +133,8 @@ useEffect(()=>{
                   totalQuestions={totalQuestions}
                   setCurrentPage={setCurrentPageHandler}
                   currentPage={currentPage}
-                />
+                /> */}
+                <QuestionsPage/>
               </>
             }
           />
@@ -148,7 +154,7 @@ useEffect(()=>{
           path='/questions'
           element={
             <>
-              <Questions
+              {/* <Questions
                 questions={currentQuestions(questions)}
                 totalQuestions={totalQuestions}
               />
@@ -158,7 +164,8 @@ useEffect(()=>{
                 totalQuestions={totalQuestions}
                 setCurrentPage={setCurrentPageHandler}
                 currentPage={currentPage}
-              />
+              /> */}
+              <QuestionsPage/>
             </>
           }
         />

@@ -10,7 +10,6 @@ align-items: center;
 background-color: #f8f9f9;
 width: 100%;
 padding-top:50px;
-height: 100vh;
 `
 
 function Ask ({user,auth}) {
