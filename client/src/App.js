@@ -66,7 +66,7 @@ function App() {
     const authorization = sessionStorage.getItem('authorization');
     const refresh = localStorage.getItem('refresh');
     if (authorization) {
-      console.log(authorization);
+      // console.log(authorization);
       axios({
         method: 'get',
         url: `${URI}/users/auth`,
@@ -79,15 +79,15 @@ function App() {
           setAuth(authorization);
           setIsLogin(true);
           setUser(res.data.data);
-          console.log(res.data.data);
+          // console.log(res.data.data);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           sessionStorage.removeItem('authorization');
           getAuthByRefresh(refresh);
         });
     } else if (refresh) {
-      console.log(refresh);
+      // console.log(refresh);
       getAuthByRefresh(refresh);
     }
   }, []);
@@ -109,7 +109,7 @@ function App() {
       })
       .catch((err) => {
         localStorage.removeItem('refresh');
-        console.log(err);
+        // console.log(err);
       });
   };
 

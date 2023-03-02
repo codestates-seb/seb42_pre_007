@@ -66,7 +66,7 @@ const Nav = () => {
   return (
     <NavContainer>
       <NavBox>
-        <p className='nav-item'>Home</p>
+        <p className='nav-item' onClick={()=>navigate('/')}>Home</p>
         <span>PUBLIC</span>
         <NavList>
           <NavItem><p className={`${location}.includes('question') ? nav-item active : nav-item`} onClick={()=>navigate('/questions')}><span><FaGlobeAmericas/></span> Questions</p></NavItem>

@@ -118,14 +118,14 @@ const Header = ({user,isLogin,setUser,setIsLogin,setAuth}) => {
   }
 
   const search=(e)=>{
-    if(e.key==='Enter') navigate(`/search/${searchString}`)
+    if(e.key==='Enter'&&searchString.length>0) navigate(`/search/${searchString}`)
   }
 
   return (
     <HeaderWrap>
       <HeaderContent>
         <Logo onClick={()=>navigate('/')} ><img src='/logo.png' alt='stack overflow logo' /></Logo>
-        <QuestionBtn>Questions</QuestionBtn>
+        <QuestionBtn onClick={()=>navigate('/questions')}>Questions</QuestionBtn>
         <SearchBar>
           <span><FaSearch/></span>
           <SearchInput value={searchString} type='text' onChange={searchStringHandler} onKeyDown={search}/>

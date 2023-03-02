@@ -86,7 +86,6 @@ export function EditForm({user,auth}) {
 
   useEffect(() => {
     setIsTitleValid(title.length > 15&&title.length<=50);
-    console.log(isTitleValid)
   }, [title]);
   //is content length is over 30?
   useEffect(() => {
@@ -131,8 +130,6 @@ export function EditForm({user,auth}) {
       user: user['displayName'],
       tags,
     };
-    console.log(URI)
-    console.log(JSON.stringify(data))
     axios({
       method: 'patch',
       url: `${URI}/questions/${questionId}`,
@@ -146,8 +143,6 @@ export function EditForm({user,auth}) {
         navigate(`/questions/${res.data['data']}`);
       })
       .catch((err) => {
-        console.log(auth)
-        console.log(err);
       });
   };
 

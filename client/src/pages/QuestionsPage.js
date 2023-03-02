@@ -11,6 +11,7 @@ import Nav from '../components/Nav';
 
 const QuestionPageContainer = styled.main`
 /* display: flex; */
+min-height: 90vh;
 `;
 const MainWrap = styled.div`
   position: relative;
@@ -57,8 +58,8 @@ export function QuestionsPage() {
   }, [currentPage]);
 
   useEffect(() => {
-    console.log('get questions success!');
-    console.log(questions);
+    // console.log('get questions success!');
+    // console.log(questions);
   }, [questions]);
 
   const endIdx = currentPage * postsPerPage;

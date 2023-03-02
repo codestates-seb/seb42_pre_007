@@ -78,7 +78,7 @@ export function AskForm({ user, auth }) {
             setTagsOffer(res.data);
             // console.log(`getTagsTimeout Axios`);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {});
       }, 500);
     } else setTagsOffer([]);
   }, [tagInput]);
@@ -143,8 +143,6 @@ export function AskForm({ user, auth }) {
       user: user['displayName'],
       tags,
     };
-    console.log(URI)
-    console.log(JSON.stringify(data))
     axios({
       method: 'post',
       url: `${URI}/questions/ask`,
@@ -158,8 +156,6 @@ export function AskForm({ user, auth }) {
         navigate(`/questions/${res.data['data']}`);
       })
       .catch((err) => {
-        console.log(auth)
-        console.log(err);
       });
   };
   //Discard draft 버튼

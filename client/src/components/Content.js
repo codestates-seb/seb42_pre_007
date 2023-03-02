@@ -41,10 +41,9 @@ const Content = ({user,auth}) => {
       }
     })
     .then((res)=>{
-      console.log(res)
       setQuestionVote(prevState=>prevState+1)
     })
-    .catch((err)=>{console.log(err)})
+    .catch((err)=>{})
   }
   const questionVoteDown = () =>{
     axios({
@@ -55,15 +54,12 @@ const Content = ({user,auth}) => {
       }
     })
     .then((res)=>{
-      console.log('votes result')
-      console.log(res)
       setQuestionVote(prevState=>prevState-1)
     })
-    .catch((err)=>{console.log(err)})
+    .catch((err)=>{})
   }
 
   const questionRemove=()=>{
-    console.log(auth);
     axios({
       method:'delete',
       url:`${URI}/questions/${questionId}`,
@@ -71,7 +67,7 @@ const Content = ({user,auth}) => {
         authorization:auth
       }
     }).then(res=>navigate('/'))
-    .catch(err=>console.log(err));
+    .catch(err=>{});
   }
 
 const questionEdit=()=>{
@@ -130,7 +126,7 @@ const questionEdit=()=>{
       {
         contentData.answers && (
           contentData.answers.map(answer => (
-            <ContentAnswer answer={answer} key={answer.answerId} auth={auth} questionId={questionId} />
+            <ContentAnswer answer={answer} key={answer.answerId} user={user} auth={auth} questionId={questionId} />
           ))
         )
       }

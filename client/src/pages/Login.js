@@ -49,10 +49,8 @@ const Login = ({setUser, setIsLogin,setAuth}) => {
       navigate('/')
       setIsLogin(true)
       setUser(res.data)
-      console.log(res.data)
-      console.log(res.headers.authorization)
     })
-    .catch((err)=>{console.log(err)})
+    .catch((err)=>{})
   };
 
   //* 로그인 시도 -> 토큰발행api 요청 보내 -> 토큰을 response -> 
