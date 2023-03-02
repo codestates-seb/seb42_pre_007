@@ -1,6 +1,5 @@
 package com.pre007.server.question.controller;
 
-import com.pre007.server.globaldto.PageableResponseDto;
 import com.pre007.server.globaldto.ResponseDto;
 import com.pre007.server.question.dto.QuestionSearch;
 import com.pre007.server.question.dto.QuestionPatchDto;

@@ -30,14 +30,12 @@ public class QuestionService {
     private final FindQuestionService findQuestionService;
     private final FindUserService findUserService;
     private final QuestionVoteRepository questionVoteRepository;
-//    private final QuestionTagRepository questionTagRepository;
 
     private List<String> tagList = List.of("zero"); // 임시방편
 
     // 페이지별 조회
     public PageableResponseDto getQuestionsByQuestionPage(QuestionSearch questionSearch){
         List<QuestionResponseSimple> questions = questionRepository.getQuestionsByQuestionPage(questionSearch);
-        //PageableInfo pageableInfo = questionRepository.getQuestionsCount().get(0);
         PageableInfo pageableInfo = new PageableInfo();
         pageableInfo.setTotalCount(questionRepository.count());
         pageableInfo.editByQuestionSearch(questionSearch);
@@ -84,19 +82,6 @@ public class QuestionService {
                 .replaceAll("\\]", "")
                 .replaceAll(",", ""));
 
-        // 폐기
-//        List<QuestionTag> incompleteTags = Arrays.stream(dto.getTag())
-//                .map(s -> {
-//                    if (tagList.contains(s)) {
-//                        return tagList.indexOf(s);
-//                    }
-//                    tagList.add(s);
-//                    return tagList.size() - 1;
-//                })
-//                .map(i -> new QuestionTag(i))
-//                .collect(Collectors.toList());
-//        List<QuestionTag> tags = question.setTags(incompleteTags);
-
         return questionRepository.save(question).getQuestionId();
     }
 
@@ -107,6 +92,10 @@ public class QuestionService {
         findUserService.isPermission(question.getUser(), email);
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());
+        question.setTags(Arrays.toString(dto.getTags())
+                .replaceAll("\\[", "")
+                .replaceAll("\\]", "")
+                .replaceAll(",", ""));
     }
 
     // 삭제

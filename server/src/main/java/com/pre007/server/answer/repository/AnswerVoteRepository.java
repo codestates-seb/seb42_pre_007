@@ -2,8 +2,6 @@ package com.pre007.server.answer.repository;
 
 import com.pre007.server.answer.entity.Answer;
 import com.pre007.server.answer.entity.AnswerVote;
-import com.pre007.server.question.entity.Question;
-import com.pre007.server.question.entity.QuestionVote;
 import com.pre007.server.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

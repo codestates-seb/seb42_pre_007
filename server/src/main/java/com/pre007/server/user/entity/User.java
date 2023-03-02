@@ -1,8 +1,6 @@
 package com.pre007.server.user.entity;
 
 import lombok.*;
-import org.hibernate.type.DateType;
-import org.springframework.security.core.Authentication;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

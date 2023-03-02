@@ -1,6 +1,5 @@
 package com.pre007.server.globaldto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

@@ -1,6 +1,5 @@
 package com.pre007.server.auth.authorityutils;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,11 +30,6 @@ public class CustomAuthorityUtils {
     }
 
     public List<String> createRoles(String email) {
-//        return USER_ROLES.stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .map(s -> s.replaceAll("ROLE_", ""))
-//                .collect(Collectors.toList());
-
         return USER_ROLES.stream()
                 .map(a -> a.getAuthority()
                         .replaceAll("ROLE_", ""))

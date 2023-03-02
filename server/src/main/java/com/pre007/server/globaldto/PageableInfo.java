@@ -1,7 +1,6 @@
 package com.pre007.server.globaldto;
 
 import com.pre007.server.question.dto.QuestionSearch;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

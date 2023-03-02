@@ -46,5 +46,5 @@ jwt:
 #    key-store-type: PKCS12
 #    key-store-password: changeit
 
-#config:
-#  domain: {AWS s3 Endpoint}
+config:
+  domain: *

@@ -1,8 +1,6 @@
 package com.pre007.server.auth.jwt;
 
 import com.pre007.server.user.entity.User;
-import com.pre007.server.user.repository.UserRepository;
-import com.pre007.server.user.service.FindUserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
@@ -116,11 +114,6 @@ public class JwtTokenizer {
                 .setSigningKey(key)
                 .build().parseClaimsJws(jws).getBody().getSubject();
     }
-
-//    public boolean existsRefreshToken(String jws) {
-//        User findUser = userRepository.findByEmail(getUsername(jws)).orElse(null);
-//        return findUser != null;
-//    }
 
     public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();

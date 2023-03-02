@@ -1,11 +1,9 @@
 package com.pre007.server.question.dto;
 
 import com.pre007.server.answer.dto.AnswerResponseDto;
-import com.pre007.server.user.dto.UserResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter

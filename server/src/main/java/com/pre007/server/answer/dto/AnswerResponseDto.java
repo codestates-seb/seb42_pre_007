@@ -20,14 +20,7 @@ public class AnswerResponseDto {
     private LocalDateTime createAt;
     private Integer votes = 0;
     private Boolean selection = false;
-//
-//    public AnswerResponseDto(Answer entity){
-//        this.user = entity.getUser().getDisplayName();
-//        this.answerId = entity.getAnswerId();
-//        this.content = entity.getContent();
-//        this.createAt = entity.getCreatedAt();
-////        this.votes = entity
-//    }
+
     public static AnswerResponseDto createByEntity(Answer entity){
         AnswerResponseDto dto = new AnswerResponseDto();
         dto.setUser(entity.getUser().getDisplayName());

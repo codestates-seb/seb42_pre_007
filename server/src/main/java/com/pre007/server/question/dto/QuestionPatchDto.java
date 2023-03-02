@@ -19,4 +19,6 @@ public class QuestionPatchDto {
 
     @Size(min = 3, max = 15)
     private String user;
+
+    private String[] tags = {};
 }

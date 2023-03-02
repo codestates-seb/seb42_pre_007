@@ -1,8 +1,6 @@
 package com.pre007.server.auth.userdetails;
 
 import com.pre007.server.auth.authorityutils.CustomAuthorityUtils;
-import com.pre007.server.exception.BusinessLogicException;
-import com.pre007.server.exception.ExceptionCode;
 import com.pre007.server.user.entity.User;
 import com.pre007.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +46,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             setPassword(user.getPassword());
             setRoles(user.getRoles()); // 확장 가능성
         }
-        @Override
+        @Override // 컨트롤러의 @Auth 어쩌구가 이건듯
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            // return authorityUtils.createAuthorities(this.getRoles());
             return authorityUtils.createAuthorities(this.getEmail());
         }
 
