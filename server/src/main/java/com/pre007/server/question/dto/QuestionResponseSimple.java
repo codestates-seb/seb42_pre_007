@@ -40,10 +40,14 @@ public class QuestionResponseSimple {
             this.content = simple.getContent();
             this.user = simple.getUser();
             this.createdAt = simple.getCreatedAt();
-            this.votes = (long) simple.getVotes() / simple.getAnswers();
             this.view = simple.getView();
             this.answers = simple.getAnswers();
             this.tags = simple.getTags().split(" ");
+            this.votes = ((long) simple.getVotes());
+
+            if (this.votes != 0 && this.answers > 0) {
+                this.votes = this.votes / this.answers;
+            }
         }
     }
 }
