@@ -43,14 +43,17 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
-    public void updateAnswer(Long id, AnswerUpdateDto requestDto){
-        // Answer answer = getAnswerById(id);
+    public void updateAnswer(Long id, AnswerUpdateDto requestDto, String email){
+
         Answer answer = findAnswerService.id(id);
+        findUserService.isPermission(answer.getUser(), email);
         answer.setContent(requestDto.getContent());
         answerRepository.save(answer);
     }
 
-    public void deleteAnswer(Long id){
+    public void deleteAnswer(Long id, String email){
+        Answer answer = findAnswerService.id(id);
+        findUserService.isPermission(answer.getUser(), email);
         answerRepository.deleteById(id);
     }
 
@@ -78,11 +81,7 @@ public class AnswerService {
 
     public void selectionAnswer(Long questionId, String email, Long id) {
         Question question = findQuestionService.id(questionId);
-        User user = findUserService.email(email);
-
-        if (question.getUser().getUserId() != user.getUserId()) {
-            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
-        }
+        findUserService.isPermission(question.getUser(), email);
 
         Answer answer = findAnswerService.id(id);
         answer.setSelection(true);

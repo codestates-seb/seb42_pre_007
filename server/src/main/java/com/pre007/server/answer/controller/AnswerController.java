@@ -34,8 +34,9 @@ public class AnswerController {
     @PatchMapping("/{answer-id}")
     public ResponseEntity updateAnswer(@PathVariable("answer-id") @Positive Long answerId,
                                        @Valid @RequestBody AnswerUpdateDto requestDto,
-                                       @PathVariable("question-id") @Positive Long questionId){
-        answerService.updateAnswer(answerId, requestDto);
+                                       @PathVariable("question-id") @Positive Long questionId,
+                                       @AuthenticationPrincipal String email){
+        answerService.updateAnswer(answerId, requestDto, email);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDto(questionId, 200));
     }
@@ -43,8 +44,9 @@ public class AnswerController {
     // Delete an existing answer -> Delete
     @DeleteMapping("/{answer-id}")
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") Long answerId,
-                                       @PathVariable("question-id") Long questionId){
-        answerService.deleteAnswer(answerId);
+                                       @PathVariable("question-id") Long questionId,
+                                       @AuthenticationPrincipal String email){
+        answerService.deleteAnswer(answerId, email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(new ResponseDto(questionId, 200));
     }

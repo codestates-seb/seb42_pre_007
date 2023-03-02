@@ -29,4 +29,10 @@ public class FindUserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
     }
+
+    public void isPermission(User user, String email) {
+        if (!user.getEmail().equals(email)) {
+            throw new BusinessLogicException(ExceptionCode.NO_PERMISSION);
+        }
+    }
 }

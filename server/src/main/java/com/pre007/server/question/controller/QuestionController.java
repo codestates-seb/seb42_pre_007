@@ -52,9 +52,10 @@ public class QuestionController {
     // 수정
     @PatchMapping("/{question-id}")
     public ResponseEntity updateQuestion(@PathVariable("question-id") @Positive Long id,
-                                         @RequestBody @Valid QuestionPatchDto dto) {
+                                         @RequestBody @Valid QuestionPatchDto dto,
+                                         @AuthenticationPrincipal String email) {
 
-        questionService.updateQuestion(dto, id);
+        questionService.updateQuestion(dto, id, email);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -63,8 +64,9 @@ public class QuestionController {
 
     // 삭제
     @DeleteMapping("/{question-id}")
-    public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive Long id) {
-        questionService.deleteQuestion(id);
+    public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive Long id,
+                                         @AuthenticationPrincipal String email) {
+        questionService.deleteQuestion(id, email);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

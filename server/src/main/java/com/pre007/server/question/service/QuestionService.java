@@ -101,17 +101,18 @@ public class QuestionService {
     }
 
     // 수정
-    public void updateQuestion(QuestionPatchDto dto, Long id) {
+    public void updateQuestion(QuestionPatchDto dto, Long id, String email) {
 
         Question question = findQuestionService.id(id);
-
+        findUserService.isPermission(question.getUser(), email);
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());
     }
 
     // 삭제
-    public void deleteQuestion(Long id){
-        findQuestionService.id(id);
+    public void deleteQuestion(Long id, String email){
+        Question question = findQuestionService.id(id);
+        findUserService.isPermission(question.getUser(), email);
         questionRepository.deleteById(id);
     }
 
