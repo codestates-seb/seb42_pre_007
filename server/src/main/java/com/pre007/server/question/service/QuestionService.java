@@ -79,7 +79,7 @@ public class QuestionService {
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());
         question.setUser(findUserService.displayName(dto.getUser()));
-        question.setTags(Arrays.toString(dto.getTag())
+        question.setTags(Arrays.toString(dto.getTags())
                 .replaceAll("\\[", "")
                 .replaceAll("\\]", "")
                 .replaceAll(",", ""));
@@ -126,7 +126,7 @@ public class QuestionService {
 
         question.setVotes(question.getVotes() + vote);
 
-        questionVoteRepository.save(new QuestionVote(user, question));
+        questionVoteRepository.save(new QuestionVote(user, question, vote));
     }
 
     private void verifyExistsVote(User user, Question question) {

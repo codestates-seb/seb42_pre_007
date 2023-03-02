@@ -7,6 +7,7 @@ import com.pre007.server.globaldto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,4 +49,36 @@ public class AnswerController {
                 .body(new ResponseDto(questionId, 200));
     }
 
+    /**
+     * votes
+     */
+    @PostMapping("/{answer-id}/votes/up")
+    public ResponseEntity postVoteUp(@PathVariable("question-id") @Positive Long questionId,
+                                     @PathVariable("answer-id") @Positive Long id,
+                                     @AuthenticationPrincipal String email) {
+        answerService.addVote(id, email, 1);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(questionId, 200));
+    }
+
+    @PostMapping("/{answer-id}/votes/down")
+    public ResponseEntity postVoteDown(@PathVariable("question-id") @Positive Long questionId,
+                                       @PathVariable("answer-id") @Positive Long id,
+                                       @AuthenticationPrincipal String email) {
+        answerService.addVote(id, email, -1);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(questionId, 200));
+    }
+
+    @PatchMapping("/{answer-id}/selection")
+    public ResponseEntity selectionAnswer(@PathVariable("question-id") @Positive Long questionId,
+                                          @PathVariable("answer-id") @Positive Long id,
+                                          @AuthenticationPrincipal String email) {
+        answerService.selectionAnswer(questionId, email, id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(questionId, 200));
+    }
 }

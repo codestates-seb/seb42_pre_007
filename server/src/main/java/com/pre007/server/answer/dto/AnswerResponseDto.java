@@ -19,6 +19,7 @@ public class AnswerResponseDto {
     private String user;
     private LocalDateTime createAt;
     private Integer votes = 0;
+    private Boolean selection = false;
 //
 //    public AnswerResponseDto(Answer entity){
 //        this.user = entity.getUser().getDisplayName();
@@ -33,6 +34,8 @@ public class AnswerResponseDto {
         dto.setAnswerId(entity.getAnswerId());
         dto.setContent(entity.getContent());
         dto.setCreateAt(entity.getCreatedAt());
+        dto.setVotes(entity.getVotes());
+        dto.setSelection(entity.getSelection());
 
         return dto;
     }

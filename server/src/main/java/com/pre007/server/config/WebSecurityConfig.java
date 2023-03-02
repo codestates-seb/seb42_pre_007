@@ -12,8 +12,10 @@ import com.pre007.server.auth.handler.UserAuthenticationSuccessHandler;
 import com.pre007.server.auth.jwt.JwtTokenizer;
 import com.pre007.server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Update;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -61,12 +63,14 @@ public class WebSecurityConfig {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
+                                .antMatchers(HttpMethod.DELETE, "/**").hasRole("USER")
+                                .antMatchers(HttpMethod.PATCH, "/**").hasRole("USER")
                                 .antMatchers("/users/signup").permitAll()
                                 .antMatchers("/users/login").permitAll()
-                                .antMatchers("/users/refresh").permitAll()
+                                .antMatchers("/users/auth").permitAll()
                                 .antMatchers("/users/**").hasRole("USER")
                                 .antMatchers("/questions/ask").hasRole("USER")
-                                .antMatchers("/question/*/answer").hasRole("USER")
+                                .antMatchers("/question/*/answer/**").hasRole("USER")
                                 .antMatchers("/question/*/votes").hasRole("USER")
 //                                .antMatchers("/h2/**").permitAll()
 //                                .anyRequest().hasAnyRole("USER", "ROLE_USER")

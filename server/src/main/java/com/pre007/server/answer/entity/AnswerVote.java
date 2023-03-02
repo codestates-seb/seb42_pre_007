@@ -1,7 +1,10 @@
-package com.pre007.server.question.entity;
+package com.pre007.server.answer.entity;
 
 import com.pre007.server.user.entity.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QuestionVote {
+public class AnswerVote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +23,14 @@ public class QuestionVote {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id")
-    private Question question;
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
 
     private Integer vote;
 
-    public QuestionVote(User user, Question question, Integer vote) {
+    public AnswerVote(User user, Answer answer, Integer vote) {
         this.user = user;
-        this.question = question;
+        this.answer = answer;
         this.vote = vote;
     }
 }

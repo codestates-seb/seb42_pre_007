@@ -22,6 +22,10 @@ public class Answer {
     @Column(length = 1000, nullable = false)
     private String content;
 
+    private Integer votes = 0;
+
+    private Boolean selection = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
