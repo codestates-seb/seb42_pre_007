@@ -31,15 +31,13 @@ public class Question {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Integer votes = 0;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<QuestionVote> votes = new ArrayList<>();
 
     private Integer view = 0;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Answer> answers = new ArrayList<>();
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-//    private List<QuestionTag> tags = new ArrayList<>();
 
     private String tags;
 
@@ -47,10 +45,10 @@ public class Question {
 
     private LocalDateTime modified = LocalDateTime.now();
 
-//    public List<QuestionTag> setTags(List<QuestionTag> tags) {
-//        this.tags = tags;
-//        return tags.stream()
-//                .map(questionTag -> questionTag.setQuestion(this))
-//                .collect(Collectors.toList());
-//    }
+    public QuestionVote addVote(QuestionVote vote) {
+        List<QuestionVote> newVotes = new ArrayList<>(votes);
+        newVotes.add(vote);
+        this.votes = newVotes;
+        return vote;
+    }
 }

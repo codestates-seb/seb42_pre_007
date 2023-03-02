@@ -5,6 +5,7 @@ import com.pre007.server.globaldto.PageableInfo;
 import com.pre007.server.question.dto.QuestionSearch;
 import com.pre007.server.question.dto.QuestionResponseSimple;
 import com.pre007.server.question.entity.QQuestion;
+import com.pre007.server.question.entity.QQuestionVote;
 import com.pre007.server.user.entity.QUser;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -38,6 +39,7 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
         QQuestion question = QQuestion.question;
         QUser user = QUser.user;
         QAnswer answer = QAnswer.answer;
+        QQuestionVote vote = QQuestionVote.questionVote;
 
         List<QuestionResponseSimple> result = jpaQueryFactory
                 .select(Projections.fields(QuestionResponseSimple.class,
@@ -46,7 +48,7 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
                         question.content,
                         user.displayName.as("user"),
                         question.createdAt,
-                        question.votes,
+                        vote.vote.sum().as("votes"),
                         question.view,
                         answer.count().as("answers"),
                         question.tags))
@@ -55,6 +57,8 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
                 .on(question.user.userId.eq(user.userId))
                 .leftJoin(question.answers, answer)
                 .on(question.questionId.eq(answer.question.questionId))
+                .leftJoin(question.votes, vote)
+                .on(question.questionId.eq(vote.question.questionId))
                 .where(tagEq(questionSearch, question)) // 태그검색
                 .where(questionEq(questionSearch, question)) // 단어검색
                 .groupBy(question.questionId)

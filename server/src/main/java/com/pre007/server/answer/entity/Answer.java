@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,7 +24,8 @@ public class Answer {
     @Column(length = 1000, nullable = false)
     private String content;
 
-    private Integer votes = 0;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<AnswerVote> votes = new ArrayList<>();
 
     private Boolean selection = false;
 
@@ -37,4 +40,11 @@ public class Answer {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime modified = LocalDateTime.now();
+
+    public AnswerVote addVote(AnswerVote vote) {
+        List<AnswerVote> newVotes = new ArrayList<>(votes);
+        newVotes.add(vote);
+        this.votes = newVotes;
+        return vote;
+    }
 }

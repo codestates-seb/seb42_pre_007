@@ -64,9 +64,7 @@ public class AnswerService {
 
         verifyExistsVote(user, answer);
 
-        answer.setVotes(answer.getVotes() + vote);
-
-        answerVoteRepository.save(new AnswerVote(user, answer, vote));
+        answerVoteRepository.save(answer.addVote(new AnswerVote(user, answer, vote)));
     }
 
     private void verifyExistsVote(User user, Answer answer) {

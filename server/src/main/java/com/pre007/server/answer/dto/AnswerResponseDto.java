@@ -1,6 +1,7 @@
 package com.pre007.server.answer.dto;
 
 import com.pre007.server.answer.entity.Answer;
+import com.pre007.server.answer.entity.AnswerVote;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +28,11 @@ public class AnswerResponseDto {
         dto.setAnswerId(entity.getAnswerId());
         dto.setContent(entity.getContent());
         dto.setCreateAt(entity.getCreatedAt());
-        dto.setVotes(entity.getVotes());
         dto.setSelection(entity.getSelection());
+        dto.setVotes(entity.getVotes().size() == 0 ? 0 :
+                entity.getVotes().stream()
+                        .mapToInt(AnswerVote::getVote)
+                        .sum());
 
         return dto;
     }

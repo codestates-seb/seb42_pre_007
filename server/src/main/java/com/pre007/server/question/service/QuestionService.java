@@ -31,8 +31,6 @@ public class QuestionService {
     private final FindUserService findUserService;
     private final QuestionVoteRepository questionVoteRepository;
 
-    private List<String> tagList = List.of("zero"); // 임시방편
-
     // 페이지별 조회
     public PageableResponseDto getQuestionsByQuestionPage(QuestionSearch questionSearch){
         List<QuestionResponseSimple> questions = questionRepository.getQuestionsByQuestionPage(questionSearch);
@@ -45,9 +43,6 @@ public class QuestionService {
     }
 
     // 단일 조회
-    /**
-     * fetch join 으로 성능개선의 여지가 있음
-     */
     public QuestionResponseDto getQuestion(Long id){
         Question getQuestion = findQuestionService.id(id);
         getQuestion.setView(getQuestion.getView() + 1);
@@ -59,12 +54,16 @@ public class QuestionService {
         dto.setContent(getQuestion.getContent());
         dto.setUser(getQuestion.getUser().getDisplayName());
         dto.setCreatedAt(getQuestion.getCreatedAt());
-        dto.setVotes(getQuestion.getVotes());
         dto.setView(getQuestion.getView());
 
         dto.setAnswers(getQuestion.getAnswers().stream()
                 .map(AnswerResponseDto::createByEntity)
                 .collect(Collectors.toList()));
+
+        dto.setVotes(getQuestion.getVotes().size() == 0 ? 0 :
+                getQuestion.getVotes().stream()
+                        .mapToInt(QuestionVote::getVote)
+                        .sum());
 
         dto.setTags(Arrays.asList(getQuestion.getTags().split(" ")));
 
@@ -114,9 +113,7 @@ public class QuestionService {
 
         verifyExistsVote(user, question);
 
-        question.setVotes(question.getVotes() + vote);
-
-        questionVoteRepository.save(new QuestionVote(user, question, vote));
+        questionVoteRepository.save(question.addVote(new QuestionVote(user, question, vote)));
     }
 
     private void verifyExistsVote(User user, Question question) {

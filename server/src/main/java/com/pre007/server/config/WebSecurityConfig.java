@@ -66,8 +66,8 @@ public class WebSecurityConfig {
                                 .antMatchers("/users/auth").permitAll()
                                 .antMatchers("/users/**").hasRole("USER")
                                 .antMatchers("/questions/ask").hasRole("USER")
-                                .antMatchers("/question/*/answer/**").hasRole("USER")
-                                .antMatchers("/question/*/votes").hasRole("USER")
+                                .antMatchers("/questions/*/answer/**").hasRole("USER")
+                                .antMatchers("/questions/*/votes").hasRole("USER")
                                 .anyRequest().permitAll()
                                 );
 
