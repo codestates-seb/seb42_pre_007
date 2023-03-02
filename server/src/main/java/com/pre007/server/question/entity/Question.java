@@ -52,11 +52,11 @@ public class Question {
         return vote;
     }
 
-    public Answer addAnswer(Answer answer) {
-        List<Answer> newAnswers = new ArrayList<>(answers);
-        newAnswers.add(answer);
-        this.answers = newAnswers;
-        answer.setQuestion(this);
-        return answer;
-    }
+//    public Answer addAnswer(Answer answer) {
+//        List<Answer> newAnswers = new ArrayList<>(answers);
+//        newAnswers.add(answer);
+//        this.answers = newAnswers;
+//        answer.setQuestion(this);
+//        return answer;
+//    }
 }
