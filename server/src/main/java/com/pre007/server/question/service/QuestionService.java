@@ -1,66 +1,71 @@
 package com.pre007.server.question.service;
 
-import com.pre007.server.answer.entity.Answer;
-import com.pre007.server.question.dto.QuestionPatchDto;
-import com.pre007.server.question.dto.QuestionPostDto;
-import com.pre007.server.question.dto.QuestionResponseDto;
+import com.pre007.server.answer.dto.AnswerResponseDto;
+import com.pre007.server.exception.BusinessLogicException;
+import com.pre007.server.exception.ExceptionCode;
+import com.pre007.server.globaldto.PageableInfo;
+import com.pre007.server.globaldto.PageableResponseDto;
+import com.pre007.server.question.dto.*;
 import com.pre007.server.question.entity.Question;
+import com.pre007.server.question.entity.QuestionVote;
 import com.pre007.server.question.repository.QuestionRepository;
-import com.pre007.server.user.dto.UserResponseDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pre007.server.question.repository.QuestionVoteRepository;
+import com.pre007.server.user.entity.User;
+import com.pre007.server.user.service.FindUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuestionService {
 
-    @Autowired
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
+    private final FindQuestionService findQuestionService;
+    private final FindUserService findUserService;
+    private final QuestionVoteRepository questionVoteRepository;
 
-    // 전체 조회
-    public List<QuestionResponseDto> getAllQuestions(){
-        List<Question> questions = questionRepository.findAll();
+    // 페이지별 조회
+    public PageableResponseDto getQuestionsByQuestionPage(QuestionSearch questionSearch){
+        List<QuestionResponseSimple> questions = questionRepository.getQuestionsByQuestionPage(questionSearch);
+        PageableInfo pageableInfo = new PageableInfo();
+        pageableInfo.setTotalCount(questionRepository.count());
+        pageableInfo.editByQuestionSearch(questionSearch);
+        pageableInfo.setResultCount(questions.size());
 
-        return questions.stream()
-                .map(question -> {
-                    QuestionResponseDto dto = new QuestionResponseDto();
-                    dto.setQuestionId(question.getQuestionId());
-                    dto.setTitle(question.getTitle());
-                    dto.setContent(question.getContent());
-                    dto.setView(question.getView());
-                    dto.setUser(UserResponseDto.fromEntity(question.getUser()));
-                    List<Long> answerIds = question.getAnswers().stream()
-                            .map(Answer::getAnswerId)
-                            .collect(Collectors.toList());
-                    dto.setAnswerIds((answerIds));
-                    dto.setCreatedAt(question.getCreatedAt());
-                    dto.setModified(question.getModified());
-
-                    return dto;
-        }).collect(Collectors.toList());
+        return new PageableResponseDto(questions.stream().map(QuestionResponseSimple::toDto), 200, pageableInfo);
     }
 
     // 단일 조회
     public QuestionResponseDto getQuestion(Long id){
-        Question getQuestion = questionRepository.findById(id).get();
+        Question getQuestion = findQuestionService.id(id);
+        getQuestion.setView(getQuestion.getView() + 1);
 
         QuestionResponseDto dto = new QuestionResponseDto();
 
         dto.setQuestionId(getQuestion.getQuestionId());
         dto.setTitle(getQuestion.getTitle());
         dto.setContent(getQuestion.getContent());
-        dto.setView(getQuestion.getView());
-        dto.setUser(UserResponseDto.fromEntity(getQuestion.getUser()));
-        List<Long> answerIds = getQuestion.getAnswers().stream()
-                                .map(Answer::getAnswerId)
-                                .collect(Collectors.toList());
-        dto.setAnswerIds((answerIds));
+        dto.setUser(getQuestion.getUser().getDisplayName());
         dto.setCreatedAt(getQuestion.getCreatedAt());
-        dto.setModified(getQuestion.getModified());
+        dto.setView(getQuestion.getView());
+
+        dto.setAnswers(getQuestion.getAnswers().stream()
+                .map(AnswerResponseDto::createByEntity)
+                .collect(Collectors.toList()));
+
+        dto.setVotes(getQuestion.getVotes().size() == 0 ? 0 :
+                getQuestion.getVotes().stream()
+                        .mapToInt(QuestionVote::getVoteQ)
+                        .sum());
+
+        dto.setTags(Arrays.asList(getQuestion.getTags().split(" ")));
 
         return dto;
     }
@@ -68,44 +73,53 @@ public class QuestionService {
     // 생성
     public Long createQuestion(QuestionPostDto dto){
         Question question = new Question();
-        question.setQuestionId(dto.getQuestionId());
         question.setTitle(dto.getTitle());
         question.setContent(dto.getContent());
+        question.setUser(findUserService.displayName(dto.getUser()));
+        question.setTags(Arrays.toString(dto.getTags())
+                .replaceAll("\\[", "")
+                .replaceAll("\\]", "")
+                .replaceAll(",", ""));
 
         return questionRepository.save(question).getQuestionId();
     }
 
     // 수정
-    public QuestionPatchDto updateQuestion(QuestionPatchDto dto) {
+    public void updateQuestion(QuestionPatchDto dto, Long id, String email) {
 
-        Question question = questionRepository.findById(dto.getQuestionId())
-                .orElseThrow(() -> new RuntimeException("Question not found with id: " + dto.getQuestionId()));
-
-        if (dto.getTitle() != null) {
-            question.setTitle(dto.getTitle());
-        }
-
-        if (dto.getContent() != null) {
-            question.setContent(dto.getContent());
-        }
-
-//        if (dto.getTags() != null) {
-//            question.setTags(dto.getTags());
-//        }
-
-        QuestionPatchDto dto2 = new QuestionPatchDto();
-        dto2.setQuestionId(question.getQuestionId());
-        dto2.setTitle(question.getTitle());
-        dto2.setContent(question.getContent());
-//        dto2.setTags(question.getTags());
-
-        return dto2;
+        Question question = findQuestionService.id(id);
+        findUserService.isPermission(question.getUser(), email);
+        question.setTitle(dto.getTitle());
+        question.setContent(dto.getContent());
+        question.setTags(Arrays.toString(dto.getTags())
+                .replaceAll("\\[", "")
+                .replaceAll("\\]", "")
+                .replaceAll(",", ""));
     }
 
     // 삭제
-    public void deleteQuestion(Long id){
-        questionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Question not found with id: " + id));
+    public void deleteQuestion(Long id, String email){
+        Question question = findQuestionService.id(id);
+        findUserService.isPermission(question.getUser(), email);
         questionRepository.deleteById(id);
+    }
+
+    /**
+     * votes
+     */
+    public void addVote(Long id, String email, Integer vote) {
+        User user = findUserService.email(email);
+        Question question = findQuestionService.id(id);
+
+        verifyExistsVote(user, question);
+
+        questionVoteRepository.save(question.addVote(new QuestionVote(user, question, vote)));
+    }
+
+    private void verifyExistsVote(User user, Question question) {
+        Optional<QuestionVote> vote = questionVoteRepository.findByUserAndQuestion(user, question);
+        if (vote.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.ALREADY_VOTED);
+        }
     }
 }

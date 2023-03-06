@@ -1,6 +1,6 @@
 package com.pre007.server.question.dto;
 
-import com.pre007.server.user.dto.UserResponseDto;
+import com.pre007.server.answer.dto.AnswerResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,13 +16,15 @@ public class QuestionResponseDto {
 
     private String content;
 
-    private Integer view;
-
-    private UserResponseDto user;
-
-    private List<Long> answerIds;
+    private String user;
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime modified;
+    private Integer votes = 0;
+
+    private Integer view = 0;
+
+    private List<AnswerResponseDto> answers;
+
+    private List<String> tags;
 }

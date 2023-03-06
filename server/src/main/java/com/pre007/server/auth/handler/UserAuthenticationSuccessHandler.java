@@ -18,6 +18,8 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
+        //request.
+
         log.info("# Authentication success : {}", ((User)(authentication.getPrincipal())).getEmail());
     }
 }

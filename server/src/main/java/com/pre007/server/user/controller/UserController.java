@@ -3,8 +3,10 @@ package com.pre007.server.user.controller;
 import com.pre007.server.globaldto.ResponseDto;
 import com.pre007.server.user.dto.UserCreatedDto;
 import com.pre007.server.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,14 +16,10 @@ import javax.validation.constraints.Positive;
 @RestController
 @Validated
 @RequestMapping("/users")
-@CrossOrigin
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping("/signup")
     public ResponseEntity postUser(@RequestBody @Valid UserCreatedDto dto) {
@@ -30,6 +28,13 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(id, 201));
+    }
+
+    @GetMapping("/auth") // email을 받아오고 조회해서 쿼리문을 한번더 날릴 필요가 있을까?
+    public ResponseEntity authenticateUser(@AuthenticationPrincipal String email) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(userService.getUserSimpleByEmail(email), 200));
     }
 
     @GetMapping("/{user-id}")

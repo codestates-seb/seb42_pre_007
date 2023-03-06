@@ -2,8 +2,11 @@ package com.pre007.server.auth.filter;
 
 import com.pre007.server.auth.authorityutils.CustomAuthorityUtils;
 import com.pre007.server.auth.jwt.JwtTokenizer;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
+import com.pre007.server.exception.BusinessLogicException;
+import com.pre007.server.exception.ExceptionCode;
+import com.pre007.server.user.entity.User;
+import com.pre007.server.user.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,24 +28,17 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-//        Map<String, Object> claims = verifyJws(request);
-//        setAuthenticationToContext(claims);
-//
-//        filterChain.doFilter(request, response);
 
         try {
-            Map<String, Object> claims = verifyJws(request);
+            Map<String, Object> claims = verifyJws(request, response);
             setAuthenticationToContext(claims);
-        } catch (SignatureException se) {
-            request.setAttribute("exception", se);
-        } catch (ExpiredJwtException ee) {
-            request.setAttribute("exception", ee);
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
@@ -53,16 +49,30 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String authorization = request.getHeader("Authorization");
+        String refresh = request.getHeader("Refresh");
 
-        return authorization == null || !authorization.startsWith("Bearer");
+        return (authorization == null || !authorization.startsWith("Bearer"))
+                && refresh == null;
     }
 
-    private Map<String, Object> verifyJws(HttpServletRequest request) {
-        String jws = request.getHeader("Authorization").replace("Bearer", "");
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
+    private Map<String, Object> verifyJws(HttpServletRequest request,
+                                          HttpServletResponse response) {
+        if (request.getHeader("Authorization") != null) {
+            String jws = request.getHeader("Authorization").replace("Bearer", "");
+            Claims claims = jwtTokenizer.getClaims(jws).getBody();
+            return claims;
+        }
 
+        String jws = request.getHeader("Refresh");
+        User user = userRepository.getUserAndRoles(jwtTokenizer.getUsername(jws))
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.INVALID_TOKEN));
+
+        String accessToken = jwtTokenizer.generateAccessTokenByUser(user);
+        response.setHeader("Authorization", "Bearer " + accessToken);
+
+        Claims claims = jwtTokenizer.getClaims(accessToken).getBody();
         return claims;
+
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {

@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,7 +21,13 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
 
+    @Column(length = 1000, nullable = false)
     private String content;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<AnswerVote> votes = new ArrayList<>();
+
+    private Boolean selection = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -32,4 +40,10 @@ public class Answer {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime modified = LocalDateTime.now();
+
+    public AnswerVote addVote(AnswerVote vote) {
+        this.votes.add(vote);
+        vote.setAnswer(this);
+        return vote;
+    }
 }
